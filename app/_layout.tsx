@@ -11,13 +11,6 @@ import { errorHandler } from '@/utils/errorHandler'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-// Performance monitoring (dev only)
-if (__DEV__) {
-  // Initialize why-did-you-render for React render tracking
-  const { initializeWhyDidYouRender } = require('@/utils/renderTracker')
-  initializeWhyDidYouRender()
-}
-
 // Singleton QueryClient instance (prevents memory leaks and cache loss)
 let queryClient: QueryClient | null = null
 
