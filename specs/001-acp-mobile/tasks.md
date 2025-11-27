@@ -195,7 +195,7 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ---
 
-## Phase 6: User Story 4 - Chat with Claude Interactively (Priority: P2) (9 tasks)
+## ✅ Phase 6: User Story 4 - Chat with Claude Interactively (Priority: P2) (9 tasks)
 
 📋 **[Detailed Implementation Plan](./phases/phase-06-interactive-chat.md)** - Complete architecture, component specifications, API integration, and testing strategy
 
@@ -218,21 +218,21 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US4]
 
-- [ ] T056 [P] [US4] Implement chat API service in services/api/chat.ts with sendMessage(), getChatHistory()
-- [ ] T057 [P] [US4] Create useChat hook in hooks/useChat.ts with messages state, sendMessage handler, loading state
+- [x] T056 [P] [US4] Implement chat API service in services/api/chat.ts with sendMessage(), getChatHistory()
+- [x] T057 [P] [US4] Create useChat hook in hooks/useChat.ts with messages state, sendMessage handler, loading state
 
 ### UI Components [US4]
 
-- [ ] T058 [P] [US4] Create ChatBubble component in components/chat/ChatBubble.tsx for user/assistant messages with avatar
-- [ ] T059 [P] [US4] Create ChatInput component in components/chat/ChatInput.tsx with text field and send button (arrow up icon)
-- [ ] T060 [P] [US4] Create ChatHeader component in components/chat/ChatHeader.tsx with "Claude" + green dot + "sonnet-4.5" subtitle + close/more options
+- [x] T058 [P] [US4] Create ChatBubble component in components/chat/ChatBubble.tsx for user/assistant messages with avatar
+- [x] T059 [P] [US4] Create ChatInput component in components/chat/ChatInput.tsx with text field and send button (arrow up icon)
+- [x] T060 [P] [US4] Create ChatHeader component in components/chat/ChatHeader.tsx with "Claude" + green dot + "sonnet-4.5" subtitle + close/more options
 
 ### Screens & Integration [US4]
 
-- [ ] T061 [US4] Implement Interactive Chat modal in app/chat.tsx with pageSheet presentation, ChatHeader, message list, ChatInput, disclaimer
-- [ ] T062 [US4] Add "Interactive" quick action button to Dashboard that opens chat modal
-- [ ] T063 [US4] Implement send message flow: optimistic UI update → API call → append Claude response
-- [ ] T064 [US4] Implement chat history loading on modal open from AsyncStorage cache
+- [x] T061 [US4] Implement Interactive Chat modal in app/chat.tsx with pageSheet presentation, ChatHeader, message list, ChatInput, disclaimer
+- [x] T062 [US4] Add "Interactive" quick action button to Dashboard that opens chat modal
+- [x] T063 [US4] Implement send message flow: optimistic UI update → API call → append Claude response
+- [x] T064 [US4] Implement chat history loading on modal open from AsyncStorage cache
 
 ---
 
@@ -261,14 +261,14 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US5]
 
-- [ ] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo()
-- [ ] T066 [P] [US5] Add createSession() method to services/api/sessions.ts
-- [ ] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled)
+- [x] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo()
+- [x] T066 [P] [US5] Add createSession() method to services/api/sessions.ts
+- [x] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled)
 
 ### UI Components [US5]
 
-- [ ] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning
-- [ ] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option
+- [x] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning
+- [x] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option
 - [ ] T070 [P] [US5] Create WorkflowTypeGrid component in components/session/WorkflowTypeGrid.tsx with 7 workflow cards, "Soon" badges for disabled
 - [ ] T071 [P] [US5] Create ModelSelector component in components/session/ModelSelector.tsx with sonnet-4.5/opus-4.5 radio buttons and descriptions
 - [ ] T072 [P] [US5] Create custom lightbulb SVG icon in assets/icons/lightbulb.svg for Ideate workflow

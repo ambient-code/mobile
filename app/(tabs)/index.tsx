@@ -40,40 +40,43 @@ interface QuickActionButtonProps {
 // Memoized Quick Action Button component
 const QuickActionButton = memo<QuickActionButtonProps>(
   ({ action, colors }: QuickActionButtonProps) => {
-  const dynamicText = action.count !== undefined ? `${action.count} ${action.text}` : action.text
+    const dynamicText = action.count !== undefined ? `${action.count} ${action.text}` : action.text
 
-  return (
-    <TouchableOpacity
-      style={[
-        styles.quickActionButton,
-        { backgroundColor: action.disabled ? colors.card : colors.accent },
-      ]}
-      onPress={action.onPress}
-      activeOpacity={0.8}
-      disabled={action.disabled}
-      accessibilityRole="button"
-      accessibilityState={{ disabled: action.disabled }}
-    >
-      <IconSymbol
-        name={action.icon as Parameters<typeof IconSymbol>[0]['name']}
-        size={28}
-        color={action.disabled ? colors.textSecondary : '#fff'}
-      />
-      <Text
-        style={[styles.quickActionText, { color: action.disabled ? colors.textSecondary : '#fff' }]}
-        numberOfLines={2}
-        ellipsizeMode="tail"
+    return (
+      <TouchableOpacity
+        style={[
+          styles.quickActionButton,
+          { backgroundColor: action.disabled ? colors.card : colors.accent },
+        ]}
+        onPress={action.onPress}
+        activeOpacity={0.8}
+        disabled={action.disabled}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: action.disabled }}
       >
-        {dynamicText}
-      </Text>
-      {action.badge && (
-        <View style={styles.soonBadge}>
-          <Text style={styles.soonText}>{action.badge}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
-  )
-}
+        <IconSymbol
+          name={action.icon as Parameters<typeof IconSymbol>[0]['name']}
+          size={28}
+          color={action.disabled ? colors.textSecondary : '#fff'}
+        />
+        <Text
+          style={[
+            styles.quickActionText,
+            { color: action.disabled ? colors.textSecondary : '#fff' },
+          ]}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
+          {dynamicText}
+        </Text>
+        {action.badge && (
+          <View style={styles.soonBadge}>
+            <Text style={styles.soonText}>{action.badge}</Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    )
+  }
 )
 
 QuickActionButton.displayName = 'QuickActionButton'
@@ -126,7 +129,12 @@ export default function DashboardScreen() {
   // Quick Actions data - memoized to prevent recreation
   const quickActions = useMemo<QuickAction[]>(
     () => [
-      { id: 'chat', icon: 'message.fill', text: 'Chat' },
+      {
+        id: 'chat',
+        icon: 'message.fill',
+        text: 'Interactive',
+        onPress: () => router.push('/chat'),
+      },
       {
         id: 'running',
         icon: 'bolt.fill',
