@@ -1,18 +1,15 @@
 # Bundle Size Report
 
-**Generated:** 11/27/2025, 3:11:41 AM
+**Generated:** 11/27/2025, 7:40:30 AM
 
 ## Platform Bundles
 
-### iOS
-
-- **Total Size:** 7.77 MB
+No bundles found. Run `npm run bundle:ios` or `npm run bundle:android` first.
 
 ## Bundle Size Targets
 
-| Platform | Target  | Status            |
-| -------- | ------- | ----------------- |
-| iOS      | < 10 MB | ✅ Good (7.77 MB) |
+| Platform | Target | Status |
+| -------- | ------ | ------ |
 
 ## Analysis Tips
 
