@@ -24,9 +24,7 @@ export default function AppearanceSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.description}>
-        Choose how ACP Mobile appears on your device.
-      </Text>
+      <Text style={styles.description}>Choose how ACP Mobile appears on your device.</Text>
 
       <View style={styles.section}>
         <ThemeOption
@@ -63,18 +61,9 @@ interface ThemeOptionProps {
   onSelect: () => void
 }
 
-function ThemeOption({
-  label,
-  description,
-  selected,
-  onSelect,
-}: ThemeOptionProps) {
+function ThemeOption({ label, description, selected, onSelect }: ThemeOptionProps) {
   return (
-    <TouchableOpacity
-      style={styles.option}
-      onPress={onSelect}
-      activeOpacity={0.7}
-    >
+    <TouchableOpacity style={styles.option} onPress={onSelect} activeOpacity={0.7}>
       <View style={styles.optionContent}>
         <Text style={styles.optionLabel}>{label}</Text>
         <Text style={styles.optionDescription}>{description}</Text>

@@ -9,6 +9,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { ChatAPI } from '@/services/api/chat'
 import { CacheService } from '@/services/storage/cache'
 import { errorHandler } from '@/utils/errorHandler'
+import { trackEvent, TelemetryEvents } from '@/services/telemetry'
 import type { ChatMessage } from '@/types/api'
 
 /**
@@ -111,6 +112,12 @@ export function useChat(): UseChatReturn {
     },
 
     onSuccess: async (assistantMessage: ChatMessage, content: string) => {
+      // Track chat message sent
+      trackEvent(TelemetryEvents.CHAT_MESSAGE_SENT, {
+        threadId,
+        messageLength: content.length,
+      })
+
       // Append assistant response to messages
       queryClient.setQueryData<ChatMessage[]>(['chat', threadId], (old = []) => [
         ...old,
