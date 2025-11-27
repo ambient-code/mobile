@@ -11,6 +11,8 @@ import {
   type SessionUpdatedData,
   type SessionProgressData,
   type SessionStatusData,
+  type NotificationNewData,
+  type NotificationReadData,
 } from '@/types/realtime'
 import { FEATURE_FLAGS } from '@/utils/constants'
 import { useToast } from '@/hooks/useToast'
@@ -282,6 +284,13 @@ export function useRealtimeSession() {
 
           case RealtimeEventType.SESSION_STATUS:
             handleStatusChange(event.data as SessionStatusData)
+            break
+
+          case RealtimeEventType.NOTIFICATION_NEW:
+          case RealtimeEventType.NOTIFICATION_READ:
+            // Invalidate notifications query to trigger refetch
+            queryClient.invalidateQueries({ queryKey: ['notifications'] })
+            logger.debug('[Realtime] Notification event, invalidating cache')
             break
 
           default:
