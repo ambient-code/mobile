@@ -8,6 +8,7 @@ import { Toast } from '@/components/ui/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
+import { initializeTelemetry } from '@/services/telemetry'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -132,6 +133,13 @@ export default function RootLayout() {
   // Initialize global error handler FIRST
   useEffect(() => {
     errorHandler.initialize()
+  }, [])
+
+  // Initialize telemetry
+  useEffect(() => {
+    initializeTelemetry().catch((error) => {
+      console.error('[App] Failed to initialize telemetry:', error)
+    })
   }, [])
 
   // Initialize performance monitoring in development

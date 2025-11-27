@@ -13,6 +13,7 @@ import {
 import { useTheme } from '@/hooks/useTheme'
 import { useUpdateSession } from '@/hooks/useUpdateSession'
 import { useToast } from '@/hooks/useToast'
+import { trackEvent, TelemetryEvents } from '@/services/telemetry'
 
 interface ApprovalActionsProps {
   sessionId: string
@@ -38,6 +39,11 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
       await updateSession.mutateAsync({
         id: sessionId,
         request: { action: 'approve' },
+      })
+
+      // Track approval
+      trackEvent(TelemetryEvents.SESSION_APPROVED, {
+        sessionId,
       })
 
       showToast({
@@ -70,6 +76,12 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
           action: 'reject',
           feedback: feedback.trim() || undefined,
         },
+      })
+
+      // Track rejection
+      trackEvent(TelemetryEvents.SESSION_REJECTED, {
+        sessionId,
+        hasFeedback: Boolean(feedback.trim()),
       })
 
       showToast({
