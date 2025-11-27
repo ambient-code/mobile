@@ -12,9 +12,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
       {/* Avatar */}
       <Image
         source={{
-          uri:
-            user.avatar ||
-            `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`,
+          uri: user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`,
         }}
         style={styles.avatar}
       />
