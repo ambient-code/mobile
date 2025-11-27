@@ -61,6 +61,8 @@ const QuickActionButton = memo<QuickActionButtonProps>(
       />
       <Text
         style={[styles.quickActionText, { color: action.disabled ? colors.textSecondary : '#fff' }]}
+        numberOfLines={2}
+        ellipsizeMode="tail"
       >
         {dynamicText}
       </Text>
@@ -398,7 +400,7 @@ const styles = StyleSheet.create({
   },
   quickActionButton: {
     width: '100%',
-    minHeight: 100,
+    height: 100,
     paddingVertical: 12,
     paddingHorizontal: 8,
     borderRadius: 12,
@@ -408,10 +410,10 @@ const styles = StyleSheet.create({
   },
   quickActionText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     textAlign: 'center',
-    lineHeight: 16,
+    lineHeight: 14,
   },
   soonBadge: {
     position: 'absolute',
