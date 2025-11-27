@@ -1,11 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UserPreferences, DEFAULT_PREFERENCES } from '@/types/user'
+import {
+  UserPreferences,
+  DEFAULT_PREFERENCES,
+  NotificationPreferences,
+  User,
+} from '@/types/user'
 import { Repository } from '@/types/api'
 
 const KEYS = {
   USER_PREFERENCES: 'user_preferences',
   CONNECTED_REPOS: 'connected_repos',
+  USER_PROFILE: 'user_profile',
 }
+
+const PROFILE_TTL = 60 * 60 * 1000 // 1 hour
 
 export class PreferencesService {
   static async getPreferences(): Promise<UserPreferences> {
@@ -67,9 +75,78 @@ export class PreferencesService {
     await this.setConnectedRepos(updated)
   }
 
+  /**
+   * Update specific notification preference
+   * Optimistic update - saves locally immediately
+   */
+  static async updateNotificationPreference(
+    key: keyof NotificationPreferences,
+    value: boolean
+  ): Promise<void> {
+    const prefs = await this.getPreferences()
+    prefs.notifications[key] = value
+    await this.setPreferences(prefs)
+  }
+
+  /**
+   * Update theme preference
+   * Optimistic update - saves locally immediately
+   */
+  static async updateTheme(
+    theme: 'light' | 'dark' | 'system'
+  ): Promise<void> {
+    const prefs = await this.getPreferences()
+    prefs.theme = theme
+    await this.setPreferences(prefs)
+  }
+
+  /**
+   * Cache user profile with TTL
+   */
+  static async cacheProfile(profile: User): Promise<void> {
+    try {
+      const data = {
+        profile,
+        timestamp: Date.now(),
+      }
+      await AsyncStorage.setItem(KEYS.USER_PROFILE, JSON.stringify(data))
+    } catch (error) {
+      console.error('Error caching profile:', error)
+    }
+  }
+
+  /**
+   * Get cached profile if not expired
+   * Returns null if cache is expired or doesn't exist
+   */
+  static async getCachedProfile(): Promise<User | null> {
+    try {
+      const data = await AsyncStorage.getItem(KEYS.USER_PROFILE)
+      if (!data) return null
+
+      const { profile, timestamp } = JSON.parse(data)
+      const age = Date.now() - timestamp
+
+      if (age > PROFILE_TTL) {
+        // Expired - clear cache
+        await AsyncStorage.removeItem(KEYS.USER_PROFILE)
+        return null
+      }
+
+      return profile
+    } catch (error) {
+      console.error('Error getting cached profile:', error)
+      return null
+    }
+  }
+
   static async clearAll(): Promise<void> {
     try {
-      await AsyncStorage.multiRemove([KEYS.USER_PREFERENCES, KEYS.CONNECTED_REPOS])
+      await AsyncStorage.multiRemove([
+        KEYS.USER_PREFERENCES,
+        KEYS.CONNECTED_REPOS,
+        KEYS.USER_PROFILE,
+      ])
     } catch (error) {
       console.error('Error clearing preferences:', error)
     }
