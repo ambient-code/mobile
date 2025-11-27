@@ -83,18 +83,26 @@ function RootLayoutNav() {
           headerTintColor: colors.text,
           headerShadowVisible: false,
           headerBackTitle: '',
+          headerBackTitleVisible: false,
           contentStyle: {
             backgroundColor: colors.bg,
           },
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
         <Stack.Screen
           name="notifications/index"
           options={{
             headerShown: true,
             headerTitle: '',
             headerBackTitle: '',
+          }}
+        />
+        <Stack.Screen
+          name="chat"
+          options={{
+            presentation: 'modal',
+            headerShown: false,
           }}
         />
       </Stack>

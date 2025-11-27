@@ -25,6 +25,9 @@ const MAPPING = {
   sparkles: 'auto-awesome',
   'checkmark.circle.fill': 'check-circle',
   'xmark.circle.fill': 'cancel',
+  'arrow.up': 'arrow-upward',
+  xmark: 'close',
+  'message.fill': 'message',
 } as IconMapping
 
 /**

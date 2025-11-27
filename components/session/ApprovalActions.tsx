@@ -147,7 +147,7 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
           <View style={[styles.modalContent, { backgroundColor: colors.card }]}>
             <Text style={[styles.modalTitle, { color: colors.text }]}>Approve Session?</Text>
             <Text style={[styles.modalMessage, { color: colors.textSecondary }]}>
-              This will mark "{sessionName}" as completed and merge the changes.
+              This will mark &ldquo;{sessionName}&rdquo; as completed and merge the changes.
             </Text>
 
             <View style={styles.modalButtons}>
