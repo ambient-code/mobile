@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AuthProvider } from '@/hooks/useAuth'
+import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { ThemeProvider, useTheme } from '@/hooks/useTheme'
 import { ToastProvider, useToast } from '@/hooks/useToast'
 import { Toast } from '@/components/ui/Toast'
