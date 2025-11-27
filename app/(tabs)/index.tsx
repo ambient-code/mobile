@@ -18,7 +18,8 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { Header } from '@/components/layout/Header'
 import { FAB } from '@/components/layout/FAB'
 import { SessionCard } from '@/components/session/SessionCard'
-import { SessionStatus, type Session } from '@/types/session'
+import type { Session } from '@/types/session'
+import { SessionStatus } from '@/types/session'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 
 // Quick Action button types and data

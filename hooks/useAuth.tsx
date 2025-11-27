@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { User } from '@/types/user'
+import type { ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import type { User } from '@/types/user'
 import { TokenManager } from '@/services/auth/token-manager'
 import { OAuthService } from '@/services/auth/oauth'
 import { AuthAPI } from '@/services/api/auth'
 import { OAUTH_CONFIG } from '@/utils/constants'
-import { AuthSessionResult } from 'expo-auth-session'
+import type { AuthSessionResult } from 'expo-auth-session'
 import { errorHandler } from '@/utils/errorHandler'
 
 interface AuthContextType {

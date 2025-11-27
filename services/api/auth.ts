@@ -1,5 +1,5 @@
 import { apiClient } from './client'
-import { TokenResponse } from '@/types/api'
+import type { TokenResponse } from '@/types/api'
 import { TokenManager } from '@/services/auth/token-manager'
 import { OAuthService } from '@/services/auth/oauth'
 import type { User } from '@/types/user'

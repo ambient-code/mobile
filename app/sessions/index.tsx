@@ -3,7 +3,8 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView } from '
 import { useTheme } from '@/hooks/useTheme'
 import { useSessions } from '@/hooks/useSessions'
 import { SessionCard } from '@/components/session/SessionCard'
-import { SessionStatus, type Session } from '@/types/session'
+import type { Session } from '@/types/session'
+import { SessionStatus } from '@/types/session'
 import { useLocalSearchParams } from 'expo-router'
 
 type FilterType = 'all' | SessionStatus
