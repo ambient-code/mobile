@@ -19,6 +19,7 @@ import { Header } from '@/components/layout/Header'
 import { FAB } from '@/components/layout/FAB'
 import { SessionCard } from '@/components/session/SessionCard'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import { SessionStatus, type Session } from '@/types/session'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 
@@ -196,19 +197,13 @@ export default function DashboardScreen() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <Header isRefetching={isRefetching} />
 
+      {/* Offline Banner - Shows at top when offline */}
+      {isOffline && <OfflineBanner />}
+
       <ScrollView
         style={styles.scrollView}
         refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
       >
-        {/* Offline Indicator */}
-        {isOffline && (
-          <View style={[styles.offlineBanner, { backgroundColor: colors.warning + '20' }]}>
-            <Text style={[styles.offlineText, { color: colors.warning }]}>
-              Offline - Showing cached data
-            </Text>
-          </View>
-        )}
-
         {/* Connection Status - Only show when disconnected or error */}
         {!isConnected && !isOffline && (
           <View

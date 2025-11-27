@@ -1,12 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {
-  UserPreferences,
-  DEFAULT_PREFERENCES,
-  NotificationPreferences,
-  User,
-  QuietHours,
-} from '@/types/user'
-import { Repository } from '@/types/api'
+import type { UserPreferences, NotificationPreferences, User } from '@/types/user';
+import { DEFAULT_PREFERENCES } from '@/types/user'
+import type { Repository } from '@/types/api'
 
 const KEYS = {
   USER_PREFERENCES: 'user_preferences',
@@ -96,16 +91,6 @@ export class PreferencesService {
   static async updateTheme(theme: 'light' | 'dark' | 'system'): Promise<void> {
     const prefs = await this.getPreferences()
     prefs.theme = theme
-    await this.setPreferences(prefs)
-  }
-
-  /**
-   * Update quiet hours preference
-   * Optimistic update - saves locally immediately
-   */
-  static async updateQuietHours(quietHours: QuietHours): Promise<void> {
-    const prefs = await this.getPreferences()
-    prefs.quietHours = quietHours
     await this.setPreferences(prefs)
   }
 

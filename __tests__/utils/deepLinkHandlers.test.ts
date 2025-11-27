@@ -16,6 +16,8 @@ import {
 import type { ParsedDeepLink } from '@/utils/deepLinking'
 import type { DeepLinkHandlerContext } from '@/utils/deepLinkHandlers'
 
+import { SessionsAPI } from '@/services/api/sessions'
+
 // Mock dependencies
 jest.mock('@/services/api/sessions', () => ({
   SessionsAPI: {
@@ -23,8 +25,6 @@ jest.mock('@/services/api/sessions', () => ({
     fetchSessions: jest.fn(),
   },
 }))
-
-import { SessionsAPI } from '@/services/api/sessions'
 
 describe('Deep Link Handlers', () => {
   let mockContext: DeepLinkHandlerContext
@@ -66,7 +66,7 @@ describe('Deep Link Handlers', () => {
       expect(mockContext.queryClient.prefetchQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           queryKey: ['session', 'abc123'],
-        }),
+        })
       )
       expect(mockContext.router.push).toHaveBeenCalledWith('/sessions/abc123')
     })
@@ -79,9 +79,7 @@ describe('Deep Link Handlers', () => {
         isValid: true,
       }
 
-      ;(SessionsAPI.fetchSessionDetail as jest.Mock).mockRejectedValue(
-        new Error('Network error'),
-      )
+      ;(SessionsAPI.fetchSessionDetail as jest.Mock).mockRejectedValue(new Error('Network error'))
 
       const result = await handleSessionDetail(parsedLink, mockContext)
 
@@ -178,7 +176,7 @@ describe('Deep Link Handlers', () => {
       expect(mockContext.queryClient.prefetchQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           queryKey: ['sessions'],
-        }),
+        })
       )
       expect(mockContext.router.push).toHaveBeenCalledWith('/sessions')
     })

@@ -106,10 +106,7 @@ export function parseDeepLink(url: string): ParsedDeepLink {
     }
 
     // Validate query parameters if validator exists
-    if (
-      matchedRoute.validateParams &&
-      !matchedRoute.validateParams(parsed.queryParams || {})
-    ) {
+    if (matchedRoute.validateParams && !matchedRoute.validateParams(parsed.queryParams || {})) {
       return {
         scheme: parsed.scheme || '',
         hostname: parsed.hostname,
@@ -171,10 +168,7 @@ function findMatchingRoute(path: string): DeepLinkRoute | null {
 /**
  * Extract route parameters from path using pattern
  */
-export function extractRouteParams(
-  path: string,
-  pattern: RegExp,
-): Record<string, string> {
+export function extractRouteParams(path: string, pattern: RegExp): Record<string, string> {
   const match = path.match(pattern)
   if (!match) return {}
 
@@ -212,14 +206,9 @@ export function isValidNotificationId(id: string): boolean {
 /**
  * Build a deep link URL for testing/sharing
  */
-export function buildDeepLink(
-  path: string,
-  queryParams?: Record<string, string>,
-): string {
+export function buildDeepLink(path: string, queryParams?: Record<string, string>): string {
   const isDev = __DEV__
-  const baseUrl = isDev
-    ? 'acp://'
-    : 'https://ambient-code.redhat.com'
+  const baseUrl = isDev ? 'acp://' : 'https://ambient-code.redhat.com'
 
   let url = `${baseUrl}${path}`
 

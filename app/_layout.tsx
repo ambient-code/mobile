@@ -1,15 +1,14 @@
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AuthProvider, useAuth } from '@/hooks/useAuth'
+import { AuthProvider } from '@/hooks/useAuth'
 import { ThemeProvider, useTheme } from '@/hooks/useTheme'
 import { ToastProvider, useToast } from '@/hooks/useToast'
 import { Toast } from '@/components/ui/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
-import { useLinking } from '@/hooks/useLinking'
-import { initializeTelemetry } from '@/services/telemetry'
+import { initializeSentry } from '@/services/monitoring/sentry'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -51,19 +50,6 @@ function RootLayoutNav() {
   const { colors, theme } = useTheme()
   const { currentToast, dismissToast } = useToast()
   const [lastError, setLastError] = useState<Error | null>(null)
-  const { isAuthenticated, isLoading } = useAuth()
-
-  // Enable deep linking
-  useLinking({
-    enabled: true,
-    onNavigationError: (url, error) => {
-      console.error('[RootLayout] Deep link navigation error:', url, error)
-      errorHandler.reportError(error, {
-        source: 'DeepLink',
-        url,
-      })
-    },
-  })
 
   // Subscribe to global errors for UI updates
   useEffect(() => {
@@ -104,18 +90,6 @@ function RootLayoutNav() {
           },
         }}
       >
-        {/* Login screen - shown when not authenticated */}
-        <Stack.Screen
-          name="login"
-          options={{
-            headerShown: false,
-            title: '',
-            // Prevent going back to app screens when on login
-            gestureEnabled: false,
-          }}
-        />
-
-        {/* App screens - shown when authenticated */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
         <Stack.Screen
           name="notifications/index"
@@ -143,16 +117,14 @@ function RootLayoutNav() {
 export default function RootLayout() {
   const client = getQueryClient()
 
-  // Initialize global error handler FIRST
+  // Initialize Sentry FIRST (before error handler)
   useEffect(() => {
-    errorHandler.initialize()
+    initializeSentry()
   }, [])
 
-  // Initialize telemetry
+  // Initialize global error handler
   useEffect(() => {
-    initializeTelemetry().catch((error) => {
-      console.error('[App] Failed to initialize telemetry:', error)
-    })
+    errorHandler.initialize()
   }, [])
 
   // Initialize performance monitoring in development
@@ -177,18 +149,15 @@ export default function RootLayout() {
 
       // Expose global performance utilities for debugging
       if (typeof global !== 'undefined') {
-        const { deepLinkAnalytics } = require('@/utils/deepLinkAnalytics')
         ;(global as any).performance = {
           ...(global as any).performance,
           memory: memoryMonitor,
           fps: fpsMonitor,
-          deepLinks: deepLinkAnalytics,
           report: () => {
             memoryMonitor.printReport()
             fpsMonitor.printReport()
             const { getRenderTracker } = require('@/utils/renderTracker')
             getRenderTracker().printReport()
-            console.log(deepLinkAnalytics.generateReport())
           },
         }
       }

@@ -31,7 +31,7 @@ class DeepLinkAnalytics {
     parsedLink: ParsedDeepLink,
     handler: string | null,
     source: 'initial' | 'foreground' | 'background',
-    navigationTime?: number,
+    navigationTime?: number
   ): void {
     const event: DeepLinkEvent = {
       timestamp: Date.now(),
@@ -66,7 +66,7 @@ class DeepLinkAnalytics {
   trackValidationFailure(
     url: string,
     errorMessage: string,
-    source: 'initial' | 'foreground' | 'background',
+    source: 'initial' | 'foreground' | 'background'
   ): void {
     const event: DeepLinkEvent = {
       timestamp: Date.now(),
@@ -170,10 +170,7 @@ class DeepLinkAnalytics {
     const emoji = event.isValid ? '✅' : '❌'
     const time = event.navigationTime ? ` (${event.navigationTime.toFixed(0)}ms)` : ''
 
-    console.log(
-      `[DeepLink] ${emoji} ${event.source} → ${event.path}${time}`,
-      event.queryParams,
-    )
+    console.log(`[DeepLink] ${emoji} ${event.source} → ${event.path}${time}`, event.queryParams)
 
     if (event.errorMessage) {
       console.warn(`[DeepLink] Error: ${event.errorMessage}`)

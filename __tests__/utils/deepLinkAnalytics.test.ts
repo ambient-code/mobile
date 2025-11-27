@@ -27,7 +27,7 @@ describe('DeepLinkAnalytics', () => {
         parsedLink,
         'session-detail',
         'foreground',
-        250,
+        250
       )
 
       const events = deepLinkAnalytics.getEvents()
@@ -47,12 +47,7 @@ describe('DeepLinkAnalytics', () => {
         errorMessage: 'Unsupported route',
       }
 
-      deepLinkAnalytics.trackNavigation(
-        'acp://unknown',
-        parsedLink,
-        null,
-        'foreground',
-      )
+      deepLinkAnalytics.trackNavigation('acp://unknown', parsedLink, null, 'foreground')
 
       const events = deepLinkAnalytics.getEvents()
       expect(events).toHaveLength(1)
@@ -74,7 +69,7 @@ describe('DeepLinkAnalytics', () => {
           `acp://sessions/test${i}`,
           parsedLink,
           'session-detail',
-          'foreground',
+          'foreground'
         )
       }
 
@@ -85,11 +80,7 @@ describe('DeepLinkAnalytics', () => {
 
   describe('trackValidationFailure', () => {
     it('should track validation failures', () => {
-      deepLinkAnalytics.trackValidationFailure(
-        'acp://invalid',
-        'Invalid URL format',
-        'initial',
-      )
+      deepLinkAnalytics.trackValidationFailure('acp://invalid', 'Invalid URL format', 'initial')
 
       const events = deepLinkAnalytics.getFailedEvents()
       expect(events).toHaveLength(1)
@@ -119,15 +110,10 @@ describe('DeepLinkAnalytics', () => {
         'acp://sessions/abc',
         validLink,
         'session-detail',
-        'foreground',
+        'foreground'
       )
 
-      deepLinkAnalytics.trackNavigation(
-        'acp://unknown',
-        invalidLink,
-        null,
-        'foreground',
-      )
+      deepLinkAnalytics.trackNavigation('acp://unknown', invalidLink, null, 'foreground')
 
       const validEvents = deepLinkAnalytics.getValidEvents()
       expect(validEvents).toHaveLength(1)
@@ -156,15 +142,10 @@ describe('DeepLinkAnalytics', () => {
         'acp://sessions/abc',
         validLink,
         'session-detail',
-        'foreground',
+        'foreground'
       )
 
-      deepLinkAnalytics.trackNavigation(
-        'acp://unknown',
-        invalidLink,
-        null,
-        'foreground',
-      )
+      deepLinkAnalytics.trackNavigation('acp://unknown', invalidLink, null, 'foreground')
 
       const failedEvents = deepLinkAnalytics.getFailedEvents()
       expect(failedEvents).toHaveLength(1)
@@ -186,7 +167,7 @@ describe('DeepLinkAnalytics', () => {
         parsedLink,
         'session-detail',
         'foreground',
-        100,
+        100
       )
 
       deepLinkAnalytics.trackNavigation(
@@ -194,7 +175,7 @@ describe('DeepLinkAnalytics', () => {
         parsedLink,
         'session-detail',
         'foreground',
-        200,
+        200
       )
 
       deepLinkAnalytics.trackNavigation(
@@ -202,7 +183,7 @@ describe('DeepLinkAnalytics', () => {
         parsedLink,
         'session-detail',
         'foreground',
-        300,
+        300
       )
 
       const avg = deepLinkAnalytics.getAverageNavigationTime()
@@ -236,7 +217,7 @@ describe('DeepLinkAnalytics', () => {
         validLink,
         'session-detail',
         'foreground',
-        100,
+        100
       )
 
       deepLinkAnalytics.trackNavigation(
@@ -244,15 +225,10 @@ describe('DeepLinkAnalytics', () => {
         validLink,
         'session-detail',
         'initial',
-        200,
+        200
       )
 
-      deepLinkAnalytics.trackNavigation(
-        'acp://unknown',
-        invalidLink,
-        null,
-        'foreground',
-      )
+      deepLinkAnalytics.trackNavigation('acp://unknown', invalidLink, null, 'foreground')
 
       const stats = deepLinkAnalytics.getStats()
 
@@ -280,7 +256,7 @@ describe('DeepLinkAnalytics', () => {
         parsedLink,
         'session-detail',
         'foreground',
-        250,
+        250
       )
 
       const report = deepLinkAnalytics.generateReport()
@@ -302,12 +278,7 @@ describe('DeepLinkAnalytics', () => {
         errorMessage: 'Unsupported route',
       }
 
-      deepLinkAnalytics.trackNavigation(
-        'acp://unknown',
-        invalidLink,
-        null,
-        'foreground',
-      )
+      deepLinkAnalytics.trackNavigation('acp://unknown', invalidLink, null, 'foreground')
 
       const report = deepLinkAnalytics.generateReport()
 
@@ -330,7 +301,7 @@ describe('DeepLinkAnalytics', () => {
         'acp://sessions/test',
         parsedLink,
         'session-detail',
-        'foreground',
+        'foreground'
       )
 
       expect(deepLinkAnalytics.getEvents()).toHaveLength(1)

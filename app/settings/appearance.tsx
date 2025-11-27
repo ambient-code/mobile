@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '../../hooks/useTheme'
+import { useOffline } from '../../hooks/useOffline'
+import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { PreferencesService } from '../../services/storage/preferences'
 
 type ThemeOption = 'light' | 'dark' | 'system'
 
 export default function AppearanceSettingsScreen() {
   const { theme, setTheme } = useTheme()
+  const { isOffline } = useOffline()
   const [selectedTheme, setSelectedTheme] = useState<ThemeOption>(theme)
 
   useEffect(() => {
@@ -24,6 +27,9 @@ export default function AppearanceSettingsScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       <Text style={styles.description}>Choose how ACP Mobile appears on your device.</Text>
 
       <View style={styles.section}>

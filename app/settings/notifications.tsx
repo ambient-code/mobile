@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View, Text, StyleSheet, Alert } from 'react-native'
 import { Toggle } from '../../components/ui/Toggle'
+import { OfflineBanner } from '../../components/ui/OfflineBanner'
+import { useOffline } from '../../hooks/useOffline'
 import { userApi } from '../../services/api/user'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { NotificationPreferences } from '../../types/user'
 
 export default function NotificationsSettingsScreen() {
+  const { isOffline } = useOffline()
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     blockingAlerts: true,
     reviewRequests: true,
@@ -70,6 +73,9 @@ export default function NotificationsSettingsScreen() {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       <Text style={styles.description}>
         Choose which notifications you want to receive on your device.
       </Text>

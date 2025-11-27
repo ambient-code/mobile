@@ -30,12 +30,7 @@ interface UseLinkingOptions {
  * Hook for handling deep links throughout the app lifecycle
  */
 export function useLinking(options: UseLinkingOptions = {}) {
-  const {
-    enabled = true,
-    onNavigationStart,
-    onNavigationComplete,
-    onNavigationError,
-  } = options
+  const { enabled = true, onNavigationStart, onNavigationComplete, onNavigationError } = options
 
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -71,7 +66,7 @@ export function useLinking(options: UseLinkingOptions = {}) {
    */
   const handleDeepLink = async (
     url: string,
-    source: 'initial' | 'foreground' | 'background',
+    source: 'initial' | 'foreground' | 'background'
   ): Promise<void> => {
     // Prevent concurrent processing
     if (isProcessingRef.current) {
@@ -92,7 +87,11 @@ export function useLinking(options: UseLinkingOptions = {}) {
 
       if (!parsedLink.isValid) {
         console.warn('[useLinking] Invalid deep link:', parsedLink.errorMessage)
-        deepLinkAnalytics.trackValidationFailure(url, parsedLink.errorMessage || 'Unknown error', source)
+        deepLinkAnalytics.trackValidationFailure(
+          url,
+          parsedLink.errorMessage || 'Unknown error',
+          source
+        )
 
         // Navigate to home on invalid link
         router.push('/(tabs)')
@@ -117,7 +116,11 @@ export function useLinking(options: UseLinkingOptions = {}) {
 
       if (!handlerName) {
         console.warn('[useLinking] No handler for path:', parsedLink.path)
-        deepLinkAnalytics.trackValidationFailure(url, `No handler for path: ${parsedLink.path}`, source)
+        deepLinkAnalytics.trackValidationFailure(
+          url,
+          `No handler for path: ${parsedLink.path}`,
+          source
+        )
         router.push('/(tabs)')
         onNavigationComplete?.(url, false)
         return
@@ -133,13 +136,7 @@ export function useLinking(options: UseLinkingOptions = {}) {
       const navigationTime = performance.now() - startTime
 
       // Track analytics
-      deepLinkAnalytics.trackNavigation(
-        url,
-        parsedLink,
-        handlerName,
-        source,
-        navigationTime,
-      )
+      deepLinkAnalytics.trackNavigation(url, parsedLink, handlerName, source, navigationTime)
 
       // Notify navigation complete
       onNavigationComplete?.(url, success)
@@ -148,7 +145,7 @@ export function useLinking(options: UseLinkingOptions = {}) {
       deepLinkAnalytics.trackValidationFailure(
         url,
         error instanceof Error ? error.message : 'Unknown error',
-        source,
+        source
       )
       onNavigationError?.(url, error as Error)
 

@@ -1,5 +1,5 @@
 import { Alert } from 'react-native'
-import type { ErrorInfo } from 'react'
+import { captureException, addBreadcrumb } from '@/services/monitoring/sentry'
 
 /**
  * Global Error Handler
@@ -79,10 +79,32 @@ class GlobalErrorHandler {
    * Track error to analytics/monitoring service
    */
   private trackError(error: Error, context?: ErrorContext): void {
-    // TODO (BACKLOG): Send to Sentry when integrated
-    // See BACKLOG.md for Sentry integration task
+    // Add breadcrumb for context
+    addBreadcrumb(
+      'Error occurred',
+      {
+        source: context?.source,
+        isFatal: context?.isFatal,
+        ...context?.extra,
+      },
+      'error'
+    )
+
+    // Report to Sentry with context
+    captureException(error, {
+      tags: {
+        source: context?.source || 'unknown',
+        fatal: context?.isFatal ? 'true' : 'false',
+      },
+      extra: {
+        componentStack: context?.componentStack,
+        ...context?.extra,
+      },
+      level: context?.isFatal ? 'fatal' : 'error',
+    })
+
     if (__DEV__) {
-      console.log('[ErrorHandler] Would track error to Sentry:', error.message, context)
+      console.log('[ErrorHandler] Error tracked to Sentry:', error.message, context)
     }
   }
 

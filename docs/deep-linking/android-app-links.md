@@ -44,11 +44,13 @@ The app is configured in `app.json` with the following settings:
 The backend team must host a Digital Asset Links JSON file at:
 
 **Staging:**
+
 ```
 https://ambient-code.apps.rosa.vteam-stage.7fpc.p3.openshiftapps.com/.well-known/assetlinks.json
 ```
 
 **Production:**
+
 ```
 https://ambient-code.redhat.com/.well-known/assetlinks.json
 ```
@@ -64,9 +66,7 @@ The `assetlinks.json` file must contain:
     "target": {
       "namespace": "android_app",
       "package_name": "com.redhat.acp.mobile",
-      "sha256_cert_fingerprints": [
-        "REPLACE_WITH_RELEASE_KEYSTORE_SHA256_FINGERPRINT"
-      ]
+      "sha256_cert_fingerprints": ["REPLACE_WITH_RELEASE_KEYSTORE_SHA256_FINGERPRINT"]
     }
   }
 ]
@@ -87,6 +87,7 @@ keytool -list -v -keystore "$KEYSTORE_PATH" -alias androiddebugkey -storepass an
 ```
 
 Copy the SHA-256 fingerprint (format: `XX:XX:XX:XX:...`) and convert it to uppercase without colons:
+
 ```
 Example: AA:BB:CC:DD:... → AABBCCDD...
 ```
@@ -128,6 +129,7 @@ adb shell pm get-app-links com.redhat.acp.mobile
 #### Manual Testing
 
 1. Send yourself an email or message with a deep link:
+
    ```
    https://ambient-code.redhat.com/sessions/abc123
    ```
@@ -141,12 +143,14 @@ adb shell pm get-app-links com.redhat.acp.mobile
 #### Link Opens in Browser Instead of App
 
 **Possible causes:**
+
 - Digital Asset Links file is missing or incorrect
 - SHA-256 fingerprint doesn't match the app's signing certificate
 - `autoVerify: true` is not set in `intentFilters`
 - Domain verification failed
 
 **Solution:**
+
 ```bash
 # Clear verification state
 adb shell pm set-app-links --package com.redhat.acp.mobile 0 all
@@ -161,6 +165,7 @@ adb shell pm get-app-links com.redhat.acp.mobile
 #### Digital Asset Links Validation Errors
 
 Use Google's Statement List Generator and Tester:
+
 ```
 https://developers.google.com/digital-asset-links/tools/generator
 ```
@@ -176,6 +181,7 @@ curl https://ambient-code.redhat.com/.well-known/assetlinks.json
 ```
 
 Expected response:
+
 - HTTP 200 status
 - `Content-Type: application/json`
 - Valid JSON matching the format above
