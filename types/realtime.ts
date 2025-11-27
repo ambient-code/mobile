@@ -1,4 +1,5 @@
 import { Session, SessionStatus } from './session'
+import { GitHubNotification } from './notification'
 
 /**
  * Real-time event types from the SSE endpoint
@@ -7,6 +8,8 @@ export enum RealtimeEventType {
   SESSION_UPDATED = 'session.updated',
   SESSION_PROGRESS = 'session.progress',
   SESSION_STATUS = 'session.status',
+  NOTIFICATION_NEW = 'notification.new',
+  NOTIFICATION_READ = 'notification.read',
   CONNECTION_OPENED = 'connection.opened',
   CONNECTION_ERROR = 'connection.error',
 }
@@ -80,12 +83,33 @@ export interface ConnectionErrorData {
 }
 
 /**
+ * Notification events
+ */
+export interface NotificationNewEvent extends RealtimeEvent<NotificationNewData> {
+  type: RealtimeEventType.NOTIFICATION_NEW
+}
+
+export interface NotificationNewData {
+  notification: GitHubNotification
+}
+
+export interface NotificationReadEvent extends RealtimeEvent<NotificationReadData> {
+  type: RealtimeEventType.NOTIFICATION_READ
+}
+
+export interface NotificationReadData {
+  notificationId: string
+}
+
+/**
  * Union type of all possible SSE events
  */
 export type RealtimeEventUnion =
   | SessionUpdatedEvent
   | SessionProgressEvent
   | SessionStatusEvent
+  | NotificationNewEvent
+  | NotificationReadEvent
   | ConnectionOpenedEvent
   | ConnectionErrorEvent
 

@@ -6,7 +6,7 @@ import { ThemeProvider, useTheme } from '@/hooks/useTheme'
 import { ToastProvider, useToast } from '@/hooks/useToast'
 import { Toast } from '@/components/ui/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { PerformanceToggle } from '@/components/PerformanceMonitor'
+import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
@@ -99,7 +99,7 @@ function RootLayoutNav() {
       </Stack>
       <Toast notification={currentToast} onDismiss={dismissToast} />
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
-      <PerformanceToggle />
+      <CreateFAB />
     </>
   )
 }

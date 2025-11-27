@@ -6,6 +6,8 @@ import {
   SessionStatusData,
   SessionUpdatedData,
 } from '@/types/realtime'
+import { GitHubNotification, NotificationType } from '@/types/notification'
+import { NOTIFICATION_WORKFLOW_MAP } from '@/utils/constants'
 import { logger } from '@/utils/logger'
 
 export const MOCK_SESSIONS: Session[] = [
@@ -122,6 +124,93 @@ export const MOCK_SESSIONS: Session[] = [
   },
 ]
 
+export const MOCK_NOTIFICATIONS: GitHubNotification[] = [
+  {
+    id: 'notif-1',
+    type: NotificationType.PULL_REQUEST,
+    repository: 'ambient-code/platform',
+    itemNumber: 1247,
+    title: 'Add real-time session monitoring to mobile dashboard',
+    author: 'sarah-dev',
+    timestamp: new Date(Date.now() - 1800000), // 30 minutes ago
+    isUnread: true,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.PULL_REQUEST],
+    url: 'https://github.com/ambient-code/platform/pull/1247',
+  },
+  {
+    id: 'notif-2',
+    type: NotificationType.ISSUE,
+    repository: 'ambient-code/acp-mobile',
+    itemNumber: 89,
+    title: 'Notifications not refreshing when app comes to foreground',
+    author: 'mike-qa',
+    timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+    isUnread: true,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.ISSUE],
+    url: 'https://github.com/ambient-code/acp-mobile/issues/89',
+  },
+  {
+    id: 'notif-3',
+    type: NotificationType.MENTION,
+    repository: 'ambient-code/platform',
+    itemNumber: 1245,
+    title: '@jeder Can you review the OAuth implementation?',
+    author: 'alex-backend',
+    timestamp: new Date(Date.now() - 7200000), // 2 hours ago
+    isUnread: true,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.MENTION],
+    url: 'https://github.com/ambient-code/platform/pull/1245#issuecomment-12345',
+  },
+  {
+    id: 'notif-4',
+    type: NotificationType.PULL_REQUEST_REVIEW,
+    repository: 'ambient-code/backend-api',
+    itemNumber: 567,
+    title: 'Improve API response caching strategy',
+    author: 'emma-sre',
+    timestamp: new Date(Date.now() - 10800000), // 3 hours ago
+    isUnread: false,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.PULL_REQUEST_REVIEW],
+    url: 'https://github.com/ambient-code/backend-api/pull/567',
+  },
+  {
+    id: 'notif-5',
+    type: NotificationType.SECURITY_ALERT,
+    repository: 'ambient-code/acp-mobile',
+    itemNumber: 3,
+    title: 'Dependabot alert: axios has a potential security vulnerability',
+    author: 'dependabot[bot]',
+    timestamp: new Date(Date.now() - 14400000), // 4 hours ago
+    isUnread: true,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.SECURITY_ALERT],
+    url: 'https://github.com/ambient-code/acp-mobile/security/dependabot/3',
+  },
+  {
+    id: 'notif-6',
+    type: NotificationType.ISSUE_COMMENT,
+    repository: 'tools/feature-planner',
+    itemNumber: 42,
+    title: 'Great idea! We should definitely prioritize this',
+    author: 'jordan-pm',
+    timestamp: new Date(Date.now() - 21600000), // 6 hours ago
+    isUnread: false,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.ISSUE_COMMENT],
+    url: 'https://github.com/tools/feature-planner/issues/42#issuecomment-67890',
+  },
+  {
+    id: 'notif-7',
+    type: NotificationType.RELEASE,
+    repository: 'facebook/react-native',
+    itemNumber: 0,
+    title: 'React Native 0.76.0 released with new architecture improvements',
+    author: 'react-native-bot',
+    timestamp: new Date(Date.now() - 86400000), // 1 day ago
+    isUnread: false,
+    suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[NotificationType.RELEASE],
+    url: 'https://github.com/facebook/react-native/releases/tag/v0.76.0',
+  },
+]
+
 /**
  * Mock SSE Service for development/testing
  *
@@ -198,15 +287,21 @@ export class MockSSEService {
    */
   private randomEventType(): RealtimeEventType {
     const rand = Math.random()
-    if (rand < 0.6) {
-      // 60% progress updates
+    if (rand < 0.5) {
+      // 50% progress updates
       return RealtimeEventType.SESSION_PROGRESS
-    } else if (rand < 0.85) {
-      // 25% session updates
+    } else if (rand < 0.7) {
+      // 20% session updates
       return RealtimeEventType.SESSION_UPDATED
-    } else {
-      // 15% status changes
+    } else if (rand < 0.85) {
+      // 15% new notifications
+      return RealtimeEventType.NOTIFICATION_NEW
+    } else if (rand < 0.95) {
+      // 10% status changes
       return RealtimeEventType.SESSION_STATUS
+    } else {
+      // 5% notification read
+      return RealtimeEventType.NOTIFICATION_READ
     }
   }
 
@@ -214,54 +309,76 @@ export class MockSSEService {
    * Create a mock event of the specified type
    */
   private createEvent(type: RealtimeEventType): RealtimeEventUnion | null {
-    // Only generate events for running sessions
-    const runningSessions = MOCK_SESSIONS.filter((s) => s.status === SessionStatus.RUNNING)
-
-    if (runningSessions.length === 0) {
-      return null
-    }
-
-    const session = runningSessions[Math.floor(Math.random() * runningSessions.length)]
-
     switch (type) {
       case RealtimeEventType.SESSION_PROGRESS:
-        return {
-          type,
-          data: {
-            sessionId: session.id,
-            progress: Math.min(100, session.progress + Math.floor(Math.random() * 10)),
-            currentTask: this.randomTask(),
-          } as SessionProgressData,
-          timestamp: Date.now(),
-        }
-
       case RealtimeEventType.SESSION_UPDATED:
-        return {
-          type,
-          data: {
-            sessionId: session.id,
-            changes: {
-              updatedAt: new Date(),
-              progress: Math.min(100, session.progress + Math.floor(Math.random() * 5)),
+      case RealtimeEventType.SESSION_STATUS: {
+        // Only generate session events for running sessions
+        const runningSessions = MOCK_SESSIONS.filter((s) => s.status === SessionStatus.RUNNING)
+        if (runningSessions.length === 0) return null
+
+        const session = runningSessions[Math.floor(Math.random() * runningSessions.length)]
+
+        if (type === RealtimeEventType.SESSION_PROGRESS) {
+          return {
+            type,
+            data: {
+              sessionId: session.id,
+              progress: Math.min(100, session.progress + Math.floor(Math.random() * 10)),
               currentTask: this.randomTask(),
-            },
-          } as SessionUpdatedData,
-          timestamp: Date.now(),
+            } as SessionProgressData,
+            timestamp: Date.now(),
+          }
+        } else if (type === RealtimeEventType.SESSION_UPDATED) {
+          return {
+            type,
+            data: {
+              sessionId: session.id,
+              changes: {
+                updatedAt: new Date(),
+                progress: Math.min(100, session.progress + Math.floor(Math.random() * 5)),
+                currentTask: this.randomTask(),
+              },
+            } as SessionUpdatedData,
+            timestamp: Date.now(),
+          }
+        } else {
+          // SESSION_STATUS
+          const newStatus = Math.random() < 0.5 ? SessionStatus.DONE : SessionStatus.AWAITING_REVIEW
+          return {
+            type,
+            data: {
+              sessionId: session.id,
+              status: newStatus,
+              completedAt: new Date().toISOString(),
+            } as SessionStatusData,
+            timestamp: Date.now(),
+          }
         }
+      }
 
-      case RealtimeEventType.SESSION_STATUS:
-        // Randomly transition to completed or awaiting review
-        const newStatus = Math.random() < 0.5 ? SessionStatus.DONE : SessionStatus.AWAITING_REVIEW
-
+      case RealtimeEventType.NOTIFICATION_NEW: {
+        // Generate a new notification
+        const notification = this.generateRandomNotification()
         return {
           type,
-          data: {
-            sessionId: session.id,
-            status: newStatus,
-            completedAt: new Date().toISOString(),
-          } as SessionStatusData,
+          data: { notification },
           timestamp: Date.now(),
         }
+      }
+
+      case RealtimeEventType.NOTIFICATION_READ: {
+        // Mark a random unread notification as read
+        const unreadNotifs = MOCK_NOTIFICATIONS.filter((n) => n.isUnread)
+        if (unreadNotifs.length === 0) return null
+
+        const notif = unreadNotifs[Math.floor(Math.random() * unreadNotifs.length)]
+        return {
+          type,
+          data: { notificationId: notif.id },
+          timestamp: Date.now(),
+        }
+      }
 
       default:
         return null
@@ -285,6 +402,88 @@ export class MockSSEService {
       'Creating pull request',
     ]
     return tasks[Math.floor(Math.random() * tasks.length)]
+  }
+
+  /**
+   * Generate a random GitHub notification
+   */
+  private generateRandomNotification(): GitHubNotification {
+    const types = Object.values(NotificationType)
+    const type = types[Math.floor(Math.random() * types.length)]
+
+    const repos = [
+      'ambient-code/platform',
+      'ambient-code/acp-mobile',
+      'ambient-code/backend-api',
+      'facebook/react-native',
+      'expo/expo',
+    ]
+
+    const titles = {
+      [NotificationType.PULL_REQUEST]: [
+        'Add new authentication flow',
+        'Fix memory leak in session manager',
+        'Update dependencies to latest versions',
+        'Improve error handling in API client',
+      ],
+      [NotificationType.ISSUE]: [
+        'App crashes on iOS when opening notifications',
+        'Session progress not updating correctly',
+        'Dark mode colors inconsistent',
+        'Performance degradation with large datasets',
+      ],
+      [NotificationType.MENTION]: [
+        '@jeder thoughts on this approach?',
+        'Can you review this when you get a chance?',
+        'What do you think about this implementation?',
+      ],
+      [NotificationType.PULL_REQUEST_REVIEW]: [
+        'Reviewed: Add notification system',
+        'Approved with suggestions',
+        'Requested changes on API implementation',
+      ],
+      [NotificationType.SECURITY_ALERT]: [
+        'Dependabot alert: vulnerability in dependencies',
+        'Code scanning found potential security issue',
+        'Secret scanning detected exposed token',
+      ],
+      [NotificationType.ISSUE_COMMENT]: [
+        'Great suggestion! Let me try that',
+        'I think we should consider the performance impact',
+        'This is working well in my testing',
+      ],
+      [NotificationType.RELEASE]: [
+        'v2.0.0 released with breaking changes',
+        'Security patch released',
+        'New features available in latest release',
+      ],
+      [NotificationType.COMMIT_COMMENT]: [
+        'Nice refactoring here',
+        'Should we add tests for this?',
+        'This might need error handling',
+      ],
+    }
+
+    const authors = ['sarah-dev', 'mike-qa', 'alex-backend', 'emma-sre', 'jordan-pm']
+
+    const titleOptions = titles[type] || ['New notification']
+    const title = titleOptions[Math.floor(Math.random() * titleOptions.length)]
+    const repo = repos[Math.floor(Math.random() * repos.length)]
+    const author = authors[Math.floor(Math.random() * authors.length)]
+    const itemNumber = Math.floor(Math.random() * 1000) + 1
+
+    return {
+      id: `notif-${Date.now()}-${Math.random()}`,
+      type,
+      repository: repo,
+      itemNumber,
+      title,
+      author,
+      timestamp: new Date(),
+      isUnread: true,
+      suggestedWorkflow: NOTIFICATION_WORKFLOW_MAP[type] || 'review',
+      url: `https://github.com/${repo}/${type.includes('pull') ? 'pull' : 'issues'}/${itemNumber}`,
+    }
   }
 }
 

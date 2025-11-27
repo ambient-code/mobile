@@ -217,20 +217,16 @@ export default function DashboardScreen() {
           </View>
         )}
 
-        {/* Quick Actions - Optimized with FlatList and memoization */}
+        {/* Quick Actions - 2 rows of 3 */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Quick Actions</Text>
-          <FlatList
-            horizontal
-            data={quickActions}
-            renderItem={renderQuickAction}
-            keyExtractor={quickActionKeyExtractor}
-            showsHorizontalScrollIndicator={false}
-            initialNumToRender={4}
-            maxToRenderPerBatch={2}
-            windowSize={3}
-            contentContainerStyle={styles.quickActionsContent}
-          />
+          <View style={styles.quickActionsGrid}>
+            {quickActions.map((action) => (
+              <View key={action.id} style={styles.quickActionWrapper}>
+                <QuickActionButton action={action} colors={colors} />
+              </View>
+            ))}
+          </View>
         </View>
 
         {/* My Reviews */}
@@ -391,25 +387,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  quickActions: {
+  quickActionsGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
+    marginTop: 12,
   },
-  quickActionsScroll: {
-    marginHorizontal: -16,
-    paddingHorizontal: 16,
-  },
-  quickActionsContent: {
-    paddingHorizontal: 16,
-    gap: 12,
+  quickActionWrapper: {
+    width: '31%', // 3 columns with gaps
   },
   quickActionButton: {
-    width: 110,
+    width: '100%',
     paddingVertical: 16,
     paddingHorizontal: 8,
     borderRadius: 12,
     alignItems: 'center',
-    marginRight: 12,
     gap: 8,
   },
   quickActionText: {
