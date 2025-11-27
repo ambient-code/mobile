@@ -2,15 +2,18 @@ import React, { useState, useCallback } from 'react'
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { useOffline } from '@/hooks/useOffline'
 import { useNotifications, useMarkAllAsRead } from '@/hooks/useNotifications'
 import { useNotificationActions } from '@/components/notifications/NotificationActions'
 import { NotificationCard } from '@/components/notifications/NotificationCard'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import type { GitHubNotification } from '@/types/notification'
 
 type FilterType = 'all' | 'unread'
 
 export default function NotificationsScreen() {
   const { colors } = useTheme()
+  const { isOffline } = useOffline()
   const [filter, setFilter] = useState<FilterType>('all')
   const { notifications, unreadCount, isLoading, refetch } = useNotifications(filter === 'unread')
   const { showActions } = useNotificationActions()
@@ -32,6 +35,11 @@ export default function NotificationsScreen() {
   )
 
   const handleMarkAllAsRead = useCallback(() => {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot mark notifications as read while offline.')
+      return
+    }
+
     if (unreadCount === 0) {
       Alert.alert('No Unread Notifications', 'All notifications are already marked as read.')
       return
@@ -51,10 +59,13 @@ export default function NotificationsScreen() {
         },
       ]
     )
-  }, [unreadCount, markAllAsRead, refetch])
+  }, [isOffline, unreadCount, markAllAsRead, refetch])
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Header with Mark All Read button */}
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>GitHub Notifications</Text>

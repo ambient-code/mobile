@@ -9,9 +9,11 @@ import {
 } from 'react-native'
 import { router } from 'expo-router'
 import { useState } from 'react'
+import { useOffline } from '@/hooks/useOffline'
 import { RepositoryPicker } from '@/components/session/RepositoryPicker'
 import { WorkflowTypeGrid } from '@/components/session/WorkflowTypeGrid'
 import { ModelSelector } from '@/components/session/ModelSelector'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import { createSessionFromRepo } from '@/services/api/sessions'
 import { trackEvent, TelemetryEvents } from '@/services/telemetry'
 import { WORKFLOWS } from '@/utils/constants'
@@ -19,6 +21,7 @@ import type { Repository } from '@/types/api'
 import { ModelType } from '@/types/session'
 
 export default function NewSessionScreen() {
+  const { isOffline } = useOffline()
   const [selectedRepo, setSelectedRepo] = useState<Repository | null>(null)
   const [selectedWorkflow, setSelectedWorkflow] = useState<string>()
   const [sessionName, setSessionName] = useState('')
@@ -54,6 +57,11 @@ export default function NewSessionScreen() {
   }
 
   const handleStartSession = async () => {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot create sessions while offline. Please check your connection.')
+      return
+    }
+
     if (!selectedRepo || !selectedWorkflow) {
       Alert.alert('Missing Information', 'Please select a repository and workflow type.')
       return
@@ -88,10 +96,13 @@ export default function NewSessionScreen() {
     }
   }
 
-  const isStartDisabled = !selectedRepo || !selectedWorkflow || loading
+  const isStartDisabled = !selectedRepo || !selectedWorkflow || loading || isOffline
 
   return (
     <View style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>New Session</Text>
 

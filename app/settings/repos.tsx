@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useOffline } from '../../hooks/useOffline'
+import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { fetchRepos, addRepo, removeRepo } from '../../services/api/repositories'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { Repository } from '../../types/api'
 
 export default function ConnectedReposScreen() {
+  const { isOffline } = useOffline()
   const [repos, setRepos] = useState<Repository[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -35,6 +38,11 @@ export default function ConnectedReposScreen() {
   }
 
   function handleAddRepo() {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot add repositories while offline.')
+      return
+    }
+
     Alert.prompt(
       'Add Repository',
       'Enter GitHub repository URL',
@@ -68,6 +76,11 @@ export default function ConnectedReposScreen() {
   }
 
   async function handleRemoveRepo(repo: Repository) {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot remove repositories while offline.')
+      return
+    }
+
     Alert.alert('Remove Repository', `Remove ${repo.name}?`, [
       { text: 'Cancel', style: 'cancel' },
       {
@@ -107,6 +120,9 @@ export default function ConnectedReposScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Add Button */}
       <TouchableOpacity style={styles.addButton} onPress={handleAddRepo}>
         <Ionicons name="add-circle" size={24} color="#8b5cf6" />

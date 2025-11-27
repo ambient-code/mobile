@@ -23,9 +23,11 @@ import {
 import { useRouter } from 'expo-router'
 import { useTheme } from '@/hooks/useTheme'
 import { useChat } from '@/hooks/useChat'
+import { useOffline } from '@/hooks/useOffline'
 import { ChatHeader } from '@/components/chat/ChatHeader'
 import { ChatBubble } from '@/components/chat/ChatBubble'
 import { ChatInput } from '@/components/chat/ChatInput'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 
 /**
@@ -35,6 +37,7 @@ export default function ChatModal() {
   const { colors } = useTheme()
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
+  const { isOffline } = useOffline()
 
   // Chat state management
   const { messages, isLoading, isSending, sendMessage } = useChat()
@@ -54,12 +57,18 @@ export default function ChatModal() {
   }
 
   const handleSend = (content: string) => {
+    if (isOffline) {
+      return // ChatInput component is already disabled when offline
+    }
     sendMessage(content)
   }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       <ChatHeader onClose={handleClose} />
+
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -108,7 +117,7 @@ export default function ChatModal() {
 
         {/* Input area */}
         <View style={styles.inputContainer}>
-          <ChatInput onSend={handleSend} disabled={isSending} />
+          <ChatInput onSend={handleSend} disabled={isSending || isOffline} />
 
           {/* Disclaimer */}
           <Text style={[styles.disclaimer, { color: colors.textSecondary }]}>
