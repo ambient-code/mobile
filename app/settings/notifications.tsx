@@ -36,10 +36,7 @@ export default function NotificationsSettingsScreen() {
     }
   }
 
-  async function handleToggle(
-    key: keyof NotificationPreferences,
-    value: boolean
-  ) {
+  async function handleToggle(key: keyof NotificationPreferences, value: boolean) {
     // Optimistic update
     const previousValue = preferences[key]
     setPreferences((prev) => ({ ...prev, [key]: value }))
@@ -57,11 +54,9 @@ export default function NotificationsSettingsScreen() {
       // Revert optimistic update on error
       setPreferences((prev) => ({ ...prev, [key]: previousValue }))
 
-      Alert.alert(
-        'Update Failed',
-        'Failed to save notification preference. Please try again.',
-        [{ text: 'OK' }]
-      )
+      Alert.alert('Update Failed', 'Failed to save notification preference. Please try again.', [
+        { text: 'OK' },
+      ])
     }
   }
 

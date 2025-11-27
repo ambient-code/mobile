@@ -1,13 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from 'react-native'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { useNotifications, useMarkAllAsRead } from '@/hooks/useNotifications'
@@ -20,9 +12,7 @@ type FilterType = 'all' | 'unread'
 export default function NotificationsScreen() {
   const { colors } = useTheme()
   const [filter, setFilter] = useState<FilterType>('all')
-  const { notifications, unreadCount, isLoading, refetch } = useNotifications(
-    filter === 'unread'
-  )
+  const { notifications, unreadCount, isLoading, refetch } = useNotifications(filter === 'unread')
   const { showActions } = useNotificationActions()
   const markAllAsRead = useMarkAllAsRead()
 
@@ -113,7 +103,9 @@ export default function NotificationsScreen() {
                 {f.label}
               </Text>
               {f.badge !== undefined && f.badge > 0 && (
-                <View style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.accent }]}>
+                <View
+                  style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.accent }]}
+                >
                   <Text style={[styles.badgeText, { color: isActive ? colors.accent : '#fff' }]}>
                     {f.badge > 99 ? '99+' : f.badge}
                   </Text>
@@ -143,9 +135,7 @@ export default function NotificationsScreen() {
           ) : (
             <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
               <Feather name="bell-off" size={48} color={colors.textSecondary} />
-              <Text style={[styles.emptyStateText, { color: colors.text }]}>
-                No notifications
-              </Text>
+              <Text style={[styles.emptyStateText, { color: colors.text }]}>No notifications</Text>
               <Text style={[styles.emptyStateSubtext, { color: colors.textSecondary }]}>
                 {filter === 'unread'
                   ? 'All caught up! No unread notifications.'

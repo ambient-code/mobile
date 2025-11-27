@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { fetchRepos, addRepo, removeRepo } from '../../services/api/repositories'
 import { PreferencesService } from '../../services/storage/preferences'
@@ -54,10 +47,7 @@ export default function ConnectedReposScreen() {
 
             // Validate URL
             if (!isValidGitHubUrl(url)) {
-              Alert.alert(
-                'Invalid URL',
-                'Please enter a valid GitHub repository URL'
-              )
+              Alert.alert('Invalid URL', 'Please enter a valid GitHub repository URL')
               return
             }
 
@@ -128,9 +118,7 @@ export default function ConnectedReposScreen() {
         <View style={styles.empty}>
           <Ionicons name="git-branch-outline" size={48} color="#d1d5db" />
           <Text style={styles.emptyText}>No repositories connected</Text>
-          <Text style={styles.emptySubtext}>
-            Add a repository to start creating sessions
-          </Text>
+          <Text style={styles.emptySubtext}>Add a repository to start creating sessions</Text>
         </View>
       ) : (
         <FlatList
