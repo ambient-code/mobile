@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useSessions } from '@/hooks/useSessions'
 import { useOffline } from '@/hooks/useOffline'
 import { useRealtimeSession } from '@/hooks/useRealtimeSession'
+import { useNotifications } from '@/hooks/useNotifications'
 import { Header } from '@/components/layout/Header'
 import { SessionCard } from '@/components/session/SessionCard'
 import { SessionStatus, type Session } from '@/types/session'
@@ -33,11 +34,12 @@ interface QuickAction {
 
 interface QuickActionButtonProps {
   action: QuickAction
-  colors: any
+  colors: ReturnType<typeof useTheme>['colors']
 }
 
 // Memoized Quick Action Button component
-const QuickActionButton = memo(({ action, colors }: QuickActionButtonProps) => {
+const QuickActionButton = memo<QuickActionButtonProps>(
+  ({ action, colors }: QuickActionButtonProps) => {
   const dynamicText = action.count !== undefined ? `${action.count} ${action.text}` : action.text
 
   return (
@@ -53,7 +55,7 @@ const QuickActionButton = memo(({ action, colors }: QuickActionButtonProps) => {
       accessibilityState={{ disabled: action.disabled }}
     >
       <IconSymbol
-        name={action.icon as any}
+        name={action.icon as Parameters<typeof IconSymbol>[0]['name']}
         size={28}
         color={action.disabled ? colors.textSecondary : '#fff'}
       />
@@ -69,7 +71,10 @@ const QuickActionButton = memo(({ action, colors }: QuickActionButtonProps) => {
       )}
     </TouchableOpacity>
   )
-})
+}
+)
+
+QuickActionButton.displayName = 'QuickActionButton'
 
 export default function DashboardScreen() {
   const { colors } = useTheme()
@@ -77,6 +82,7 @@ export default function DashboardScreen() {
   const { data: sessions, isLoading, refetch, isRefetching } = useSessions()
   const { isOffline } = useOffline()
   const { retry, isConnected, isError } = useRealtimeSession()
+  const { unreadCount } = useNotifications()
   const router = useRouter()
 
   // Filter sessions by status - optimized with single-pass filter and memoization
@@ -126,12 +132,19 @@ export default function DashboardScreen() {
         count: runningSessions.length,
         onPress: () => router.push('/sessions/?filter=running'),
       },
+      {
+        id: 'notifications',
+        icon: 'bell.fill',
+        text: 'Notifications',
+        count: unreadCount > 0 ? unreadCount : undefined,
+        onPress: () => router.push('/notifications/'),
+      },
       { id: 'lucky', icon: 'dice.fill', text: "I'm Feeling Lucky" },
       { id: 'inspire', icon: 'lightbulb.fill', text: 'Inspire Me' },
       { id: 'invent', icon: 'sparkles', text: 'Go Invent' },
       { id: 'add', icon: 'plus.circle.fill', text: 'Add Action', disabled: true, badge: 'Soon' },
     ],
-    [runningSessions.length, router]
+    [runningSessions.length, unreadCount, router]
   )
 
   // Render callback for Quick Action buttons
