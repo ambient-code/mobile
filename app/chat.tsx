@@ -57,6 +57,9 @@ export default function ChatModal() {
   }
 
   const handleSend = (content: string) => {
+    if (isOffline) {
+      return // ChatInput component is already disabled when offline
+    }
     sendMessage(content)
   }
 
@@ -114,7 +117,7 @@ export default function ChatModal() {
 
         {/* Input area */}
         <View style={styles.inputContainer}>
-          <ChatInput onSend={handleSend} disabled={isSending} />
+          <ChatInput onSend={handleSend} disabled={isSending || isOffline} />
 
           {/* Disclaimer */}
           <Text style={[styles.disclaimer, { color: colors.textSecondary }]}>

@@ -35,6 +35,11 @@ export default function NotificationsScreen() {
   )
 
   const handleMarkAllAsRead = useCallback(() => {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot mark notifications as read while offline.')
+      return
+    }
+
     if (unreadCount === 0) {
       Alert.alert('No Unread Notifications', 'All notifications are already marked as read.')
       return
@@ -54,7 +59,7 @@ export default function NotificationsScreen() {
         },
       ]
     )
-  }, [unreadCount, markAllAsRead, refetch])
+  }, [isOffline, unreadCount, markAllAsRead, refetch])
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>

@@ -56,6 +56,11 @@ export default function NewSessionScreen() {
   }
 
   const handleStartSession = async () => {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot create sessions while offline. Please check your connection.')
+      return
+    }
+
     if (!selectedRepo || !selectedWorkflow) {
       Alert.alert('Missing Information', 'Please select a repository and workflow type.')
       return
@@ -85,7 +90,7 @@ export default function NewSessionScreen() {
     }
   }
 
-  const isStartDisabled = !selectedRepo || !selectedWorkflow || loading
+  const isStartDisabled = !selectedRepo || !selectedWorkflow || loading || isOffline
 
   return (
     <View style={styles.container}>

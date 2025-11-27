@@ -38,6 +38,11 @@ export default function ConnectedReposScreen() {
   }
 
   function handleAddRepo() {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot add repositories while offline.')
+      return
+    }
+
     Alert.prompt(
       'Add Repository',
       'Enter GitHub repository URL',
@@ -71,6 +76,11 @@ export default function ConnectedReposScreen() {
   }
 
   async function handleRemoveRepo(repo: Repository) {
+    if (isOffline) {
+      Alert.alert('Offline', 'Cannot remove repositories while offline.')
+      return
+    }
+
     Alert.alert('Remove Repository', `Remove ${repo.name}?`, [
       { text: 'Cancel', style: 'cancel' },
       {
