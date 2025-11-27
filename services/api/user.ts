@@ -28,13 +28,7 @@ export const userApi = {
    * Update user preferences
    * Returns updated preferences from backend
    */
-  async updatePreferences(
-    preferences: UserPreferences
-  ): Promise<UserPreferences> {
-    const response = await apiClient.put<UserPreferences>(
-      '/user/preferences',
-      preferences
-    )
-    return response.data
+  async updatePreferences(preferences: UserPreferences): Promise<UserPreferences> {
+    return apiClient.patch<UserPreferences>('/user/preferences', preferences)
   },
 }

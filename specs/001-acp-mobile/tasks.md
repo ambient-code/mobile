@@ -261,23 +261,25 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US5]
 
-- [ ] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo()
-- [ ] T066 [P] [US5] Add createSession() method to services/api/sessions.ts
-- [ ] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled)
+- [x] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo() ✅ **COMPLETED** (Phase 7)
+- [x] T066 [P] [US5] Add createSession() method to services/api/sessions.ts ✅ **COMPLETED** (Phase 7)
+- [x] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled) ✅ **COMPLETED** (Phase 7)
 
 ### UI Components [US5]
 
-- [ ] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning
-- [ ] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option
-- [ ] T070 [P] [US5] Create WorkflowTypeGrid component in components/session/WorkflowTypeGrid.tsx with 7 workflow cards, "Soon" badges for disabled
-- [ ] T071 [P] [US5] Create ModelSelector component in components/session/ModelSelector.tsx with sonnet-4.5/opus-4.5 radio buttons and descriptions
-- [ ] T072 [P] [US5] Create custom lightbulb SVG icon in assets/icons/lightbulb.svg for Ideate workflow
+- [x] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning ✅ **COMPLETED** (Phase 7)
+- [x] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option ✅ **COMPLETED** (Phase 7)
+- [x] T070 [P] [US5] Create WorkflowTypeGrid component in components/session/WorkflowTypeGrid.tsx with 7 workflow cards, "Soon" badges for disabled ✅ **COMPLETED** (Phase 7)
+- [x] T071 [P] [US5] Create ModelSelector component in components/session/ModelSelector.tsx with sonnet-4.5/opus-4.5 radio buttons and descriptions ✅ **COMPLETED** (Phase 7)
+- [~] T072 [P] [US5] Create custom lightbulb SVG icon in assets/icons/lightbulb.svg for Ideate workflow ⚠️ **SKIPPED** - Using Ionicons 'lightbulb' instead
 
 ### Screens & Integration [US5]
 
-- [ ] T073 [US5] Implement New Session screen in app/sessions/new.tsx with RepositoryPicker, WorkflowTypeGrid, session name field, ModelSelector, "Start Session" button
-- [ ] T074 [US5] Add FAB to Dashboard (app/(tabs)/index.tsx) that navigates to New Session screen
-- [ ] T075 [US5] Implement auto-generate session name on repository + workflow selection: "{repo-name} {Workflow} - {Month Day}"
+- [x] T073 [US5] Implement New Session screen in app/sessions/new.tsx with RepositoryPicker, WorkflowTypeGrid, session name field, ModelSelector, "Start Session" button ✅ **COMPLETED** (Phase 7)
+- [x] T074 [US5] Add FAB to Dashboard (app/(tabs)/index.tsx) that navigates to New Session screen ✅ **COMPLETED** (Phase 7)
+- [x] T075 [US5] Implement auto-generate session name on repository + workflow selection: "{repo-name} {Workflow} - {Month Day}" ✅ **COMPLETED** (Phase 7)
+
+**Phase 7 Status**: ✅ **COMPLETE** (10/11 tasks, 1 skipped) - Merged to main in commit `ac71f5e` on Nov 27, 2025
 
 ---
 

@@ -9,6 +9,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
 import { useLinking } from '@/hooks/useLinking'
+import { initializeTelemetry } from '@/services/telemetry'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -50,6 +51,7 @@ function RootLayoutNav() {
   const { colors, theme } = useTheme()
   const { currentToast, dismissToast } = useToast()
   const [lastError, setLastError] = useState<Error | null>(null)
+  const { isAuthenticated, isLoading } = useAuth()
 
   // Enable deep linking
   useLinking({
@@ -102,6 +104,18 @@ function RootLayoutNav() {
           },
         }}
       >
+        {/* Login screen - shown when not authenticated */}
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: false,
+            title: '',
+            // Prevent going back to app screens when on login
+            gestureEnabled: false,
+          }}
+        />
+
+        {/* App screens - shown when authenticated */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
         <Stack.Screen
           name="notifications/index"
@@ -132,6 +146,13 @@ export default function RootLayout() {
   // Initialize global error handler FIRST
   useEffect(() => {
     errorHandler.initialize()
+  }, [])
+
+  // Initialize telemetry
+  useEffect(() => {
+    initializeTelemetry().catch((error) => {
+      console.error('[App] Failed to initialize telemetry:', error)
+    })
   }, [])
 
   // Initialize performance monitoring in development

@@ -63,9 +63,7 @@ export default function SettingsScreen() {
       }
     } catch (error) {
       console.error('Failed to open feedback form:', error)
-      Alert.alert('Error', 'Failed to open feedback form. Please try again.', [
-        { text: 'OK' },
-      ])
+      Alert.alert('Error', 'Failed to open feedback form. Please try again.', [{ text: 'OK' }])
     }
   }
 
@@ -87,11 +85,9 @@ export default function SettingsScreen() {
             router.replace('/login')
           } catch (error) {
             console.error('Sign out failed:', error)
-            Alert.alert(
-              'Sign Out Failed',
-              'Failed to sign out. Please try again.',
-              [{ text: 'OK' }]
-            )
+            Alert.alert('Sign Out Failed', 'Failed to sign out. Please try again.', [
+              { text: 'OK' },
+            ])
           }
         },
       },
@@ -122,8 +118,7 @@ export default function SettingsScreen() {
         <SettingsRow
           label="Quiet Hours"
           icon="moon-outline"
-          badge="Soon"
-          disabled
+          onPress={() => router.push('/settings/quiet-hours')}
         />
       </View>
 
@@ -135,12 +130,7 @@ export default function SettingsScreen() {
           icon="git-branch-outline"
           onPress={() => router.push('/settings/repos')}
         />
-        <SettingsRow
-          label="GitHub Integration"
-          icon="logo-github"
-          badge="Soon"
-          disabled
-        />
+        <SettingsRow label="GitHub Integration" icon="logo-github" badge="Soon" disabled />
         <SettingsRow label="API Keys" icon="key-outline" badge="Soon" disabled />
       </View>
 
