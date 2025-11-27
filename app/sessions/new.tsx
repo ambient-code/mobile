@@ -67,13 +67,11 @@ export default function NewSessionScreen() {
         model: selectedModel,
       })
 
+      // Show success toast (using Alert for now)
+      Alert.alert('Success', 'Session created successfully!')
+
       // Navigate back to dashboard
       router.replace('/(tabs)')
-
-      // Show success toast (using Alert for now)
-      setTimeout(() => {
-        Alert.alert('Success', 'Session created successfully!')
-      }, 100)
     } catch (error) {
       console.error('Failed to create session:', error)
       Alert.alert('Error', 'Failed to create session. Please try again.')
@@ -116,6 +114,7 @@ export default function NewSessionScreen() {
 
       <View style={styles.footer}>
         <TouchableOpacity
+          testID="start-session-button"
           style={[styles.startButton, isStartDisabled && styles.startButtonDisabled]}
           onPress={handleStartSession}
           disabled={isStartDisabled}
