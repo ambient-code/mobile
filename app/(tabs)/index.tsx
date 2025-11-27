@@ -135,7 +135,7 @@ export default function DashboardScreen() {
       {
         id: 'notifications',
         icon: 'bell.fill',
-        text: 'Notifications',
+        text: 'GitHub Notifications',
         count: unreadCount > 0 ? unreadCount : undefined,
         onPress: () => router.push('/notifications/'),
       },
