@@ -58,8 +58,9 @@ export default function AuthCallbackScreen() {
         throw new Error('Code verifier not found. Please try logging in again.')
       }
 
-      // Exchange authorization code for tokens
-      await AuthAPI.exchangeToken(code, codeVerifier, OAUTH_CONFIG.redirectUri)
+      // Exchange authorization code for tokens (use same redirect URI as login)
+      const redirectUri = OAuthService.getRedirectUri()
+      await AuthAPI.exchangeToken(code, codeVerifier, redirectUri)
 
       // Clear code verifier
       OAuthService.clearCodeVerifier()
