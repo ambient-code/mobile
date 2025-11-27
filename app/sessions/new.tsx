@@ -13,6 +13,7 @@ import { RepositoryPicker } from '@/components/session/RepositoryPicker'
 import { WorkflowTypeGrid } from '@/components/session/WorkflowTypeGrid'
 import { ModelSelector } from '@/components/session/ModelSelector'
 import { createSessionFromRepo } from '@/services/api/sessions'
+import { trackEvent, TelemetryEvents } from '@/services/telemetry'
 import { WORKFLOWS } from '@/utils/constants'
 import type { Repository } from '@/types/api'
 import { ModelType } from '@/types/session'
@@ -65,6 +66,13 @@ export default function NewSessionScreen() {
         repositoryId: selectedRepo.id,
         workflowType: selectedWorkflow,
         model: selectedModel,
+      })
+
+      // Track session creation
+      trackEvent(TelemetryEvents.SESSION_CREATED, {
+        workflowType: selectedWorkflow,
+        model: selectedModel,
+        repositoryId: selectedRepo.id,
       })
 
       // Navigate back to dashboard
