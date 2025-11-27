@@ -96,6 +96,14 @@ function RootLayoutNav() {
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="sessions" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="notifications/index"
+          options={{
+            headerShown: true,
+            headerTitle: '',
+            headerBackTitle: '',
+          }}
+        />
       </Stack>
       <Toast notification={currentToast} onDismiss={dismissToast} />
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
