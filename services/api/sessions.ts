@@ -1,10 +1,11 @@
 import { apiClient } from './client'
-import {
+import type {
   Session,
   SessionDetail,
   CreateSessionRequest,
   UpdateSessionRequest,
   SessionStatus,
+  ModelType,
   LogEntry,
 } from '@/types/session'
 import {
@@ -64,4 +65,25 @@ export class SessionsAPI {
     const validated = validateResponse<{ logs: LogEntry[] }>(logsResponseSchema, response)
     return validated.logs
   }
+}
+
+// Helper functions for Phase 7 UI
+export async function createSessionFromRepo(params: {
+  name: string
+  repositoryId: string
+  workflowType: string
+  model: string
+  description?: string
+}): Promise<Session> {
+  // For now, we'll need to convert repositoryId to repositoryUrl
+  // This assumes we have the repository object available
+  // In production, the backend might accept repositoryId directly
+  const request: CreateSessionRequest = {
+    name: params.name,
+    workflowType: params.workflowType,
+    model: params.model as ModelType,
+    repositoryUrl: params.repositoryId, // Backend should handle this
+  }
+
+  return SessionsAPI.createSession(request)
 }

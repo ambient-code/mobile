@@ -195,7 +195,7 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ---
 
-## ✅ Phase 6: User Story 4 - Chat with Claude Interactively (Priority: P2) (9 tasks)
+## ✅ Phase 6: User Story 4 - Chat with Claude Interactively (Priority: P2) (9 tasks) - COMPLETE
 
 📋 **[Detailed Implementation Plan](./phases/phase-06-interactive-chat.md)** - Complete architecture, component specifications, API integration, and testing strategy
 
@@ -261,14 +261,14 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US5]
 
-- [x] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo()
-- [x] T066 [P] [US5] Add createSession() method to services/api/sessions.ts
-- [x] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled)
+- [ ] T065 [P] [US5] Implement repositories API service in services/api/repositories.ts with fetchRepos(), addRepo(), removeRepo()
+- [ ] T066 [P] [US5] Add createSession() method to services/api/sessions.ts
+- [ ] T067 [P] [US5] Create workflow types constant in utils/constants.ts with 7 workflows and their metadata (id, label, icon, description, enabled)
 
 ### UI Components [US5]
 
-- [x] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning
-- [x] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option
+- [ ] T068 [P] [US5] Create FAB component in components/layout/FAB.tsx with purple circle + plus icon, bottom-right positioning
+- [ ] T069 [P] [US5] Create RepositoryPicker component in components/session/RepositoryPicker.tsx showing connected repos list + "Enter GitHub URL" option
 - [ ] T070 [P] [US5] Create WorkflowTypeGrid component in components/session/WorkflowTypeGrid.tsx with 7 workflow cards, "Soon" badges for disabled
 - [ ] T071 [P] [US5] Create ModelSelector component in components/session/ModelSelector.tsx with sonnet-4.5/opus-4.5 radio buttons and descriptions
 - [ ] T072 [P] [US5] Create custom lightbulb SVG icon in assets/icons/lightbulb.svg for Ideate workflow
@@ -282,6 +282,8 @@ This task list breaks down the ACP mobile implementation into phases organized b
 ---
 
 ## Phase 8: User Story 6 - Manage Settings and Preferences (Priority: P3) (12 tasks)
+
+📋 **Detailed Implementation Plan**: [plans/phase-8-settings.md](./plans/phase-8-settings.md)
 
 **Story Goal**: Configure notification preferences, connected repositories, appearance settings for customization
 

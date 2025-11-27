@@ -16,6 +16,7 @@ import { useOffline } from '@/hooks/useOffline'
 import { useRealtimeSession } from '@/hooks/useRealtimeSession'
 import { useNotifications } from '@/hooks/useNotifications'
 import { Header } from '@/components/layout/Header'
+import { FAB } from '@/components/layout/FAB'
 import { SessionCard } from '@/components/session/SessionCard'
 import { SessionStatus, type Session } from '@/types/session'
 import { IconSymbol } from '@/components/ui/icon-symbol'
@@ -313,6 +314,9 @@ export default function DashboardScreen() {
 
         <View style={{ height: 40 }} />
       </ScrollView>
+
+      {/* Floating Action Button */}
+      <FAB />
     </View>
   )
 }
