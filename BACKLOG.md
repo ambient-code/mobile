@@ -332,12 +332,14 @@ componentDidCatch(error: Error, errorInfo: ErrorInfo) {
 **Issue:** Frequent slow frame warnings (20-40 FPS) during modal open/close animations and optimistic updates.
 
 **Observed Warnings:**
+
 ```
 WARN  🐌 Slow frame detected: 38.4 FPS (26.06ms)
 WARN  🐌 Slow frame detected: 21.4 FPS (46.70ms)
 ```
 
 **Root Causes:**
+
 1. Modal animations + React Query cache updates happening simultaneously
 2. 300ms loading state + 800ms mock delay may cause layout thrashing
 3. Multiple re-renders during optimistic update flow
@@ -345,6 +347,7 @@ WARN  🐌 Slow frame detected: 21.4 FPS (46.70ms)
 **Solutions:**
 
 1. **Use native driver for modal animations:**
+
 ```typescript
 // ApprovalActions.tsx - Modal animation
 <Modal
@@ -355,6 +358,7 @@ WARN  🐌 Slow frame detected: 21.4 FPS (46.70ms)
 ```
 
 2. **Debounce optimistic updates:**
+
 ```typescript
 // useUpdateSession.ts - Batch state updates
 onMutate: async ({ id, request }) => {
@@ -366,6 +370,7 @@ onMutate: async ({ id, request }) => {
 ```
 
 3. **Profile with React DevTools:**
+
 - Identify which components re-render during mutations
 - Add more `memo()` boundaries if needed
 - Check if Toast component causes layout shifts
@@ -383,6 +388,7 @@ onMutate: async ({ id, request }) => {
 **Issue:** Warning on every app start due to missing optional dependency.
 
 **Warning:**
+
 ```
 WARN  ⚠️  Could not initialize why-did-you-render:
 [Error: Cannot find module '@welldone-software/why-did-you-render']
@@ -391,13 +397,16 @@ WARN  ⚠️  Could not initialize why-did-you-render:
 **Solution:**
 
 Either:
+
 1. **Remove the code** (recommended if not actively debugging):
+
 ```bash
 # Find and remove why-did-you-render initialization code
 grep -r "why-did-you-render" components/
 ```
 
 2. **Or install the dependency** (if needed for debugging):
+
 ```bash
 npm install --save-dev @welldone-software/why-did-you-render
 ```
@@ -466,6 +475,7 @@ analytics.trackScreen('SessionDetail')
    - GDPR/CCPA compliance
 
 **Benefits:**
+
 - Understand which features users actually use
 - Identify performance bottlenecks in production
 - Data-driven product decisions

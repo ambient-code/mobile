@@ -10,13 +10,7 @@ interface SettingsRowProps {
   disabled?: boolean
 }
 
-export function SettingsRow({
-  label,
-  icon,
-  badge,
-  onPress,
-  disabled = false,
-}: SettingsRowProps) {
+export function SettingsRow({ label, icon, badge, onPress, disabled = false }: SettingsRowProps) {
   return (
     <TouchableOpacity
       style={[styles.container, disabled && styles.disabled]}
@@ -35,9 +29,7 @@ export function SettingsRow({
       )}
 
       {/* Label */}
-      <Text style={[styles.label, disabled && styles.disabledText]}>
-        {label}
-      </Text>
+      <Text style={[styles.label, disabled && styles.disabledText]}>{label}</Text>
 
       {/* Badge */}
       {badge && (
@@ -47,11 +39,7 @@ export function SettingsRow({
       )}
 
       {/* Chevron */}
-      <Ionicons
-        name="chevron-forward"
-        size={20}
-        color={disabled ? '#d1d5db' : '#9ca3af'}
-      />
+      <Ionicons name="chevron-forward" size={20} color={disabled ? '#d1d5db' : '#9ca3af'} />
     </TouchableOpacity>
   )
 }
