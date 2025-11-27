@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
 } from 'react-native'
-import { router, useRootNavigationState } from 'expo-router'
+import { router, useRootNavigationState, useLocalSearchParams } from 'expo-router'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuth } from '@/hooks/useAuth'
 import { ApiStatusIndicator } from '@/components/ui/ApiStatusIndicator'
@@ -24,6 +24,16 @@ export default function LoginScreen() {
   const { login, isAuthenticated, isLoading } = useAuth()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const rootNavigationState = useRootNavigationState()
+  const params = useLocalSearchParams<{ error?: string }>()
+
+  // Show error message from OAuth callback if present
+  useEffect(() => {
+    if (params.error) {
+      Alert.alert('Authentication Error', params.error, [{ text: 'OK' }])
+      // Clear error from URL
+      router.setParams({ error: undefined })
+    }
+  }, [params.error])
 
   // Redirect to dashboard if already authenticated
   useEffect(() => {

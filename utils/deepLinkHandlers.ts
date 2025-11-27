@@ -19,7 +19,7 @@ export interface DeepLinkHandlerContext {
 
 export type DeepLinkHandler = (
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ) => Promise<boolean>
 
 /**
@@ -27,13 +27,10 @@ export type DeepLinkHandler = (
  */
 export async function handleSessionDetail(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router, queryClient } = context
-  const params = extractRouteParams(
-    parsedLink.path,
-    /^\/sessions\/([a-zA-Z0-9_-]+)$/,
-  )
+  const params = extractRouteParams(parsedLink.path, /^\/sessions\/([a-zA-Z0-9_-]+)$/)
 
   const sessionId = params.id || parsedLink.queryParams.id
 
@@ -76,7 +73,7 @@ export async function handleSessionDetail(
  */
 export async function handleSessionCreate(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router } = context
 
@@ -102,7 +99,7 @@ export async function handleSessionCreate(
  */
 export async function handleSessionsList(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router, queryClient } = context
 
@@ -136,7 +133,7 @@ export async function handleSessionsList(
  */
 export async function handleNotifications(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router } = context
 
@@ -159,12 +156,12 @@ export async function handleNotifications(
  */
 export async function handleSettings(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router } = context
   const params = extractRouteParams(
     parsedLink.path,
-    /^\/settings\/(appearance|notifications|repos)$/,
+    /^\/settings\/(appearance|notifications|repos)$/
   )
 
   const section = params.section
@@ -185,7 +182,7 @@ export async function handleSettings(
  */
 export async function handleChat(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const { router } = context
 
@@ -208,11 +205,16 @@ export async function handleChat(
  */
 export async function handleOAuthCallback(
   parsedLink: ParsedDeepLink,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
-  // OAuth callback is handled by OAuthService
-  // No action needed here - just let the existing flow handle it
-  console.log('[DeepLink] OAuth callback - handled by OAuthService')
+  const { router } = context
+
+  console.log('[DeepLink] OAuth callback - navigating to callback route')
+
+  // Navigate to callback route with all query parameters
+  const params = new URLSearchParams(parsedLink.queryParams as Record<string, string>).toString()
+  router.push(`/auth/callback?${params}`)
+
   return true
 }
 
@@ -222,7 +224,7 @@ export async function handleOAuthCallback(
 export async function routeDeepLink(
   parsedLink: ParsedDeepLink,
   handlerName: string,
-  context: DeepLinkHandlerContext,
+  context: DeepLinkHandlerContext
 ): Promise<boolean> {
   const handlers: Record<string, DeepLinkHandler> = {
     'session-detail': handleSessionDetail,
