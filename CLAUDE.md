@@ -3,6 +3,9 @@
 Auto-generated from all feature plans. Last updated: 2025-11-26
 
 ## Active Technologies
+- TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, Recharts (or React Native Charts Wrapper) (002-admin-stats-dashboard)
+- React Query cache (in-memory) with 4-minute staleTime, no persistent storage for dashboard data (002-admin-stats-dashboard)
+- TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts (002-admin-stats-dashboard)
 
 - TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router (file-based routing), React Native, @expo/vector-icons, react-native-svg (001-acp-mobile)
 
@@ -76,8 +79,10 @@ git commit --no-verify
 - Extract complex logic into custom hooks
 
 ## Recent Changes
+- 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts
+- 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts
+- 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, Recharts (or React Native Charts Wrapper)
 
-- 001-acp-mobile: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router (file-based routing), React Native, @expo/vector-icons, react-native-svg
 
 ## Skills
 

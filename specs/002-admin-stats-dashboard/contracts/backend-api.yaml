@@ -1,0 +1,774 @@
+openapi: 3.0.3
+info:
+  title: ACP Admin Analytics API
+  description: Backend API endpoints for admin statistics dashboard
+  version: 1.0.0
+servers:
+  - url: https://api.acp.example.com
+    description: Production API
+  - url: http://localhost:8080
+    description: Local development
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/admin/analytics/system-health:
+    get:
+      summary: Get current system health status
+      description: Returns real-time system health metrics including active users, error rate, latency, and overall status
+      operationId: getSystemHealth
+      tags:
+        - Analytics
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: System health retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/admin/analytics/golden-signals:
+    get:
+      summary: Get Golden Signals metrics
+      description: Returns SRE Golden Signals (Latency, Traffic, Errors, Saturation) over specified time period
+      operationId: getGoldenSignals
+      tags:
+        - Analytics
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [7d, 30d]
+            default: 7d
+          description: Time period for metrics
+      responses:
+        '200':
+          description: Golden Signals retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoldenSignalsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/analytics/engagement:
+    get:
+      summary: Get user engagement metrics
+      description: Returns DAU, MAU, stickiness, and new vs returning user data
+      operationId: getEngagementMetrics
+      tags:
+        - Analytics
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [24h, 7d, 30d]
+            default: 24h
+          description: Time period for DAU breakdown
+      responses:
+        '200':
+          description: Engagement metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/analytics/platforms:
+    get:
+      summary: Get platform distribution and OS versions
+      description: Returns breakdown of web vs mobile usage and OS version distributions
+      operationId: getPlatformDistribution
+      tags:
+        - Analytics
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [30d]
+            default: 30d
+          description: Time period for platform analysis
+      responses:
+        '200':
+          description: Platform distribution retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformDistributionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/errors/summary:
+    get:
+      summary: Get error summary and top errors
+      description: Returns error rate, breakdown by type, and top 5 errors
+      operationId: getErrorSummary
+      tags:
+        - Errors
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [7d, 30d]
+            default: 7d
+          description: Time period for error analysis
+      responses:
+        '200':
+          description: Error summary retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSummaryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from ACP authentication. Must have role=admin.
+
+  schemas:
+    # Response wrappers
+    SystemHealthResponse:
+      type: object
+      required:
+        - data
+        - cached
+        - lastUpdated
+      properties:
+        data:
+          $ref: '#/components/schemas/SystemHealthStatus'
+        cached:
+          type: boolean
+          description: True if data returned from cache
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When data was last fetched/calculated
+        error:
+          type: string
+          nullable: true
+          description: Error message if API failed but cached data available
+
+    GoldenSignalsResponse:
+      type: object
+      required:
+        - data
+        - cached
+        - lastUpdated
+      properties:
+        data:
+          $ref: '#/components/schemas/GoldenSignalsMetrics'
+        cached:
+          type: boolean
+        lastUpdated:
+          type: string
+          format: date-time
+        error:
+          type: string
+          nullable: true
+
+    EngagementResponse:
+      type: object
+      required:
+        - data
+        - cached
+        - lastUpdated
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementMetrics'
+        cached:
+          type: boolean
+        lastUpdated:
+          type: string
+          format: date-time
+        error:
+          type: string
+          nullable: true
+
+    PlatformDistributionResponse:
+      type: object
+      required:
+        - data
+        - cached
+        - lastUpdated
+      properties:
+        data:
+          $ref: '#/components/schemas/PlatformDistribution'
+        cached:
+          type: boolean
+        lastUpdated:
+          type: string
+          format: date-time
+        error:
+          type: string
+          nullable: true
+
+    ErrorSummaryResponse:
+      type: object
+      required:
+        - data
+        - cached
+        - lastUpdated
+      properties:
+        data:
+          $ref: '#/components/schemas/ErrorMetrics'
+        cached:
+          type: boolean
+        lastUpdated:
+          type: string
+          format: date-time
+        error:
+          type: string
+          nullable: true
+
+    # Data models
+    SystemHealthStatus:
+      type: object
+      required:
+        - status
+        - timestamp
+        - metrics
+        - statusReasons
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, down]
+          description: Overall system health status
+        timestamp:
+          type: string
+          format: date-time
+          description: When status was determined
+        metrics:
+          type: object
+          required:
+            - activeUsers
+            - requestsPerMinute
+            - errorRate
+            - latencyP95
+          properties:
+            activeUsers:
+              type: object
+              required:
+                - total
+                - web
+                - mobile
+                - both
+              properties:
+                total:
+                  type: integer
+                  minimum: 0
+                web:
+                  type: integer
+                  minimum: 0
+                mobile:
+                  type: integer
+                  minimum: 0
+                both:
+                  type: integer
+                  minimum: 0
+                  description: Users active on both web and mobile
+            requestsPerMinute:
+              type: number
+              format: double
+              minimum: 0
+            errorRate:
+              type: number
+              format: double
+              minimum: 0
+              maximum: 100
+              description: Error percentage (0-100)
+            latencyP95:
+              type: number
+              format: double
+              minimum: 0
+              description: 95th percentile latency in milliseconds
+        statusReasons:
+          type: array
+          items:
+            type: string
+          description: Reasons why status is not healthy
+
+    GoldenSignalsMetrics:
+      type: object
+      required:
+        - timeRange
+        - latency
+        - traffic
+        - errors
+        - saturation
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        latency:
+          $ref: '#/components/schemas/LatencyMetrics'
+        traffic:
+          $ref: '#/components/schemas/TrafficMetrics'
+        errors:
+          $ref: '#/components/schemas/ErrorMetricsDetailed'
+        saturation:
+          $ref: '#/components/schemas/SaturationMetrics'
+
+    EngagementMetrics:
+      type: object
+      required:
+        - timeRange
+        - dau
+        - mau
+        - stickiness
+        - newVsReturning
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        dau:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyActiveUsers'
+          description: 24-hour hourly breakdown
+        mau:
+          type: integer
+          minimum: 0
+          description: 30-day unique users
+        stickiness:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          nullable: true
+          description: (DAU/MAU) * 100, or null if MAU = 0
+        newVsReturning:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewVsReturningData'
+
+    PlatformDistribution:
+      type: object
+      required:
+        - timeRange
+        - distribution
+        - osVersions
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        distribution:
+          type: object
+          required:
+            - web
+            - mobile
+            - both
+          properties:
+            web:
+              $ref: '#/components/schemas/PlatformStats'
+            mobile:
+              $ref: '#/components/schemas/PlatformStats'
+            both:
+              type: integer
+              minimum: 0
+              description: Users active on both platforms
+        osVersions:
+          type: object
+          required:
+            - mobile
+            - web
+          properties:
+            mobile:
+              type: array
+              items:
+                $ref: '#/components/schemas/OSVersionBreakdown'
+            web:
+              type: array
+              items:
+                $ref: '#/components/schemas/OSVersionBreakdown'
+
+    ErrorMetrics:
+      type: object
+      required:
+        - timeSeries
+        - breakdown
+        - topErrors
+      properties:
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricDataPoint'
+        breakdown:
+          $ref: '#/components/schemas/ErrorBreakdown'
+        topErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorEvent'
+          maxItems: 5
+          description: Top 5 errors by count
+
+    # Supporting models
+    TimeRange:
+      type: object
+      required:
+        - start
+        - end
+        - resolution
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        resolution:
+          type: string
+          enum: [hour, day]
+
+    LatencyMetrics:
+      type: object
+      required:
+        - timeSeries
+        - trend
+        - currentP95
+      properties:
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricDataPoint'
+        trend:
+          type: string
+          enum: [improving, stable, degrading]
+        currentP95:
+          type: number
+          format: double
+          minimum: 0
+
+    TrafficMetrics:
+      type: object
+      required:
+        - timeSeries
+        - currentRPM
+        - activeSessions
+      properties:
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricDataPoint'
+        currentRPM:
+          type: number
+          format: double
+          minimum: 0
+        activeSessions:
+          type: integer
+          minimum: 0
+
+    ErrorMetricsDetailed:
+      type: object
+      required:
+        - timeSeries
+        - breakdown
+        - topErrors
+      properties:
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricDataPoint'
+        breakdown:
+          $ref: '#/components/schemas/ErrorBreakdown'
+        topErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorEvent'
+          maxItems: 5
+
+    SaturationMetrics:
+      type: object
+      required:
+        - cpu
+        - memory
+        - dbPool
+      properties:
+        cpu:
+          $ref: '#/components/schemas/SaturationDataPoint'
+        memory:
+          $ref: '#/components/schemas/SaturationDataPoint'
+        dbPool:
+          $ref: '#/components/schemas/SaturationDataPoint'
+
+    MetricDataPoint:
+      type: object
+      required:
+        - timestamp
+        - value
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+        metricType:
+          type: string
+        platform:
+          type: string
+          enum: [web, mobile, combined]
+        metadata:
+          type: object
+          additionalProperties: true
+
+    DailyActiveUsers:
+      type: object
+      required:
+        - hour
+        - uniqueUsers
+      properties:
+        hour:
+          type: string
+          format: date-time
+        uniqueUsers:
+          type: integer
+          minimum: 0
+
+    NewVsReturningData:
+      type: object
+      required:
+        - hour
+        - newUsers
+        - returningUsers
+      properties:
+        hour:
+          type: string
+          format: date-time
+        newUsers:
+          type: integer
+          minimum: 0
+        returningUsers:
+          type: integer
+          minimum: 0
+
+    PlatformStats:
+      type: object
+      required:
+        - activeUsers
+        - percentage
+        - requestsPerMinute
+        - errorRate
+      properties:
+        activeUsers:
+          type: integer
+          minimum: 0
+        percentage:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+        requestsPerMinute:
+          type: number
+          format: double
+          minimum: 0
+        errorRate:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+
+    OSVersionBreakdown:
+      type: object
+      required:
+        - os
+        - version
+        - count
+        - percentage
+      properties:
+        os:
+          type: string
+          enum: [iOS, Android, macOS, Windows, Linux, Unknown]
+        version:
+          type: string
+        count:
+          type: integer
+          minimum: 0
+        percentage:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+
+    ErrorBreakdown:
+      type: object
+      required:
+        - total4xx
+        - total5xx
+        - percentage4xx
+        - percentage5xx
+      properties:
+        total4xx:
+          type: integer
+          minimum: 0
+        total5xx:
+          type: integer
+          minimum: 0
+        percentage4xx:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+        percentage5xx:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+
+    ErrorEvent:
+      type: object
+      required:
+        - errorId
+        - message
+        - errorType
+        - count
+        - lastSeen
+      properties:
+        errorId:
+          type: string
+        message:
+          type: string
+        errorType:
+          type: string
+          enum: ['4xx', '5xx']
+        count:
+          type: integer
+          minimum: 1
+        lastSeen:
+          type: string
+          format: date-time
+        platform:
+          type: string
+          enum: [web, mobile]
+        affectedUsers:
+          type: integer
+          minimum: 0
+
+    SaturationDataPoint:
+      type: object
+      required:
+        - current
+        - threshold
+        - status
+      properties:
+        current:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Current usage percentage
+        threshold:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Warning threshold
+        status:
+          type: string
+          enum: [normal, warning, critical]
+
+    # Error responses
+    Error:
+      type: object
+      required:
+        - status
+        - message
+        - code
+        - retryable
+      properties:
+        status:
+          type: string
+          enum: [error]
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+            - ANALYTICS_API_DOWN
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - RATE_LIMIT_EXCEEDED
+            - INVALID_TIME_RANGE
+            - NETWORK_ERROR
+        retryable:
+          type: boolean
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            message: Invalid time range specified
+            code: INVALID_TIME_RANGE
+            retryable: false
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            message: Authentication required
+            code: UNAUTHORIZED
+            retryable: false
+
+    Forbidden:
+      description: Admin access required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            message: Admin access required
+            code: FORBIDDEN
+            retryable: false
+
+    ServiceUnavailable:
+      description: Analytics service temporarily unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            message: PostHog API temporarily unavailable
+            code: ANALYTICS_API_DOWN
+            retryable: true
