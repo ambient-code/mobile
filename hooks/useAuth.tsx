@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import type { User } from '@/types/user'
 import { TokenManager } from '@/services/auth/token-manager'
@@ -7,6 +7,7 @@ import { AuthAPI } from '@/services/api/auth'
 import { OAUTH_CONFIG } from '@/utils/constants'
 import type { AuthSessionResult } from 'expo-auth-session'
 import { errorHandler } from '@/utils/errorHandler'
+import { setUser as setSentryUser, clearUser as clearSentryUser } from '@/services/monitoring/sentry'
 
 interface AuthContextType {
   user: User | null
@@ -34,6 +35,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Fetch real user profile from API
         const userProfile = await AuthAPI.getUserProfile()
         setUser(userProfile)
+
+        // Set user context in Sentry
+        setSentryUser({
+          id: userProfile.id,
+          email: userProfile.email,
+          username: userProfile.username,
+        })
       }
     } catch (error) {
       console.error('Auth check error:', error)
@@ -46,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // If profile fetch fails, log out to prevent broken state
       await TokenManager.clearTokens()
       setUser(null)
+      clearSentryUser()
     } finally {
       setIsLoading(false)
     }
@@ -84,6 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await AuthAPI.logout()
       setUser(null)
+      clearSentryUser()
     } catch (error) {
       console.error('Logout error:', error)
       throw error

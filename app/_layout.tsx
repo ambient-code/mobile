@@ -8,6 +8,7 @@ import { Toast } from '@/components/ui/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
+import { initializeSentry } from '@/services/monitoring/sentry'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -116,7 +117,12 @@ function RootLayoutNav() {
 export default function RootLayout() {
   const client = getQueryClient()
 
-  // Initialize global error handler FIRST
+  // Initialize Sentry FIRST (before error handler)
+  useEffect(() => {
+    initializeSentry()
+  }, [])
+
+  // Initialize global error handler
   useEffect(() => {
     errorHandler.initialize()
   }, [])
