@@ -1,28 +1,21 @@
 import React, { useState, useCallback } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from 'react-native'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { useOffline } from '@/hooks/useOffline'
 import { useNotifications, useMarkAllAsRead } from '@/hooks/useNotifications'
 import { useNotificationActions } from '@/components/notifications/NotificationActions'
 import { NotificationCard } from '@/components/notifications/NotificationCard'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import type { GitHubNotification } from '@/types/notification'
 
 type FilterType = 'all' | 'unread'
 
 export default function NotificationsScreen() {
   const { colors } = useTheme()
+  const { isOffline } = useOffline()
   const [filter, setFilter] = useState<FilterType>('all')
-  const { notifications, unreadCount, isLoading, refetch } = useNotifications(
-    filter === 'unread'
-  )
+  const { notifications, unreadCount, isLoading, refetch } = useNotifications(filter === 'unread')
   const { showActions } = useNotificationActions()
   const markAllAsRead = useMarkAllAsRead()
 
@@ -65,6 +58,9 @@ export default function NotificationsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Header with Mark All Read button */}
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>GitHub Notifications</Text>
@@ -113,7 +109,9 @@ export default function NotificationsScreen() {
                 {f.label}
               </Text>
               {f.badge !== undefined && f.badge > 0 && (
-                <View style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.accent }]}>
+                <View
+                  style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.accent }]}
+                >
                   <Text style={[styles.badgeText, { color: isActive ? colors.accent : '#fff' }]}>
                     {f.badge > 99 ? '99+' : f.badge}
                   </Text>
@@ -143,9 +141,7 @@ export default function NotificationsScreen() {
           ) : (
             <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
               <Feather name="bell-off" size={48} color={colors.textSecondary} />
-              <Text style={[styles.emptyStateText, { color: colors.text }]}>
-                No notifications
-              </Text>
+              <Text style={[styles.emptyStateText, { color: colors.text }]}>No notifications</Text>
               <Text style={[styles.emptyStateSubtext, { color: colors.textSecondary }]}>
                 {filter === 'unread'
                   ? 'All caught up! No unread notifications.'

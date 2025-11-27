@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useTheme } from '@/hooks/useTheme'
+import { useOffline } from '@/hooks/useOffline'
 import { useSessions } from '@/hooks/useSessions'
 import { SessionCard } from '@/components/session/SessionCard'
-import type { Session } from '@/types/session'
-import { SessionStatus } from '@/types/session'
+import { OfflineBanner } from '@/components/ui/OfflineBanner'
+import { SessionStatus, type Session } from '@/types/session'
 import { useLocalSearchParams } from 'expo-router'
 
 type FilterType = 'all' | SessionStatus
 
 export default function SessionsListScreen() {
   const { colors } = useTheme()
+  const { isOffline } = useOffline()
   const { filter: urlFilter } = useLocalSearchParams()
   const [filter, setFilter] = useState<FilterType>('all')
 
@@ -41,6 +43,9 @@ export default function SessionsListScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Filter Chips */}
       <ScrollView
         horizontal

@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useOffline } from '../../hooks/useOffline'
+import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { fetchRepos, addRepo, removeRepo } from '../../services/api/repositories'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { Repository } from '../../types/api'
 
 export default function ConnectedReposScreen() {
+  const { isOffline } = useOffline()
   const [repos, setRepos] = useState<Repository[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -54,10 +50,7 @@ export default function ConnectedReposScreen() {
 
             // Validate URL
             if (!isValidGitHubUrl(url)) {
-              Alert.alert(
-                'Invalid URL',
-                'Please enter a valid GitHub repository URL'
-              )
+              Alert.alert('Invalid URL', 'Please enter a valid GitHub repository URL')
               return
             }
 
@@ -117,6 +110,9 @@ export default function ConnectedReposScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Add Button */}
       <TouchableOpacity style={styles.addButton} onPress={handleAddRepo}>
         <Ionicons name="add-circle" size={24} color="#8b5cf6" />
@@ -128,9 +124,7 @@ export default function ConnectedReposScreen() {
         <View style={styles.empty}>
           <Ionicons name="git-branch-outline" size={48} color="#d1d5db" />
           <Text style={styles.emptyText}>No repositories connected</Text>
-          <Text style={styles.emptySubtext}>
-            Add a repository to start creating sessions
-          </Text>
+          <Text style={styles.emptySubtext}>Add a repository to start creating sessions</Text>
         </View>
       ) : (
         <FlatList

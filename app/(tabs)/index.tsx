@@ -197,19 +197,13 @@ export default function DashboardScreen() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <Header isRefetching={isRefetching} />
 
+      {/* Offline Banner - Shows at top when offline */}
+      {isOffline && <OfflineBanner />}
+
       <ScrollView
         style={styles.scrollView}
         refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
       >
-        {/* Offline Indicator */}
-        {isOffline && (
-          <View style={[styles.offlineBanner, { backgroundColor: colors.warning + '20' }]}>
-            <Text style={[styles.offlineText, { color: colors.warning }]}>
-              Offline - Showing cached data
-            </Text>
-          </View>
-        )}
-
         {/* Connection Status - Only show when disconnected or error */}
         {!isConnected && !isOffline && (
           <View

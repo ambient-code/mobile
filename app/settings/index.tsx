@@ -3,7 +3,9 @@ import { ScrollView, View, Text, StyleSheet, Alert, Linking } from 'react-native
 import { router } from 'expo-router'
 import { ProfileCard } from '../../components/settings/ProfileCard'
 import { SettingsRow } from '../../components/ui/SettingsRow'
+import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { useAuth } from '../../hooks/useAuth'
+import { useOffline } from '../../hooks/useOffline'
 import { userApi } from '../../services/api/user'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { User } from '../../types/user'
@@ -13,6 +15,7 @@ const FEEDBACK_FORM_URL =
 
 export default function SettingsScreen() {
   const { user: authUser, logout } = useAuth()
+  const { isOffline } = useOffline()
   const [profile, setProfile] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -63,9 +66,7 @@ export default function SettingsScreen() {
       }
     } catch (error) {
       console.error('Failed to open feedback form:', error)
-      Alert.alert('Error', 'Failed to open feedback form. Please try again.', [
-        { text: 'OK' },
-      ])
+      Alert.alert('Error', 'Failed to open feedback form. Please try again.', [{ text: 'OK' }])
     }
   }
 
@@ -87,11 +88,9 @@ export default function SettingsScreen() {
             router.replace('/login')
           } catch (error) {
             console.error('Sign out failed:', error)
-            Alert.alert(
-              'Sign Out Failed',
-              'Failed to sign out. Please try again.',
-              [{ text: 'OK' }]
-            )
+            Alert.alert('Sign Out Failed', 'Failed to sign out. Please try again.', [
+              { text: 'OK' },
+            ])
           }
         },
       },
@@ -108,6 +107,9 @@ export default function SettingsScreen() {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Offline Banner */}
+      {isOffline && <OfflineBanner />}
+
       {/* Profile Card */}
       {profile && <ProfileCard user={profile} />}
 
@@ -119,12 +121,7 @@ export default function SettingsScreen() {
           icon="notifications-outline"
           onPress={() => router.push('/settings/notifications')}
         />
-        <SettingsRow
-          label="Quiet Hours"
-          icon="moon-outline"
-          badge="Soon"
-          disabled
-        />
+        <SettingsRow label="Quiet Hours" icon="moon-outline" badge="Soon" disabled />
       </View>
 
       {/* Integrations Section */}
@@ -135,12 +132,7 @@ export default function SettingsScreen() {
           icon="git-branch-outline"
           onPress={() => router.push('/settings/repos')}
         />
-        <SettingsRow
-          label="GitHub Integration"
-          icon="logo-github"
-          badge="Soon"
-          disabled
-        />
+        <SettingsRow label="GitHub Integration" icon="logo-github" badge="Soon" disabled />
         <SettingsRow label="API Keys" icon="key-outline" badge="Soon" disabled />
       </View>
 
