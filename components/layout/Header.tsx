@@ -10,16 +10,20 @@ import {
   Alert,
 } from 'react-native'
 import { router } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuth } from '@/hooks/useAuth'
 import { getGreeting } from '@/utils/constants'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { NotificationsModal } from '@/components/modals/NotificationsModal'
 import { PreferencesService } from '@/services/storage/preferences'
+import { getUnreadCount } from '@/services/announcements'
 
 interface HeaderProps {
   isRefetching?: boolean
 }
+
+const STORAGE_KEY = '@acp_read_announcements'
 
 // Memoized Header component to prevent unnecessary re-renders
 export const Header = memo(({ isRefetching = false }: HeaderProps) => {
@@ -27,6 +31,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
   const { user } = useAuth()
   const [greeting, setGreeting] = useState(() => getGreeting())
   const [notificationsVisible, setNotificationsVisible] = useState(false)
+  const [unreadAnnouncementsCount, setUnreadAnnouncementsCount] = useState(0)
 
   useEffect(() => {
     // Only update greeting if it actually changed (hourly changes)
@@ -42,6 +47,26 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
 
     return () => clearInterval(interval)
   }, [greeting])
+
+  // Load unread announcements count
+  useEffect(() => {
+    const loadUnreadCount = async () => {
+      try {
+        const stored = await AsyncStorage.getItem(STORAGE_KEY)
+        const readIds = stored ? JSON.parse(stored) : []
+        const count = getUnreadCount(readIds)
+        setUnreadAnnouncementsCount(count)
+      } catch (error) {
+        console.error('Failed to load unread announcements count:', error)
+      }
+    }
+
+    loadUnreadCount()
+
+    // Refresh count when returning to this screen
+    const interval = setInterval(loadUnreadCount, 10000) // Check every 10 seconds
+    return () => clearInterval(interval)
+  }, [])
 
   // Memoize getInitials function
   const getInitials = useCallback((name: string) => {
@@ -120,7 +145,22 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
       </Text>
 
       <View style={styles.actions}>
-        {/* Notifications/Announcements */}
+        {/* Announcements */}
+        <TouchableOpacity
+          style={[styles.iconButton, { backgroundColor: colors.card }]}
+          onPress={() => router.push('/announcements')}
+          activeOpacity={0.7}
+        >
+          <IconSymbol name="gift.fill" size={20} color={colors.text} />
+          {/* Unread badge */}
+          {unreadAnnouncementsCount > 0 && (
+            <View style={[styles.unreadBadge, { backgroundColor: colors.accent }]}>
+              <Text style={styles.unreadBadgeText}>{unreadAnnouncementsCount}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
+        {/* Notifications */}
         <TouchableOpacity
           style={[styles.iconButton, { backgroundColor: colors.card }]}
           onPress={openNotifications}

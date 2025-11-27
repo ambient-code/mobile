@@ -15,6 +15,7 @@ import { WorkflowTypeGrid } from '@/components/session/WorkflowTypeGrid'
 import { ModelSelector } from '@/components/session/ModelSelector'
 import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import { createSessionFromRepo } from '@/services/api/sessions'
+import { trackEvent, TelemetryEvents } from '@/services/telemetry'
 import { WORKFLOWS } from '@/utils/constants'
 import type { Repository } from '@/types/api'
 import { ModelType } from '@/types/session'
@@ -75,13 +76,18 @@ export default function NewSessionScreen() {
         model: selectedModel,
       })
 
-      // Navigate back to dashboard
-      router.replace('/(tabs)')
+      // Track session creation
+      trackEvent(TelemetryEvents.SESSION_CREATED, {
+        workflowType: selectedWorkflow,
+        model: selectedModel,
+        repositoryId: selectedRepo.id,
+      })
 
       // Show success toast (using Alert for now)
-      setTimeout(() => {
-        Alert.alert('Success', 'Session created successfully!')
-      }, 100)
+      Alert.alert('Success', 'Session created successfully!')
+
+      // Navigate back to dashboard
+      router.replace('/(tabs)')
     } catch (error) {
       console.error('Failed to create session:', error)
       Alert.alert('Error', 'Failed to create session. Please try again.')
@@ -127,6 +133,7 @@ export default function NewSessionScreen() {
 
       <View style={styles.footer}>
         <TouchableOpacity
+          testID="start-session-button"
           style={[styles.startButton, isStartDisabled && styles.startButtonDisabled]}
           onPress={handleStartSession}
           disabled={isStartDisabled}

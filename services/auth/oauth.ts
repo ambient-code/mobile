@@ -50,6 +50,14 @@ export class OAuthService {
   private static codeVerifier: string | null = null
 
   static async initiateLogin(): Promise<AuthSession.AuthSessionResult> {
+    // Use Expo's proxy redirect URI for better compatibility
+    const redirectUri = AuthSession.makeRedirectUri({
+      scheme: 'acp',
+      path: 'auth/callback',
+    })
+
+    console.log('[OAuth] Using redirect URI:', redirectUri)
+
     // Generate PKCE code verifier and challenge
     const codeVerifier = generateCodeVerifier()
     this.codeVerifier = codeVerifier
@@ -59,13 +67,17 @@ export class OAuthService {
     const authRequest = new AuthSession.AuthRequest({
       clientId: OAUTH_CONFIG.clientId,
       scopes: OAUTH_CONFIG.scopes,
-      redirectUri: OAUTH_CONFIG.redirectUri,
+      redirectUri,
       usePKCE: true,
       codeChallenge,
       codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
     })
 
-    return await authRequest.promptAsync(discovery)
+    const result = await authRequest.promptAsync(discovery)
+
+    console.log('[OAuth] Auth result:', result.type)
+
+    return result
   }
 
   static getCodeVerifier(): string | null {
@@ -74,5 +86,12 @@ export class OAuthService {
 
   static clearCodeVerifier(): void {
     this.codeVerifier = null
+  }
+
+  static getRedirectUri(): string {
+    return AuthSession.makeRedirectUri({
+      scheme: 'acp',
+      path: 'auth/callback',
+    })
   }
 }

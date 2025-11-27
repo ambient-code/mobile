@@ -7,7 +7,10 @@ import { AuthAPI } from '@/services/api/auth'
 import { OAUTH_CONFIG } from '@/utils/constants'
 import type { AuthSessionResult } from 'expo-auth-session'
 import { errorHandler } from '@/utils/errorHandler'
-import { setUser as setSentryUser, clearUser as clearSentryUser } from '@/services/monitoring/sentry'
+import {
+  setUser as setSentryUser,
+  clearUser as clearSentryUser,
+} from '@/services/monitoring/sentry'
 
 interface AuthContextType {
   user: User | null
@@ -73,13 +76,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           throw new Error('Code verifier not found')
         }
 
-        // Exchange code for tokens
-        await AuthAPI.exchangeToken(result.params.code, codeVerifier, OAUTH_CONFIG.redirectUri)
+        // Exchange code for tokens (use the same redirect URI that was used for login)
+        const redirectUri = OAuthService.getRedirectUri()
+        await AuthAPI.exchangeToken(result.params.code, codeVerifier, redirectUri)
 
         // Fetch user profile
         await checkAuth()
       } else if (result.type === 'error') {
         throw new Error(result.error?.message || 'Login failed')
+      } else {
+        throw new Error('Login was cancelled or failed')
       }
     } catch (error) {
       console.error('Login error:', error)
