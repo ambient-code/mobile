@@ -115,7 +115,11 @@ export default function SettingsScreen() {
           icon="notifications-outline"
           onPress={() => router.push('/settings/notifications')}
         />
-        <SettingsRow label="Quiet Hours" icon="moon-outline" badge="Soon" disabled />
+        <SettingsRow
+          label="Quiet Hours"
+          icon="moon-outline"
+          onPress={() => router.push('/settings/quiet-hours')}
+        />
       </View>
 
       {/* Integrations Section */}
