@@ -281,7 +281,7 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ---
 
-## Phase 8: User Story 6 - Manage Settings and Preferences (Priority: P3) (12 tasks)
+## ✅ Phase 8: User Story 6 - Manage Settings and Preferences (Priority: P3) (12 tasks) - COMPLETE
 
 📋 **Detailed Implementation Plan**: [plans/phase-8-settings.md](./plans/phase-8-settings.md)
 
@@ -306,24 +306,24 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US6]
 
-- [ ] T076 [P] [US6] Implement user preferences API in services/api/user.ts with fetchProfile(), fetchPreferences(), updatePreferences()
-- [ ] T077 [P] [US6] Enhance preferences storage in services/storage/preferences.ts to handle theme, notifications, quietHours
+- [x] T076 [P] [US6] Implement user preferences API in services/api/user.ts with fetchProfile(), fetchPreferences(), updatePreferences()
+- [x] T077 [P] [US6] Enhance preferences storage in services/storage/preferences.ts to handle theme, notifications, quietHours
 
 ### UI Components [US6]
 
-- [ ] T078 [P] [US6] Create ProfileCard component in components/settings/ProfileCard.tsx with avatar, name, role, SSO status badge
-- [ ] T079 [P] [US6] Create SettingsRow component in components/ui/SettingsRow.tsx with label, icon, chevron right, optional badge
-- [ ] T080 [P] [US6] Create Toggle component in components/ui/Toggle.tsx for notification preference switches
+- [x] T078 [P] [US6] Create ProfileCard component in components/settings/ProfileCard.tsx with avatar, name, role, SSO status badge
+- [x] T079 [P] [US6] Create SettingsRow component in components/ui/SettingsRow.tsx with label, icon, chevron right, optional badge
+- [x] T080 [P] [US6] Create Toggle component in components/ui/Toggle.tsx for notification preference switches
 
 ### Screens [US6]
 
-- [ ] T081 [US6] Implement Settings main screen in app/settings/index.tsx with ProfileCard, menu items (Push Notifications, Quiet Hours, Connected Repos, GitHub Integration, API Keys, Appearance), Send Feedback, Sign Out
-- [ ] T082 [US6] Implement Push Notifications settings in app/settings/notifications.tsx with 4 toggles
-- [ ] T083 [US6] Implement Connected Repositories screen in app/settings/repos.tsx with repo list and add/remove functionality
-- [ ] T084 [US6] Implement Appearance settings in app/settings/appearance.tsx with theme selector (light/dark/system)
-- [ ] T085 [US6] Implement Sign Out flow: confirm dialog → clear SecureStore + AsyncStorage → redirect to login
-- [ ] T086 [US6] Add Settings access from user menu (avatar tap in header)
-- [ ] T087 [US6] Implement "Send Feedback" action to open Google Form: https://docs.google.com/forms/d/e/1FAIpQLScQwBV4ZH2b3Fm_D0IDzIwKyCa-B8AnKhAOXZj3_F5cN0Gm8Q/viewform
+- [x] T081 [US6] Implement Settings main screen in app/settings/index.tsx with ProfileCard, menu items (Push Notifications, Quiet Hours, Connected Repos, GitHub Integration, API Keys, Appearance), Send Feedback, Sign Out
+- [x] T082 [US6] Implement Push Notifications settings in app/settings/notifications.tsx with 4 toggles
+- [x] T083 [US6] Implement Connected Repositories screen in app/settings/repos.tsx with repo list and add/remove functionality
+- [x] T084 [US6] Implement Appearance settings in app/settings/appearance.tsx with theme selector (light/dark/system)
+- [x] T085 [US6] Implement Sign Out flow: confirm dialog → clear SecureStore + AsyncStorage → redirect to login
+- [x] T086 [US6] Add Settings access from user menu (avatar tap in header)
+- [x] T087 [US6] Implement "Send Feedback" action to open Google Form: https://docs.google.com/forms/d/e/1FAIpQLScQwBV4ZH2b3Fm_D0IDzIwKyCa-B8AnKhAOXZj3_F5cN0Gm8Q/viewform
 
 ---
 
