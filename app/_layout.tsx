@@ -127,7 +127,7 @@ export default function RootLayout() {
       })
 
       const fpsMonitor = startFPSMonitoring({
-        slowFrameThreshold: 50, // Warn if FPS drops below 50
+        slowFrameThreshold: 30, // Warn if FPS drops below 30 (more reasonable for mobile)
       })
 
       console.log('🔍 Performance monitoring active')
