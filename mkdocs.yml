@@ -65,6 +65,7 @@ nav:
   - Getting Started:
     - Quick Start: getting-started/quickstart.md
     - Setup Guide: getting-started/setup.md
+    - Mobile User Guide: mobile-user-guide.md
     - Troubleshooting: getting-started/troubleshooting.md
     - Universal Links: getting-started/universal-links.md
   - Architecture:

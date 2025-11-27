@@ -43,7 +43,17 @@ performance.report() // Full performance report
 
 See [Performance Monitoring Guide](performance/monitoring.md) for complete documentation.
 
-## Quick Start
+## Using the Mobile App
+
+📱 **New to the ACP Mobile app?** Check out the [**Mobile User Guide**](mobile-user-guide.md) for step-by-step instructions on:
+
+- Installing the app (iOS/Android)
+- Logging in and getting started
+- Monitoring your AI coding sessions
+- Configuring settings and preferences
+- Troubleshooting common issues
+
+## Developer Quick Start
 
 ### Prerequisites
 
