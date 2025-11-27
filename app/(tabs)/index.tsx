@@ -18,6 +18,7 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { Header } from '@/components/layout/Header'
 import { FAB } from '@/components/layout/FAB'
 import { SessionCard } from '@/components/session/SessionCard'
+import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { SessionStatus, type Session } from '@/types/session'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 
@@ -85,7 +86,14 @@ QuickActionButton.displayName = 'QuickActionButton'
 export default function DashboardScreen() {
   const { colors } = useTheme()
   const { isLoading: authLoading } = useAuth()
-  const { data: sessions, isLoading, refetch, isRefetching } = useSessions()
+  const {
+    data: sessions,
+    isLoading,
+    refetch,
+    isRefetching,
+    isError: isQueryError,
+    error: queryError,
+  } = useSessions()
   const { isOffline } = useOffline()
   const { retry, isConnected, isError } = useRealtimeSession()
   const { unreadCount } = useNotifications()
@@ -170,6 +178,16 @@ export default function DashboardScreen() {
     return (
       <View style={[styles.container, { backgroundColor: colors.bg }]}>
         <Text style={[styles.loadingText, { color: colors.text }]}>Loading...</Text>
+      </View>
+    )
+  }
+
+  // Show error UI if sessions failed to load
+  if (isQueryError && queryError) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.bg }]}>
+        <Header isRefetching={isRefetching} />
+        <ErrorMessage error={queryError as Error} retry={refetch} />
       </View>
     )
   }
