@@ -126,8 +126,8 @@ export default function QuietHoursSettingsScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.description}>
-        Set quiet hours to pause notifications during specific times. You&apos;ll still receive
-        notifications for blocking alerts.
+        Set quiet hours to silence all notifications during specific times. You can review any
+        missed notifications after quiet hours end.
       </Text>
 
       <View style={styles.section}>
@@ -180,10 +180,11 @@ export default function QuietHoursSettingsScreen() {
       {quietHours.enabled && (
         <View style={styles.info}>
           <Text style={styles.infoText}>
-            Notifications will be silenced from {quietHours.start} to {quietHours.end} every day.
+            All notifications will be silenced from {quietHours.start} to {quietHours.end} every
+            day.
           </Text>
           <Text style={styles.infoText}>
-            Blocking alerts that require immediate attention will still be shown.
+            You can review any missed notifications after quiet hours end.
           </Text>
         </View>
       )}
