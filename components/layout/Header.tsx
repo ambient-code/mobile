@@ -1,10 +1,21 @@
 import React, { useState, useEffect, useMemo, useCallback, memo } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+  ActionSheetIOS,
+  Alert,
+} from 'react-native'
+import { router } from 'expo-router'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuth } from '@/hooks/useAuth'
 import { getGreeting } from '@/utils/constants'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { NotificationsModal } from '@/components/modals/NotificationsModal'
+import { PreferencesService } from '@/services/storage/preferences'
 
 interface HeaderProps {
   isRefetching?: boolean
@@ -51,6 +62,57 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
   const openNotifications = useCallback(() => setNotificationsVisible(true), [])
   const closeNotifications = useCallback(() => setNotificationsVisible(false), [])
 
+  // User menu handler
+  const showUserMenu = useCallback(() => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Settings', 'Sign Out', 'Cancel'],
+          destructiveButtonIndex: 1,
+          cancelButtonIndex: 2,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            router.push('/settings')
+          } else if (buttonIndex === 1) {
+            handleSignOut()
+          }
+        }
+      )
+    } else {
+      // Android: Show custom dialog
+      Alert.alert('Account', '', [
+        { text: 'Settings', onPress: () => router.push('/settings') },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: handleSignOut,
+        },
+        { text: 'Cancel', style: 'cancel' },
+      ])
+    }
+  }, [])
+
+  // Sign out handler
+  const handleSignOut = useCallback(async () => {
+    Alert.alert('Sign Out', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await PreferencesService.clearAll()
+            // logout() will clear auth context and tokens
+            router.replace('/login')
+          } catch (error) {
+            console.error('Sign out failed:', error)
+          }
+        },
+      },
+    ])
+  }, [])
+
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <Text style={[styles.greeting, { color: colors.text }]} numberOfLines={1}>
@@ -76,6 +138,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
           <TouchableOpacity
             style={[styles.avatar, { backgroundColor: colors.accent }]}
             activeOpacity={0.7}
+            onPress={showUserMenu}
           >
             <Text style={styles.avatarText}>{userInitials}</Text>
           </TouchableOpacity>
