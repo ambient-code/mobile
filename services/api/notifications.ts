@@ -3,6 +3,7 @@ import type { GitHubNotification } from '@/types/notification'
 import { NotificationType } from '@/types/notification'
 import { z } from 'zod'
 import { validateResponse } from './schemas'
+import { MOCK_NOTIFICATIONS } from '@/utils/mockData'
 
 /**
  * GitHub Notification schema for API validation
@@ -42,6 +43,16 @@ export class NotificationsAPI {
   static async fetchNotifications(
     unreadOnly = false
   ): Promise<{ notifications: GitHubNotification[]; unreadCount: number }> {
+    // Use mock data in development
+    if (__DEV__) {
+      const notifications = unreadOnly
+        ? MOCK_NOTIFICATIONS.filter((n) => n.isUnread)
+        : MOCK_NOTIFICATIONS
+      const unreadCount = MOCK_NOTIFICATIONS.filter((n) => n.isUnread).length
+
+      return { notifications, unreadCount }
+    }
+
     const params = unreadOnly ? { unread: 'true' } : {}
     const response = await apiClient.get<unknown>('/notifications/github', {
       params,
