@@ -155,7 +155,7 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ---
 
-## Phase 5: User Story 3 - Respond to GitHub Notifications (Priority: P2) (10 tasks)
+## ✅ Phase 5: User Story 3 - Respond to GitHub Notifications (Priority: P2) (10 tasks) - COMPLETE
 
 **Story Goal**: Receive and act on GitHub notifications from phone to quickly respond to PRs, issues, mentions
 
@@ -176,22 +176,22 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ### Data Layer [US3]
 
-- [ ] T046 [P] [US3] Implement notifications API service in services/api/notifications.ts with fetchNotifications(), markAsRead(), muteThread()
-- [ ] T047 [P] [US3] Create useNotifications hook in hooks/useNotifications.ts with polling every 30s and unread count
+- [x] T046 [P] [US3] Implement notifications API service in services/api/notifications.ts with fetchNotifications(), markAsRead(), muteThread()
+- [x] T047 [P] [US3] Create useNotifications hook in hooks/useNotifications.ts with polling every 30s and unread count
 
 ### UI Components [US3]
 
-- [ ] T048 [P] [US3] Create NotificationCard component in components/notifications/NotificationCard.tsx with type icon, repo, title, author, time, unread indicator (blue border + dot)
-- [ ] T049 [P] [US3] Create NotificationActions component in components/notifications/NotificationActions.tsx with action sheet: preview, start workflow, mark read, open browser, mute
-- [ ] T050 [P] [US3] Create workflow suggestion mapping in utils/constants.ts: NotificationType → WorkflowType (PR→Review, Issue→Bugfix, etc.)
+- [x] T048 [P] [US3] Create NotificationCard component in components/notifications/NotificationCard.tsx with type icon, repo, title, author, time, unread indicator (blue border + dot)
+- [x] T049 [P] [US3] Create NotificationActions component in components/notifications/NotificationActions.tsx with action sheet: preview, start workflow, mark read, open browser, mute
+- [x] T050 [P] [US3] Create workflow suggestion mapping in utils/constants.ts: NotificationType → WorkflowType (PR→Review, Issue→Bugfix, etc.)
 
 ### Screens & Integration [US3]
 
-- [ ] T051 [US3] Implement GitHub Notifications screen in app/notifications/index.tsx with filter tabs (All/Unread), unread count badge, "Mark all read" action
-- [ ] T052 [US3] Implement notification tap handler to show NotificationActions action sheet
-- [ ] T053 [US3] Implement "Mark as Read" action with optimistic update and API call
-- [ ] T054 [US3] Implement "Open in Browser" action using Linking.openURL()
-- [ ] T055 [US3] Add "GitHub Notifications" quick action to Dashboard with unread count badge
+- [x] T051 [US3] Implement GitHub Notifications screen in app/notifications/index.tsx with filter tabs (All/Unread), unread count badge, "Mark all read" action
+- [x] T052 [US3] Implement notification tap handler to show NotificationActions action sheet
+- [x] T053 [US3] Implement "Mark as Read" action with optimistic update and API call
+- [x] T054 [US3] Implement "Open in Browser" action using Linking.openURL()
+- [x] T055 [US3] Add "GitHub Notifications" quick action to Dashboard with unread count badge
 
 ---
 
