@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/142</span>
+                <span class='fraction'>0/145</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/132</span>
+                <span class='fraction'>0/135</span>
             </div>
         
             
@@ -442,7 +442,16 @@
 <a name='L377'></a><a href='#L377'>377</a>
 <a name='L378'></a><a href='#L378'>378</a>
 <a name='L379'></a><a href='#L379'>379</a>
-<a name='L380'></a><a href='#L380'>380</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a>
+<a name='L386'></a><a href='#L386'>386</a>
+<a name='L387'></a><a href='#L387'>387</a>
+<a name='L388'></a><a href='#L388'>388</a>
+<a name='L389'></a><a href='#L389'>389</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -466,6 +475,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -712,10 +723,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -725,6 +740,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -834,6 +852,8 @@ import {
   type SessionUpdatedData,
   type SessionProgressData,
   type SessionStatusData,
+  type NotificationNewData,
+  type NotificationReadData,
 } from '@/types/realtime'
 import { FEATURE_FLAGS } from '@/utils/constants'
 import { useToast } from '@/hooks/useToast'
@@ -937,23 +957,23 @@ export function <span class="fstat-no" title="function not covered" >useRealtime
 &nbsp;
         // Update all sessions cache entries ONLY if session exists in that cache
 <span class="cstat-no" title="statement not covered" >        queryClient.setQueriesData&lt;Session[]&gt;({ queryKey: ['sessions'] }, <span class="fstat-no" title="function not covered" >(o</span>ld) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
+<span class="cstat-no" title="statement not covered" >          if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
 &nbsp;
-        // Check if this session exists in THIS cache entry
-        const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
-<span class="cstat-no" title="statement not covered" >        if (sessionIndex === -1) {</span>
-          // Session not in this cache, don't update
-<span class="cstat-no" title="statement not covered" >          return old</span>
-        }
+          // Check if this session exists in THIS cache entry
+          const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
+<span class="cstat-no" title="statement not covered" >          if (sessionIndex === -1) {</span>
+            // Session not in this cache, don't update
+<span class="cstat-no" title="statement not covered" >            return old</span>
+          }
 &nbsp;
-        // Session exists, update it
-        const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
-<span class="cstat-no" title="statement not covered" >        updated[sessionIndex] = {</span>
-          ...updated[sessionIndex],
-          progress: data.progress,
-          currentTask: data.currentTask || updated[sessionIndex].currentTask,
-          updatedAt: new Date(),
-        }
+          // Session exists, update it
+          const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
+<span class="cstat-no" title="statement not covered" >          updated[sessionIndex] = {</span>
+            ...updated[sessionIndex],
+            progress: data.progress,
+            currentTask: data.currentTask || updated[sessionIndex].currentTask,
+            updatedAt: new Date(),
+          }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          logger.debug('[Realtime] Sessions cache updated')</span>
 <span class="cstat-no" title="statement not covered" >          return updated</span>
@@ -985,22 +1005,22 @@ export function <span class="fstat-no" title="function not covered" >useRealtime
 &nbsp;
         // Update all sessions cache entries ONLY if session exists in that cache
 <span class="cstat-no" title="statement not covered" >        queryClient.setQueriesData&lt;Session[]&gt;({ queryKey: ['sessions'] }, <span class="fstat-no" title="function not covered" >(o</span>ld) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
+<span class="cstat-no" title="statement not covered" >          if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
 &nbsp;
-        // Check if this session exists in THIS cache entry
-        const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
-<span class="cstat-no" title="statement not covered" >        if (sessionIndex === -1) {</span>
-          // Session not in this cache, don't update
-<span class="cstat-no" title="statement not covered" >          return old</span>
-        }
+          // Check if this session exists in THIS cache entry
+          const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
+<span class="cstat-no" title="statement not covered" >          if (sessionIndex === -1) {</span>
+            // Session not in this cache, don't update
+<span class="cstat-no" title="statement not covered" >            return old</span>
+          }
 &nbsp;
-        // Session exists, update it
-        const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
-<span class="cstat-no" title="statement not covered" >        updated[sessionIndex] = {</span>
-          ...updated[sessionIndex],
-          ...data.changes,
-          updatedAt: new Date(),
-        }
+          // Session exists, update it
+          const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
+<span class="cstat-no" title="statement not covered" >          updated[sessionIndex] = {</span>
+            ...updated[sessionIndex],
+            ...data.changes,
+            updatedAt: new Date(),
+          }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          logger.debug('[Realtime] Sessions cache updated')</span>
 <span class="cstat-no" title="statement not covered" >          return updated</span>
@@ -1040,25 +1060,25 @@ export function <span class="fstat-no" title="function not covered" >useRealtime
 &nbsp;
         // Update all sessions cache entries ONLY if session exists in that cache
 <span class="cstat-no" title="statement not covered" >        queryClient.setQueriesData&lt;Session[]&gt;({ queryKey: ['sessions'] }, <span class="fstat-no" title="function not covered" >(o</span>ld) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
+<span class="cstat-no" title="statement not covered" >          if (!old) <span class="cstat-no" title="statement not covered" >return old</span></span>
 &nbsp;
-        // Check if this session exists in THIS cache entry
-        const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
-<span class="cstat-no" title="statement not covered" >        if (sessionIndex === -1) {</span>
-          // Session not in this cache, don't update
-<span class="cstat-no" title="statement not covered" >          return old</span>
-        }
+          // Check if this session exists in THIS cache entry
+          const sessionIndex = <span class="cstat-no" title="statement not covered" >old.findIndex(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === data.sessionId)</span></span>
+<span class="cstat-no" title="statement not covered" >          if (sessionIndex === -1) {</span>
+            // Session not in this cache, don't update
+<span class="cstat-no" title="statement not covered" >            return old</span>
+          }
 &nbsp;
-        // Session exists, update it
-        const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
-<span class="cstat-no" title="statement not covered" >        updated[sessionIndex] = {</span>
-          ...updated[sessionIndex],
-          status: data.status,
-          errorMessage: data.errorMessage || updated[sessionIndex].errorMessage,
-          updatedAt: new Date(),
-          // Set progress to 100 if completed
-          progress: data.status === 'done' ? 100 : updated[sessionIndex].progress,
-        }
+          // Session exists, update it
+          const updated = <span class="cstat-no" title="statement not covered" >[...old]</span>
+<span class="cstat-no" title="statement not covered" >          updated[sessionIndex] = {</span>
+            ...updated[sessionIndex],
+            status: data.status,
+            errorMessage: data.errorMessage || updated[sessionIndex].errorMessage,
+            updatedAt: new Date(),
+            // Set progress to 100 if completed
+            progress: data.status === 'done' ? 100 : updated[sessionIndex].progress,
+          }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          logger.debug('[Realtime] Sessions cache updated')</span>
 <span class="cstat-no" title="statement not covered" >          return updated</span>
@@ -1107,15 +1127,22 @@ export function <span class="fstat-no" title="function not covered" >useRealtime
 <span class="cstat-no" title="statement not covered" >            handleStatusChange(event.data as SessionStatusData)</span>
 <span class="cstat-no" title="statement not covered" >            break</span>
 &nbsp;
+          case RealtimeEventType.NOTIFICATION_NEW:
+          case RealtimeEventType.NOTIFICATION_READ:
+            // Invalidate notifications query to trigger refetch
+<span class="cstat-no" title="statement not covered" >            queryClient.invalidateQueries({ queryKey: ['notifications'] })</span>
+<span class="cstat-no" title="statement not covered" >            logger.debug('[Realtime] Notification event, invalidating cache')</span>
+<span class="cstat-no" title="statement not covered" >            break</span>
+&nbsp;
           default:
 <span class="cstat-no" title="statement not covered" >            console.warn('[Realtime] Unknown event type:', event.type)</span>
         }
       } catch (error) {
         // Report error to global handler
-<span class="cstat-no" title="statement not covered" >        errorHandler.reportError(</span>
-          error instanceof Error ? error : new Error(String(error)),
-          { source: 'SSE Event Handler', extra: { eventType: event.type } }
-        )
+<span class="cstat-no" title="statement not covered" >        errorHandler.reportError(error instanceof Error ? error : new Error(String(error)), {</span>
+          source: 'SSE Event Handler',
+          extra: { eventType: event.type },
+        })
       }
     },
     [isDuplicateEvent, handleProgressUpdate, handleSessionUpdate, handleStatusChange]
@@ -1207,7 +1234,7 @@ export function <span class="fstat-no" title="function not covered" >useRealtime
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-27T05:04:12.937Z
+                at 2025-11-27T12:38:52.371Z
             </div>
         <script src="../prettify.js"></script>
         <script>

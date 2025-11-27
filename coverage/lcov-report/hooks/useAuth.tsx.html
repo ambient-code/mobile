@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.38% </span>
+                <span class="strong">51.06% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/42</span>
+                <span class='fraction'>24/47</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.38% </span>
+                <span class="strong">51.06% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/42</span>
+                <span class='fraction'>24/47</span>
             </div>
         
             
@@ -177,7 +177,28 @@
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
 <a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,12 +238,19 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -245,10 +273,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,6 +294,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -291,14 +323,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { User } from '@/types/user'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import type { User } from '@/types/user'
 import { TokenManager } from '@/services/auth/token-manager'
 import { OAuthService } from '@/services/auth/oauth'
 import { AuthAPI } from '@/services/api/auth'
 import { OAUTH_CONFIG } from '@/utils/constants'
-import { AuthSessionResult } from 'expo-auth-session'
+import type { AuthSessionResult } from 'expo-auth-session'
 import { errorHandler } from '@/utils/errorHandler'
+import {
+  setUser as setSentryUser,
+  clearUser as clearSentryUser,
+} from '@/services/monitoring/sentry'
 &nbsp;
 interface AuthContextType {
   user: User | null
@@ -326,19 +363,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Fetch real user profile from API
         const userProfile = await AuthAPI.getUserProfile()
         setUser(userProfile)
+&nbsp;
+        // Set user context in Sentry
+        setSentryUser({
+          id: userProfile.id,
+          email: userProfile.email,
+          username: userProfile.username,
+        })
       }
     } catch (error) {
       console.error('Auth check error:', error)
 &nbsp;
       // Report to global error handler
-      errorHandler.reportError(
-        error instanceof Error ? error : <span class="branch-1 cbranch-no" title="branch not covered" >new Error(String(error)),</span>
-        { source: 'Auth Check' }
-      )
+      errorHandler.reportError(error instanceof Error ? error : <span class="branch-1 cbranch-no" title="branch not covered" >new Error(String(error)),</span> {
+        source: 'Auth Check',
+      })
 &nbsp;
       // If profile fetch fails, log out to prevent broken state
       await TokenManager.clearTokens()
       setUser(null)
+      clearSentryUser()
     } finally {
       setIsLoading(false)
     }
@@ -357,13 +401,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <span class="cstat-no" title="statement not covered" >          throw new Error('Code verifier not found')</span>
         }
 &nbsp;
-        // Exchange code for tokens
-<span class="cstat-no" title="statement not covered" >        await AuthAPI.exchangeToken(result.params.code, codeVerifier, OAUTH_CONFIG.redirectUri)</span>
+        // Exchange code for tokens (use the same redirect URI that was used for login)
+        const redirectUri = <span class="cstat-no" title="statement not covered" >OAuthService.getRedirectUri()</span>
+<span class="cstat-no" title="statement not covered" >        await AuthAPI.exchangeToken(result.params.code, codeVerifier, redirectUri)</span>
 &nbsp;
         // Fetch user profile
 <span class="cstat-no" title="statement not covered" >        await checkAuth()</span>
       } else <span class="cstat-no" title="statement not covered" >if (result.type === 'error') {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(result.error?.message || 'Login failed')</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        throw new Error('Login was cancelled or failed')</span>
       }
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Login error:', error)</span>
@@ -377,6 +424,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AuthAPI.logout()</span>
 <span class="cstat-no" title="statement not covered" >      setUser(null)</span>
+<span class="cstat-no" title="statement not covered" >      clearSentryUser()</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Logout error:', error)</span>
 <span class="cstat-no" title="statement not covered" >      throw error</span>
@@ -412,7 +460,7 @@ export function useAuth() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-27T05:04:12.937Z
+                at 2025-11-27T12:38:52.371Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -4,13 +4,14 @@ import type { User } from '@/types/user'
 import { TokenManager } from '@/services/auth/token-manager'
 import { OAuthService } from '@/services/auth/oauth'
 import { AuthAPI } from '@/services/api/auth'
-import { OAUTH_CONFIG } from '@/utils/constants'
+import { USE_MOCK_AUTH } from '@/utils/constants'
 import type { AuthSessionResult } from 'expo-auth-session'
 import { errorHandler } from '@/utils/errorHandler'
 import {
   setUser as setSentryUser,
   clearUser as clearSentryUser,
 } from '@/services/monitoring/sentry'
+import { MockAuthService } from '@/services/auth/mock-auth'
 
 interface AuthContextType {
   user: User | null
@@ -33,6 +34,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
+      // Use mock auth if enabled
+      if (USE_MOCK_AUTH) {
+        const mockUser = await MockAuthService.getUserProfile()
+        setUser(mockUser)
+        setSentryUser({
+          id: mockUser.id,
+          email: mockUser.email,
+          username: mockUser.name,
+        })
+        return
+      }
+
+      // Real auth flow
       const isAuth = await TokenManager.isAuthenticated()
       if (isAuth) {
         // Fetch real user profile from API
@@ -67,7 +81,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true)
 
-      // Initiate OAuth flow
+      // Use mock auth if enabled
+      if (USE_MOCK_AUTH) {
+        const mockUser = await MockAuthService.login()
+        setUser(mockUser)
+        setSentryUser({
+          id: mockUser.id,
+          email: mockUser.email,
+          username: mockUser.name,
+        })
+        return
+      }
+
+      // Real OAuth flow
       const result: AuthSessionResult = await OAuthService.initiateLogin()
 
       if (result.type === 'success' && result.params?.code) {
@@ -97,6 +123,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
+      // Use mock auth if enabled
+      if (USE_MOCK_AUTH) {
+        await MockAuthService.logout()
+        setUser(null)
+        clearSentryUser()
+        return
+      }
+
+      // Real logout
       await AuthAPI.logout()
       setUser(null)
       clearSentryUser()

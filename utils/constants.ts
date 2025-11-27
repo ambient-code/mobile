@@ -26,6 +26,9 @@ export const FEATURE_FLAGS = {
   DEBUG_API_CALLS: __DEV__,
 }
 
+// Authentication Configuration
+export const USE_MOCK_AUTH = process.env.EXPO_PUBLIC_USE_MOCK_AUTH === 'true'
+
 // Polling Intervals (milliseconds)
 export const POLLING_INTERVALS = {
   SESSIONS_ACTIVE: 5000, // 5 seconds when app is active
