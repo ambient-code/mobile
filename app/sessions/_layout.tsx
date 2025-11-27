@@ -6,20 +6,11 @@ export default function SessionsLayout() {
       screenOptions={{
         headerShown: true,
         headerBackTitle: '',
+        headerTitle: '',
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Sessions',
-        }}
-      />
-      <Stack.Screen
-        name="[id]"
-        options={{
-          title: 'Session Details',
-        }}
-      />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="[id]" />
     </Stack>
   )
 }

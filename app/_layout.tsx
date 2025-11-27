@@ -95,7 +95,6 @@ function RootLayoutNav() {
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="sessions" options={{ headerShown: false }} />
         <Stack.Screen
           name="notifications/index"
           options={{
