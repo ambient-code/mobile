@@ -50,6 +50,7 @@ function RootLayoutNav() {
   const { colors, theme } = useTheme()
   const { currentToast, dismissToast } = useToast()
   const [lastError, setLastError] = useState<Error | null>(null)
+  const { isAuthenticated, isLoading } = useAuth()
 
   // Subscribe to global errors for UI updates
   useEffect(() => {
@@ -90,6 +91,18 @@ function RootLayoutNav() {
           },
         }}
       >
+        {/* Login screen - shown when not authenticated */}
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: false,
+            title: '',
+            // Prevent going back to app screens when on login
+            gestureEnabled: false,
+          }}
+        />
+
+        {/* App screens - shown when authenticated */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
         <Stack.Screen
           name="notifications/index"
