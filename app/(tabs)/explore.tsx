@@ -1,112 +1,317 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Switch } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
+import { useAuth } from '@/hooks/useAuth'
+import { IconSymbol } from '@/components/ui/icon-symbol'
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+export default function SettingsScreen() {
+  const { colors, themeMode, setThemeMode } = useTheme()
+  const { user, logout } = useAuth()
 
-export default function TabTwoScreen() {
+  const handleThemeChange = (mode: 'light' | 'dark' | 'system') => {
+    setThemeMode(mode)
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
-  );
+    <ScrollView style={[styles.container, { backgroundColor: colors.bg }]}>
+      <View style={styles.header}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Settings</Text>
+        <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
+          Manage your preferences
+        </Text>
+      </View>
+
+      {/* Account Section */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>ACCOUNT</Text>
+
+        <View style={[styles.card, { backgroundColor: colors.card }]}>
+          <View style={styles.accountInfo}>
+            <View style={[styles.avatar, { backgroundColor: colors.accent }]}>
+              <Text style={styles.avatarText}>
+                {user?.name
+                  ?.split(' ')
+                  .map((n) => n[0])
+                  .join('') || 'U'}
+              </Text>
+            </View>
+            <View style={styles.accountDetails}>
+              <Text style={[styles.accountName, { color: colors.text }]}>{user?.name}</Text>
+              <Text style={[styles.accountEmail, { color: colors.textSecondary }]}>
+                {user?.email}
+              </Text>
+              <Text style={[styles.accountRole, { color: colors.accent }]}>{user?.role}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Appearance Section */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>APPEARANCE</Text>
+
+        <View style={[styles.card, { backgroundColor: colors.card }]}>
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <IconSymbol name="moon.fill" size={20} color={colors.text} />
+              <Text style={[styles.settingLabel, { color: colors.text }]}>Dark Mode</Text>
+            </View>
+            <Text style={[styles.settingValue, { color: colors.textSecondary }]}>
+              {themeMode === 'system' ? 'Auto' : themeMode === 'dark' ? 'On' : 'Off'}
+            </Text>
+          </View>
+
+          <View style={[styles.themeOptions, { borderTopColor: colors.border }]}>
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'light' && { backgroundColor: colors.accent + '20' },
+              ]}
+              onPress={() => handleThemeChange('light')}
+              activeOpacity={0.7}
+            >
+              <IconSymbol name="sun.max.fill" size={24} color={colors.text} />
+              <Text style={[styles.themeOptionText, { color: colors.text }]}>Light</Text>
+              {themeMode === 'light' && (
+                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'dark' && { backgroundColor: colors.accent + '20' },
+              ]}
+              onPress={() => handleThemeChange('dark')}
+              activeOpacity={0.7}
+            >
+              <IconSymbol name="moon.fill" size={24} color={colors.text} />
+              <Text style={[styles.themeOptionText, { color: colors.text }]}>Dark</Text>
+              {themeMode === 'dark' && (
+                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'system' && { backgroundColor: colors.accent + '20' },
+              ]}
+              onPress={() => handleThemeChange('system')}
+              activeOpacity={0.7}
+            >
+              <IconSymbol name="sparkles" size={24} color={colors.text} />
+              <Text style={[styles.themeOptionText, { color: colors.text }]}>Auto</Text>
+              {themeMode === 'system' && (
+                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      {/* Notifications Section */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>NOTIFICATIONS</Text>
+
+        <View style={[styles.card, { backgroundColor: colors.card }]}>
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <Text style={[styles.settingLabel, { color: colors.text }]}>Blocking Alerts</Text>
+            </View>
+            <Switch
+              value={user?.preferences.notifications.blockingAlerts}
+              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              thumbColor={
+                user?.preferences.notifications.blockingAlerts ? colors.accent : colors.card
+              }
+              ios_backgroundColor={colors.border}
+            />
+          </View>
+
+          <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <Text style={[styles.settingLabel, { color: colors.text }]}>Review Requests</Text>
+            </View>
+            <Switch
+              value={user?.preferences.notifications.reviewRequests}
+              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              thumbColor={
+                user?.preferences.notifications.reviewRequests ? colors.accent : colors.card
+              }
+              ios_backgroundColor={colors.border}
+            />
+          </View>
+
+          <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <Text style={[styles.settingLabel, { color: colors.text }]}>Session Updates</Text>
+            </View>
+            <Switch
+              value={user?.preferences.notifications.sessionUpdates}
+              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              thumbColor={
+                user?.preferences.notifications.sessionUpdates ? colors.accent : colors.card
+              }
+              ios_backgroundColor={colors.border}
+            />
+          </View>
+
+          <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <Text style={[styles.settingLabel, { color: colors.text }]}>Features & News</Text>
+            </View>
+            <Switch
+              value={user?.preferences.notifications.featuresAndNews}
+              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              thumbColor={
+                user?.preferences.notifications.featuresAndNews ? colors.accent : colors.card
+              }
+              ios_backgroundColor={colors.border}
+            />
+          </View>
+        </View>
+      </View>
+
+      {/* Danger Zone */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>ACCOUNT</Text>
+
+        <TouchableOpacity
+          style={[styles.card, styles.dangerButton, { backgroundColor: colors.error + '10' }]}
+          onPress={logout}
+          activeOpacity={0.7}
+        >
+          <Text style={[styles.dangerButtonText, { color: colors.error }]}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  titleContainer: {
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 48,
+    paddingBottom: 24,
+  },
+  headerTitle: {
+    fontSize: 32,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+  },
+  section: {
+    marginBottom: 24,
+    paddingHorizontal: 16,
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 8,
+    letterSpacing: 0.5,
+  },
+  card: {
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  accountInfo: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 16,
   },
-});
+  avatar: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  accountDetails: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: 4,
+  },
+  accountName: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  accountEmail: {
+    fontSize: 14,
+  },
+  accountRole: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  settingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'transparent',
+  },
+  settingInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flex: 1,
+  },
+  settingLabel: {
+    fontSize: 16,
+  },
+  settingValue: {
+    fontSize: 14,
+  },
+  themeOptions: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+  },
+  themeOption: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    gap: 8,
+    position: 'relative',
+  },
+  themeOptionText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  activeIndicator: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  dangerButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dangerButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+})

@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+.expo/
+.expo-shared/
+
+# Native
+android/
+ios/
+
+# Logs
+*.log
+
+# Generated files
+*.generated.ts
+*.generated.tsx
+
+# Config files that shouldn't be formatted
+metro.config.js
+babel.config.js
+
+# Cache
+.cache/

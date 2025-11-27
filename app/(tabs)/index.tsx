@@ -1,98 +1,439 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, memo } from 'react'
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { useTheme } from '@/hooks/useTheme'
+import { useAuth } from '@/hooks/useAuth'
+import { useSessions } from '@/hooks/useSessions'
+import { useOffline } from '@/hooks/useOffline'
+import { useRealtimeSession } from '@/hooks/useRealtimeSession'
+import { Header } from '@/components/layout/Header'
+import { SessionCard } from '@/components/session/SessionCard'
+import { SessionStatus, type Session } from '@/types/session'
+import { IconSymbol } from '@/components/ui/icon-symbol'
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+// Quick Action button types and data
+interface QuickAction {
+  id: string
+  icon: string
+  text: string
+  route?: string
+  onPress?: () => void
+  disabled?: boolean
+  badge?: string
+  count?: number
+}
 
-export default function HomeScreen() {
+interface QuickActionButtonProps {
+  action: QuickAction
+  colors: any
+}
+
+// Memoized Quick Action Button component
+const QuickActionButton = memo(({ action, colors }: QuickActionButtonProps) => {
+  const dynamicText = action.count !== undefined ? `${action.count} ${action.text}` : action.text
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <TouchableOpacity
+      style={[
+        styles.quickActionButton,
+        { backgroundColor: action.disabled ? colors.card : colors.accent },
+      ]}
+      onPress={action.onPress}
+      activeOpacity={0.8}
+      disabled={action.disabled}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: action.disabled }}
+    >
+      <IconSymbol
+        name={action.icon as any}
+        size={28}
+        color={action.disabled ? colors.textSecondary : '#fff'}
+      />
+      <Text
+        style={[styles.quickActionText, { color: action.disabled ? colors.textSecondary : '#fff' }]}
+      >
+        {dynamicText}
+      </Text>
+      {action.badge && (
+        <View style={styles.soonBadge}>
+          <Text style={styles.soonText}>{action.badge}</Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  )
+})
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+export default function DashboardScreen() {
+  const { colors } = useTheme()
+  const { isLoading: authLoading } = useAuth()
+  const { data: sessions, isLoading, refetch, isRefetching } = useSessions()
+  const { isOffline } = useOffline()
+  const { retry, isConnected, isError } = useRealtimeSession()
+  const router = useRouter()
+
+  // Filter sessions by status - optimized with single-pass filter and memoization
+  const { runningSessions, awaitingReview } = useMemo(() => {
+    if (!sessions) return { runningSessions: [], awaitingReview: [] }
+
+    const running: Session[] = []
+    const review: Session[] = []
+
+    for (const session of sessions) {
+      if (session.status === SessionStatus.RUNNING) running.push(session)
+      else if (session.status === SessionStatus.AWAITING_REVIEW) review.push(session)
+    }
+
+    return { runningSessions: running, awaitingReview: review }
+  }, [sessions])
+
+  const handleViewAllSessions = useCallback(() => {
+    router.push('/sessions/')
+  }, [router])
+
+  const renderSessionCard = useCallback(
+    ({ item }: { item: Session }) => (
+      <View style={styles.reviewCardWrapper}>
+        <SessionCard session={item} />
+      </View>
+    ),
+    []
+  )
+
+  // Render callback for running sessions (no wrapper needed)
+  const renderRunningSession = useCallback(
+    ({ item }: { item: Session }) => <SessionCard session={item} />,
+    []
+  )
+
+  const sessionKeyExtractor = useCallback((item: Session) => item.id, [])
+
+  // Quick Actions data - memoized to prevent recreation
+  const quickActions = useMemo<QuickAction[]>(
+    () => [
+      { id: 'chat', icon: 'message.fill', text: 'Chat' },
+      {
+        id: 'running',
+        icon: 'bolt.fill',
+        text: 'Running',
+        count: runningSessions.length,
+        onPress: () => router.push('/sessions/?filter=running'),
+      },
+      { id: 'lucky', icon: 'dice.fill', text: "I'm Feeling Lucky" },
+      { id: 'inspire', icon: 'lightbulb.fill', text: 'Inspire Me' },
+      { id: 'invent', icon: 'sparkles', text: 'Go Invent' },
+      { id: 'add', icon: 'plus.circle.fill', text: 'Add Action', disabled: true, badge: 'Soon' },
+    ],
+    [runningSessions.length, router]
+  )
+
+  // Render callback for Quick Action buttons
+  const renderQuickAction = useCallback(
+    ({ item }: { item: QuickAction }) => <QuickActionButton action={item} colors={colors} />,
+    [colors]
+  )
+
+  const quickActionKeyExtractor = useCallback((item: QuickAction) => item.id, [])
+
+  if (authLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.bg }]}>
+        <Text style={[styles.loadingText, { color: colors.text }]}>Loading...</Text>
+      </View>
+    )
+  }
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      <Header isRefetching={isRefetching} />
+
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+      >
+        {/* Offline Indicator */}
+        {isOffline && (
+          <View style={[styles.offlineBanner, { backgroundColor: colors.warning + '20' }]}>
+            <Text style={[styles.offlineText, { color: colors.warning }]}>
+              Offline - Showing cached data
+            </Text>
+          </View>
+        )}
+
+        {/* Connection Status - Only show when disconnected or error */}
+        {!isConnected && !isOffline && (
+          <View
+            style={[
+              styles.connectionBanner,
+              { backgroundColor: isError ? colors.error + '20' : colors.warning + '20' },
+            ]}
+          >
+            <View style={styles.connectionContent}>
+              <View
+                style={[
+                  styles.connectionDot,
+                  {
+                    backgroundColor: isError ? colors.error : colors.warning,
+                  },
+                ]}
+              />
+              <Text
+                style={[styles.connectionText, { color: isError ? colors.error : colors.warning }]}
+              >
+                {isError ? 'Real-time updates unavailable' : 'Connecting to updates...'}
+              </Text>
+            </View>
+            {isError && (
+              <TouchableOpacity
+                onPress={retry}
+                style={styles.retryButton}
+                accessibilityRole="button"
+                accessibilityLabel="Retry connection"
+                accessibilityHint="Double tap to retry real-time connection"
+              >
+                <Text style={[styles.retryText, { color: colors.error }]}>Retry</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
+        {/* Quick Actions - Optimized with FlatList and memoization */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Quick Actions</Text>
+          <FlatList
+            horizontal
+            data={quickActions}
+            renderItem={renderQuickAction}
+            keyExtractor={quickActionKeyExtractor}
+            showsHorizontalScrollIndicator={false}
+            initialNumToRender={4}
+            maxToRenderPerBatch={2}
+            windowSize={3}
+            contentContainerStyle={styles.quickActionsContent}
+          />
+        </View>
+
+        {/* My Reviews */}
+        {awaitingReview.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>My Reviews</Text>
+              <View
+                style={[
+                  styles.badge,
+                  { backgroundColor: colors.warning + '20', borderColor: colors.warning },
+                ]}
+              >
+                <Text style={[styles.badgeText, { color: colors.warning }]}>
+                  {awaitingReview.length}
+                </Text>
+              </View>
+            </View>
+
+            <FlatList
+              horizontal
+              data={awaitingReview}
+              renderItem={renderSessionCard}
+              keyExtractor={sessionKeyExtractor}
+              showsHorizontalScrollIndicator={false}
+              initialNumToRender={3}
+              maxToRenderPerBatch={3}
+              windowSize={3}
+            />
+          </View>
+        )}
+
+        {/* Active Sessions */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Active Sessions</Text>
+            {runningSessions.length > 0 && (
+              <TouchableOpacity
+                onPress={handleViewAllSessions}
+                accessibilityRole="button"
+                accessibilityLabel="View all sessions"
+                accessibilityHint="Double tap to view all active sessions"
+              >
+                <Text style={[styles.viewAllText, { color: colors.accent }]}>View All</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {isLoading ? (
+            <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
+              Loading sessions...
+            </Text>
+          ) : runningSessions.length === 0 ? (
+            <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
+              <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
+                No active sessions
+              </Text>
+              <Text style={[styles.emptyStateSubtext, { color: colors.textSecondary }]}>
+                Tap the + button to start a new session
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={runningSessions.slice(0, 3)}
+              renderItem={renderRunningSession}
+              keyExtractor={sessionKeyExtractor}
+              scrollEnabled={false}
+              initialNumToRender={3}
+              maxToRenderPerBatch={3}
+              windowSize={1}
+            />
+          )}
+        </View>
+
+        <View style={{ height: 40 }} />
+      </ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginTop: 100,
+    fontSize: 16,
+  },
+  offlineBanner: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  offlineText: {
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  connectionBanner: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  connectionContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-  stepContainer: {
+  connectionDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  connectionText: {
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  retryButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  retryText: {
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  viewAllText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  badge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  badgeText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  quickActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  quickActionsScroll: {
+    marginHorizontal: -16,
+    paddingHorizontal: 16,
+  },
+  quickActionsContent: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  quickActionButton: {
+    width: 110,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginRight: 12,
     gap: 8,
-    marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  quickActionText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  soonBadge: {
     position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: '#FFA500',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
   },
-});
+  soonText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  reviewCardWrapper: {
+    width: 300,
+    marginRight: 12,
+  },
+  emptyState: {
+    padding: 32,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  emptyStateText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  emptyStateSubtext: {
+    fontSize: 14,
+  },
+})

@@ -1,0 +1,247 @@
+/**
+ * Mock SSE Service for Development/Testing
+ *
+ * This file contains ONLY the MockSSEService class extracted from utils/mockData.ts.
+ * Use this during development to test SSE integration without a real backend.
+ *
+ * PRODUCTION USAGE: Never enable this in production builds. Always check __DEV__.
+ */
+
+import {
+  RealtimeEventUnion,
+  RealtimeEventType,
+  SessionProgressData,
+  SessionStatusData,
+  SessionUpdatedData,
+} from '@/types/realtime'
+import { SessionStatus } from '@/types/session'
+
+/**
+ * Mock SSE Service for development/testing
+ *
+ * Simulates Server-Sent Events by randomly generating session update events.
+ * Useful for testing the UI without a real backend SSE endpoint.
+ *
+ * Features:
+ * - Generates realistic random events every 3-5 seconds
+ * - Matches production event structure exactly
+ * - Supports all event types (progress, status, updated)
+ * - Subscription pattern compatible with real RealtimeService
+ *
+ * Usage:
+ * ```typescript
+ * const unsubscribe = mockSSEService.subscribe((event) => {
+ *   console.log('Event:', event)
+ * })
+ * mockSSEService.start()
+ *
+ * // Later...
+ * unsubscribe()
+ * mockSSEService.stop()
+ * ```
+ */
+export class MockSSEService {
+  private callbacks: Set<(event: RealtimeEventUnion) => void> = new Set()
+  private intervalId: ReturnType<typeof setInterval> | null = null
+  private isRunning = false
+
+  /**
+   * Start generating mock SSE events
+   *
+   * Generates random events every 3-5 seconds to simulate
+   * realistic backend behavior.
+   */
+  start(): void {
+    if (this.isRunning) {
+      console.warn('[MockSSE] Already running')
+      return
+    }
+
+    this.isRunning = true
+    console.log('[MockSSE] Starting mock event generation')
+
+    // Generate events every 3-5 seconds
+    this.intervalId = setInterval(
+      () => {
+        this.generateRandomEvent()
+      },
+      3000 + Math.random() * 2000 // Random between 3-5 seconds
+    )
+  }
+
+  /**
+   * Stop generating mock SSE events
+   *
+   * Cleans up interval timer and stops event generation.
+   */
+  stop(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
+      this.intervalId = null
+    }
+    this.isRunning = false
+    console.log('[MockSSE] Stopped mock event generation')
+  }
+
+  /**
+   * Subscribe to mock SSE events
+   *
+   * @param callback - Function to call when events are generated
+   * @returns Unsubscribe function
+   *
+   * Example:
+   * ```typescript
+   * const unsubscribe = mockSSEService.subscribe((event) => {
+   *   handleEvent(event)
+   * })
+   *
+   * // Later...
+   * unsubscribe()
+   * ```
+   */
+  subscribe(callback: (event: RealtimeEventUnion) => void): () => void {
+    this.callbacks.add(callback)
+    return () => this.callbacks.delete(callback)
+  }
+
+  /**
+   * Generate a random SSE event
+   *
+   * Randomly selects an event type (weighted towards progress updates),
+   * creates a realistic event payload, and notifies all subscribers.
+   */
+  private generateRandomEvent(): void {
+    const eventType = this.randomEventType()
+    const event = this.createEvent(eventType)
+
+    if (event) {
+      console.log('[MockSSE] Generated event:', event.type, event.data)
+
+      // Notify all subscribers (same pattern as real RealtimeService)
+      this.callbacks.forEach((callback) => {
+        try {
+          callback(event)
+        } catch (error) {
+          console.error('[MockSSE] Error in callback:', error)
+        }
+      })
+    }
+  }
+
+  /**
+   * Randomly select an event type (weighted distribution)
+   *
+   * Distribution:
+   * - 60% progress updates (most common)
+   * - 25% session updates (moderate)
+   * - 15% status changes (least common)
+   *
+   * This matches typical production event frequency.
+   */
+  private randomEventType(): RealtimeEventType {
+    const rand = Math.random()
+    if (rand < 0.6) {
+      // 60% progress updates
+      return RealtimeEventType.SESSION_PROGRESS
+    } else if (rand < 0.85) {
+      // 25% session updates
+      return RealtimeEventType.SESSION_UPDATED
+    } else {
+      // 15% status changes
+      return RealtimeEventType.SESSION_STATUS
+    }
+  }
+
+  /**
+   * Create a mock event of the specified type
+   *
+   * Generates realistic event payloads that match production structure.
+   * Only generates events for sessions with status RUNNING (sessions that
+   * would realistically be sending updates).
+   *
+   * @param type - The event type to generate
+   * @returns Mock event or null if no eligible sessions
+   */
+  private createEvent(type: RealtimeEventType): RealtimeEventUnion | null {
+    // In your real app, you'd get this from your mock data or state
+    // For this example, we'll generate a random session ID
+    const mockSessionIds = ['1', '3'] // IDs of running sessions
+
+    if (mockSessionIds.length === 0) {
+      return null
+    }
+
+    const sessionId = mockSessionIds[Math.floor(Math.random() * mockSessionIds.length)]
+
+    switch (type) {
+      case RealtimeEventType.SESSION_PROGRESS:
+        return {
+          type,
+          data: {
+            sessionId,
+            progress: Math.floor(Math.random() * 100), // 0-100%
+            currentTask: this.randomTask(),
+          } as SessionProgressData,
+          timestamp: Date.now(),
+        }
+
+      case RealtimeEventType.SESSION_UPDATED:
+        return {
+          type,
+          data: {
+            sessionId,
+            changes: {
+              updatedAt: new Date(),
+              progress: Math.floor(Math.random() * 100),
+              currentTask: this.randomTask(),
+            },
+          } as SessionUpdatedData,
+          timestamp: Date.now(),
+        }
+
+      case RealtimeEventType.SESSION_STATUS:
+        // Randomly transition to completed or awaiting review
+        const newStatus = Math.random() < 0.5 ? SessionStatus.DONE : SessionStatus.AWAITING_REVIEW
+
+        return {
+          type,
+          data: {
+            sessionId,
+            status: newStatus,
+            completedAt: new Date().toISOString(),
+          } as SessionStatusData,
+          timestamp: Date.now(),
+        }
+
+      default:
+        return null
+    }
+  }
+
+  /**
+   * Generate a random task description
+   *
+   * Returns realistic task names that might appear during
+   * an AI coding session.
+   */
+  private randomTask(): string {
+    const tasks = [
+      'Analyzing code structure',
+      'Reviewing test coverage',
+      'Generating documentation',
+      'Optimizing performance',
+      'Refactoring components',
+      'Updating dependencies',
+      'Running security scan',
+      'Building deployment artifacts',
+      'Validating code quality',
+      'Creating pull request',
+    ]
+    return tasks[Math.floor(Math.random() * tasks.length)]
+  }
+}
+
+// Singleton instance for app-wide use
+// Import this in your app:
+// import { mockSSEService } from '@/utils/mockData'
+export const mockSSEService = new MockSSEService()
