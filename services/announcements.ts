@@ -92,18 +92,15 @@ const mockAnnouncements: Announcement[] = [
  * Get all announcements sorted by timestamp (newest first)
  */
 export const getAnnouncements = (): Announcement[] => {
-  return [...mockAnnouncements].sort(
-    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
-  )
+  return [...mockAnnouncements].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 }
 
 /**
  * Get count of new (unread) announcements
  */
 export const getUnreadCount = (readAnnouncementIds: string[]): number => {
-  return mockAnnouncements.filter(
-    (ann) => ann.isNew && !readAnnouncementIds.includes(ann.id)
-  ).length
+  return mockAnnouncements.filter((ann) => ann.isNew && !readAnnouncementIds.includes(ann.id))
+    .length
 }
 
 /**

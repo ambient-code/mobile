@@ -32,7 +32,7 @@ export function RepositoryPicker({ selectedRepoId, onSelectRepo, onEnterUrl }: P
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#6366f1" testID="activity-indicator" />
       </View>
     )
   }

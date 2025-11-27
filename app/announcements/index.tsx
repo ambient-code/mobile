@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { useTheme } from '@/hooks/useTheme'
@@ -102,13 +95,7 @@ export default function AnnouncementsScreen() {
         >
           <View style={styles.cardHeader}>
             <View style={styles.titleRow}>
-              <Text
-                style={[
-                  styles.title,
-                  { color: colors.text },
-                  unread && styles.titleUnread,
-                ]}
-              >
+              <Text style={[styles.title, { color: colors.text }, unread && styles.titleUnread]}>
                 {item.title}
               </Text>
               {unread && (
