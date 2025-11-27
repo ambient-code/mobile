@@ -1,0 +1,24 @@
+{
+  "entryPoints": ["./"],
+  "entryPointStrategy": "expand",
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/node_modules/**",
+    "**/__tests__/**",
+    "**/jest.setup.ts",
+    "**/jest.config.js",
+    "**/.expo/**",
+    "**/docs/**"
+  ],
+  "out": "docs/api/generated",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "includeVersion": true,
+  "gitRevision": "main",
+  "sort": ["source-order"],
+  "categorizeByGroup": true
+}

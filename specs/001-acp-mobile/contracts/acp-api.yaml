@@ -1,0 +1,855 @@
+openapi: 3.0.3
+info:
+  title: ACP Mobile API
+  description: REST API for ACP mobile companion app
+  version: 1.0.0
+  contact:
+    name: ACP Team
+    url: https://github.com/ambient-code/platform
+
+servers:
+  - url: https://ambient-code.apps.rosa.vteam-stage.7fpc.p3.openshiftapps.com/api/v1
+    description: Staging environment
+  - url: http://localhost:8080/api/v1
+    description: Local development
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      summary: Initiate OAuth login flow
+      description: Returns OAuth authorization URL for Red Hat SSO
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                redirectUri:
+                  type: string
+                  format: uri
+                  example: "exp://localhost:19000/--/auth"
+              required:
+                - redirectUri
+      responses:
+        '200':
+          description: OAuth authorization URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authUrl:
+                    type: string
+                    format: uri
+                  state:
+                    type: string
+                    description: CSRF protection state parameter
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /auth/token:
+    post:
+      summary: Exchange authorization code for tokens
+      description: OAuth token exchange with PKCE
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Authorization code from OAuth callback
+                codeVerifier:
+                  type: string
+                  description: PKCE code verifier
+                redirectUri:
+                  type: string
+                  format: uri
+              required:
+                - code
+                - codeVerifier
+                - redirectUri
+      responses:
+        '200':
+          description: Access and refresh tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      description: Get new access token using refresh token
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+              required:
+                - refreshToken
+      responses:
+        '200':
+          description: New access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /sessions:
+    get:
+      summary: List user's sessions
+      description: Get all AI coding sessions for authenticated user
+      tags:
+        - Sessions
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [running, paused, done, awaiting_review, error]
+          description: Filter by session status
+      responses:
+        '200':
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Session'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      summary: Create new session
+      description: Start a new AI coding session
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /sessions/{id}:
+    get:
+      summary: Get session details
+      description: Get detailed information about a specific session
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    patch:
+      summary: Update session
+      description: Update session status (approve/reject review, pause/resume)
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [approve, reject, pause, resume]
+                feedback:
+                  type: string
+                  description: Feedback when rejecting review
+              required:
+                - action
+      responses:
+        '200':
+          description: Session updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /sessions/{id}/logs:
+    get:
+      summary: Get session execution logs
+      description: Get detailed execution logs and task history
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Session logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LogEntry'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /notifications:
+    get:
+      summary: Get GitHub notifications
+      description: Get user's GitHub notifications with suggested workflows
+      tags:
+        - Notifications
+      parameters:
+        - name: unread
+          in: query
+          schema:
+            type: boolean
+          description: Filter to unread notifications only
+      responses:
+        '200':
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GitHubNotification'
+                  unreadCount:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /notifications/{id}:
+    patch:
+      summary: Update notification
+      description: Mark notification as read
+      tags:
+        - Notifications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isUnread:
+                  type: boolean
+              required:
+                - isUnread
+      responses:
+        '200':
+          description: Notification updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitHubNotification'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /notifications/{id}/mute:
+    post:
+      summary: Mute notification thread
+      description: Mute a GitHub notification thread
+      tags:
+        - Notifications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Thread muted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /repos:
+    get:
+      summary: Get connected repositories
+      description: Get user's list of connected repositories
+      tags:
+        - Repositories
+      responses:
+        '200':
+          description: List of repositories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  repositories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Repository'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      summary: Add connected repository
+      description: Add a repository to user's connected list
+      tags:
+        - Repositories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: "https://github.com/ambient-code/platform"
+                branch:
+                  type: string
+                  example: "main"
+              required:
+                - url
+      responses:
+        '201':
+          description: Repository added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /repos/{id}:
+    delete:
+      summary: Remove connected repository
+      description: Remove repository from user's connected list
+      tags:
+        - Repositories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Repository removed
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /chat:
+    post:
+      summary: Send chat message
+      description: Send message to Claude in interactive chat
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                threadId:
+                  type: string
+                  description: Optional thread ID to continue conversation
+              required:
+                - message
+      responses:
+        '200':
+          description: Claude's response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /chat/{threadId}:
+    get:
+      summary: Get conversation history
+      description: Get all messages in a chat thread
+      tags:
+        - Chat
+      parameters:
+        - name: threadId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chat thread messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  threadId:
+                    type: string
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChatMessage'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /user/profile:
+    get:
+      summary: Get user profile
+      description: Get authenticated user's profile information
+      tags:
+        - User
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /user/preferences:
+    get:
+      summary: Get user preferences
+      description: Get user's app preferences
+      tags:
+        - User
+      responses:
+        '200':
+          description: User preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    patch:
+      summary: Update user preferences
+      description: Update user's app preferences
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferences'
+      responses:
+        '200':
+          description: Preferences updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /user/push-token:
+    post:
+      summary: Register push notification token
+      description: Register Expo push token for notifications
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Expo push token
+              required:
+                - token
+      responses:
+        '200':
+          description: Token registered
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SessionId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Session identifier
+
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+          description: Access token TTL in seconds
+      required:
+        - accessToken
+        - refreshToken
+        - expiresIn
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+        ssoProvider:
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - role
+        - ssoProvider
+
+    UserPreferences:
+      type: object
+      properties:
+        theme:
+          type: string
+          enum: [light, dark, system]
+        notifications:
+          $ref: '#/components/schemas/NotificationPreferences'
+        quietHours:
+          type: object
+          nullable: true
+          properties:
+            enabled:
+              type: boolean
+            start:
+              type: string
+              pattern: '^([01]\d|2[0-3]):[0-5]\d$'
+            end:
+              type: string
+              pattern: '^([01]\d|2[0-3]):[0-5]\d$'
+
+    NotificationPreferences:
+      type: object
+      properties:
+        blockingAlerts:
+          type: boolean
+        reviewRequests:
+          type: boolean
+        sessionUpdates:
+          type: boolean
+        featuresAndNews:
+          type: boolean
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [running, paused, done, awaiting_review, error]
+        progress:
+          type: number
+          minimum: 0
+          maximum: 100
+        model:
+          type: string
+          enum: [sonnet-4.5, opus-4.5]
+        workflowType:
+          type: string
+          enum: [review, bugfix, plan, research, chat, ideate]
+        repository:
+          $ref: '#/components/schemas/Repository'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        currentTask:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - status
+        - progress
+        - model
+        - workflowType
+        - repository
+        - createdAt
+        - updatedAt
+
+    SessionDetail:
+      allOf:
+        - $ref: '#/components/schemas/Session'
+        - type: object
+          properties:
+            tasksCompleted:
+              type: array
+              items:
+                type: string
+
+    CreateSessionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        workflowType:
+          type: string
+          enum: [review, bugfix, plan, research, chat, ideate]
+        model:
+          type: string
+          enum: [sonnet-4.5, opus-4.5]
+        repositoryUrl:
+          type: string
+          format: uri
+        branch:
+          type: string
+      required:
+        - workflowType
+        - model
+        - repositoryUrl
+
+    Repository:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        branch:
+          type: string
+        isConnected:
+          type: boolean
+      required:
+        - id
+        - name
+        - url
+        - branch
+
+    GitHubNotification:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [pull_request, pull_request_review, issue, issue_comment, commit_comment, mention, release, security_alert]
+        repository:
+          type: string
+        itemNumber:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        isUnread:
+          type: boolean
+        suggestedWorkflow:
+          type: string
+          enum: [review, bugfix, plan, research, chat, ideate]
+        url:
+          type: string
+          format: uri
+      required:
+        - id
+        - type
+        - repository
+        - itemNumber
+        - title
+        - author
+        - timestamp
+        - isUnread
+        - suggestedWorkflow
+        - url
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        threadId:
+          type: string
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - threadId
+        - role
+        - content
+        - timestamp
+
+    LogEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum: [info, warning, error]
+        message:
+          type: string
+      required:
+        - timestamp
+        - level
+        - message
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+      required:
+        - error
+        - message
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Unauthorized:
+      description: Authentication required or invalid token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
