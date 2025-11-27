@@ -8,6 +8,7 @@ import { Toast } from '@/components/ui/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { CreateFAB } from '@/components/layout/CreateFAB'
 import { errorHandler } from '@/utils/errorHandler'
+import { useLinking } from '@/hooks/useLinking'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
@@ -49,6 +50,18 @@ function RootLayoutNav() {
   const { colors, theme } = useTheme()
   const { currentToast, dismissToast } = useToast()
   const [lastError, setLastError] = useState<Error | null>(null)
+
+  // Enable deep linking
+  useLinking({
+    enabled: true,
+    onNavigationError: (url, error) => {
+      console.error('[RootLayout] Deep link navigation error:', url, error)
+      errorHandler.reportError(error, {
+        source: 'DeepLink',
+        url,
+      })
+    },
+  })
 
   // Subscribe to global errors for UI updates
   useEffect(() => {
@@ -143,15 +156,18 @@ export default function RootLayout() {
 
       // Expose global performance utilities for debugging
       if (typeof global !== 'undefined') {
+        const { deepLinkAnalytics } = require('@/utils/deepLinkAnalytics')
         ;(global as any).performance = {
           ...(global as any).performance,
           memory: memoryMonitor,
           fps: fpsMonitor,
+          deepLinks: deepLinkAnalytics,
           report: () => {
             memoryMonitor.printReport()
             fpsMonitor.printReport()
             const { getRenderTracker } = require('@/utils/renderTracker')
             getRenderTracker().printReport()
+            console.log(deepLinkAnalytics.generateReport())
           },
         }
       }
