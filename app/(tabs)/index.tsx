@@ -398,17 +398,20 @@ const styles = StyleSheet.create({
   },
   quickActionButton: {
     width: '100%',
-    paddingVertical: 16,
+    minHeight: 100,
+    paddingVertical: 12,
     paddingHorizontal: 8,
     borderRadius: 12,
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
   },
   quickActionText: {
     color: '#fff',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     textAlign: 'center',
+    lineHeight: 16,
   },
   soonBadge: {
     position: 'absolute',
