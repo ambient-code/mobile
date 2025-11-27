@@ -52,3 +52,6 @@ site/
 .venv-docs/
 __pycache__/
 *.pyc
+
+# Implementation scripts
+implement-phases.sh
