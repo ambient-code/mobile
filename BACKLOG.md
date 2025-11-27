@@ -408,7 +408,72 @@ npm install --save-dev @welldone-software/why-did-you-render
 
 ## MEDIUM Priority
 
-### 6. Bundle Size Monitoring
+### 6. App Telemetry
+
+**Confidence:** 90%
+**Effort:** 2-3 days
+
+**Issue:** No telemetry/analytics to understand user behavior, feature usage, or performance metrics in production.
+
+**Action Items:**
+
+1. **Choose telemetry provider:**
+   - Expo Analytics (built-in, simple)
+   - Segment (multi-destination)
+   - Mixpanel (product analytics)
+   - PostHog (open source, self-hostable)
+
+2. **Track key events:**
+   - User sessions (start, end, duration)
+   - Feature usage (sessions viewed, notifications checked, actions taken)
+   - Performance metrics (screen load times, API response times)
+   - Errors and crashes (complement Sentry)
+   - User flows (navigation paths, drop-off points)
+
+3. **Implementation example with Expo Analytics:**
+
+```typescript
+// utils/analytics.ts
+import * as Analytics from 'expo-analytics'
+
+export const analytics = {
+  trackEvent: (name: string, properties?: Record<string, any>) => {
+    if (!__DEV__) {
+      Analytics.logEvent(name, properties)
+    }
+  },
+  trackScreen: (screenName: string) => {
+    if (!__DEV__) {
+      Analytics.setCurrentScreen(screenName)
+    }
+  },
+  setUserProperties: (properties: Record<string, any>) => {
+    if (!__DEV__) {
+      Analytics.setUserProperties(properties)
+    }
+  },
+}
+
+// Usage in components
+analytics.trackEvent('session_viewed', { sessionId, status })
+analytics.trackScreen('SessionDetail')
+```
+
+4. **Privacy considerations:**
+   - Update Privacy Manifest with data collection disclosure
+   - Implement opt-out mechanism
+   - Anonymize sensitive data (no tokens, no PII)
+   - GDPR/CCPA compliance
+
+**Benefits:**
+- Understand which features users actually use
+- Identify performance bottlenecks in production
+- Data-driven product decisions
+- Track adoption and retention metrics
+
+---
+
+### 7. Bundle Size Monitoring
 
 **Confidence:** 80%
 **Effort:** 4 hours
@@ -440,7 +505,7 @@ npm install --save-dev react-native-bundle-visualizer
 
 ---
 
-### 7. Inconsistent Type Imports
+### 8. Inconsistent Type Imports
 
 **Confidence:** 80%
 **Effort:** 1 hour
@@ -458,7 +523,7 @@ This should auto-fix most instances. Review and commit.
 
 ---
 
-### 8. Security Audit Completion
+### 9. Security Audit Completion
 
 **Confidence:** 95%
 **Effort:** 2-3 weeks
