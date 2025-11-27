@@ -417,7 +417,49 @@ npm install --save-dev @welldone-software/why-did-you-render
 
 ## MEDIUM Priority
 
-### 6. App Telemetry
+### 6. Research @shopify/react-native-performance Library
+
+**Confidence:** 70%
+**Effort:** 1-2 days
+
+**Issue:** Currently using custom performance monitoring (`utils/performanceMonitor.ts`, `utils/fpsMonitor.ts`, `utils/renderTracker.ts`). The `@shopify/react-native-performance` library is already installed but not actively used. Need to evaluate if it provides better performance monitoring capabilities.
+
+**Action Items:**
+
+1. **Research the library:**
+   - Review documentation: https://github.com/Shopify/react-native-performance
+   - Understand capabilities vs. current custom implementation
+   - Check maintenance status and community support
+
+2. **Compare features:**
+   - Memory monitoring (current: `performanceMonitor.ts`)
+   - FPS tracking (current: `fpsMonitor.ts`)
+   - Render performance (current: `renderTracker.ts`)
+   - Additional features from Shopify library
+
+3. **Decision criteria:**
+   - Better accuracy/features than custom implementation?
+   - Active maintenance (library currently marked as "unmaintained")
+   - New Architecture compatibility
+   - Integration effort vs. value gained
+
+4. **Possible outcomes:**
+   - Replace custom monitoring with Shopify library
+   - Keep custom implementation and remove Shopify dependency
+   - Hybrid approach using both
+
+**Files to review:**
+
+- `utils/performanceMonitor.ts` - Current memory monitoring
+- `utils/fpsMonitor.ts` - Current FPS tracking
+- `utils/renderTracker.ts` - Current render performance
+- `app/_layout.tsx:131-171` - Where performance monitoring is initialized
+
+**Note:** Library is flagged as "Unmaintained" and "Untested on New Architecture" by Expo doctor. Consider this in the evaluation.
+
+---
+
+### 7. App Telemetry
 
 **Confidence:** 90%
 **Effort:** 2-3 days
