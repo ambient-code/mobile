@@ -197,6 +197,8 @@ This task list breaks down the ACP mobile implementation into phases organized b
 
 ## Phase 6: User Story 4 - Chat with Claude Interactively (Priority: P2) (9 tasks)
 
+📋 **[Detailed Implementation Plan](./phases/phase-06-interactive-chat.md)** - Complete architecture, component specifications, API integration, and testing strategy
+
 **Story Goal**: Have quick interactive conversations with Claude from phone for immediate answers without starting full session
 
 **Independent Test**: Tap "Interactive" button, chat modal opens, send message, receive response within 3s, ask follow-up maintaining context, close and reopen to see history
@@ -235,6 +237,8 @@ This task list breaks down the ACP mobile implementation into phases organized b
 ---
 
 ## Phase 7: User Story 5 - Start New AI Sessions (Priority: P2) (11 tasks)
+
+📋 **[Detailed Implementation Plan](./phase-7-implementation-plan.md)** - Complete coldstart guide with code examples, testing strategy, and troubleshooting
 
 **Story Goal**: Initiate new AI coding sessions from phone to kick off work remotely
 
