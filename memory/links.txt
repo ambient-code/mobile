@@ -1,0 +1,12 @@
+# Ambient Code Platform (ACP) main repo - frontend, backend, operator, CRDs
+https://github.com/ambient-code/platform
+
+# Ambient Code Platform Code Base Agent generator
+# See amber.md in platform repo or doubleagent.md in agentready repo
+https://github.com/ambient-code/cba
+
+# Mobile app client for ACP
+https://github.com/ambient-code/mobile
+
+# Assess, align and monitor readiness for agentic development (tbench.ai validated best practices).
+https://github.com/ambient-code/agentready

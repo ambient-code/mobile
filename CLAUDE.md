@@ -115,3 +115,5 @@ Claude will automatically route you to the right documentation.
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+- Use the Makefile in the platform repo to control the local developer environment. Use as necessary. Before beginning, ALWAYS confirm the dev local version that is running is the target version you actually want.
