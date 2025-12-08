@@ -3,6 +3,7 @@
 Auto-generated from all feature plans. Last updated: 2025-11-26
 
 ## Active Technologies
+
 - TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, Recharts (or React Native Charts Wrapper) (002-admin-stats-dashboard)
 - React Query cache (in-memory) with 4-minute staleTime, no persistent storage for dashboard data (002-admin-stats-dashboard)
 - TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts (002-admin-stats-dashboard)
@@ -35,18 +36,40 @@ tests/
 
 ### Pre-commit Hook
 
-This project uses Husky and lint-staged to automatically lint and format staged files before commits.
+This project uses Husky and lint-staged to automatically lint, format, and type-check staged files before commits.
 When you run `git commit`, the following happens automatically:
 
 1. Prettier formats all staged `.js`, `.jsx`, `.ts`, `.tsx`, `.json`, and `.md` files
 2. ESLint runs with `--fix` on all staged TypeScript/JavaScript files
-3. If any issues can't be auto-fixed, the commit is blocked
+3. **TypeScript type-check runs (only if `.ts` or `.tsx` files are staged)**
+4. If any issues can't be auto-fixed or type errors exist, the commit is blocked
+
+**Performance impact:**
+
+- Non-TypeScript commits: ~2-3 seconds (no change)
+- TypeScript file commits: ~8-30 seconds (includes type-checking)
 
 To bypass the pre-commit hook (not recommended):
 
 ```bash
 git commit --no-verify
 ```
+
+### CI/CD Pipeline
+
+All pull requests to `main` must pass automated checks via GitHub Actions:
+
+- ✅ TypeScript type-check (`npm run type-check`)
+- ✅ ESLint validation (`npm run lint`)
+- ✅ Prettier format check (`npm run format:check`)
+- ✅ Test suite (`npm run test`)
+
+**CI runs on:**
+
+- All pull requests targeting `main`
+- Direct pushes to `main` branch
+
+Check the Actions tab in GitHub for CI status and detailed logs.
 
 ## Code Style
 
@@ -79,10 +102,10 @@ git commit --no-verify
 - Extract complex logic into custom hooks
 
 ## Recent Changes
+
 - 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts
 - 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, react-native-gifted-charts
 - 002-admin-stats-dashboard: Added TypeScript 5.x with React Native 0.76 + Expo SDK 52, Expo Router, React Query v5, PostHog SDK, Sentry SDK, Recharts (or React Native Charts Wrapper)
-
 
 ## Skills
 

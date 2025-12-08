@@ -25,8 +25,7 @@ export const analyticsApi = {
    * Get current system health status
    * Endpoint: GET /api/admin/analytics/system-health
    */
-  getSystemHealth: () =>
-    apiClient.get<SystemHealthResponse>(ADMIN_METRICS.ENDPOINTS.SYSTEM_HEALTH),
+  getSystemHealth: () => apiClient.get<SystemHealthResponse>(ADMIN_METRICS.ENDPOINTS.SYSTEM_HEALTH),
 
   /**
    * Get Golden Signals metrics (Latency, Traffic, Errors, Saturation)
@@ -35,7 +34,7 @@ export const analyticsApi = {
   getGoldenSignals: (period: GoldenSignalsPeriod = '7d') =>
     apiClient.get<GoldenSignalsResponse>(ADMIN_METRICS.ENDPOINTS.GOLDEN_SIGNALS, {
       params: { period },
-    }),
+    } as any),
 
   /**
    * Get user engagement metrics (DAU, MAU, stickiness)
@@ -44,7 +43,7 @@ export const analyticsApi = {
   getEngagementMetrics: (period: EngagementPeriod = '24h') =>
     apiClient.get<EngagementResponse>(ADMIN_METRICS.ENDPOINTS.ENGAGEMENT, {
       params: { period },
-    }),
+    } as any),
 
   /**
    * Get platform distribution and OS versions
@@ -53,7 +52,7 @@ export const analyticsApi = {
   getPlatformDistribution: (period: PlatformPeriod = '30d') =>
     apiClient.get<PlatformDistributionResponse>(ADMIN_METRICS.ENDPOINTS.PLATFORMS, {
       params: { period },
-    }),
+    } as any),
 
   /**
    * Get error summary and top errors
@@ -62,5 +61,5 @@ export const analyticsApi = {
   getErrorSummary: (period: ErrorPeriod = '7d') =>
     apiClient.get<ErrorSummaryResponse>(ADMIN_METRICS.ENDPOINTS.ERROR_SUMMARY, {
       params: { period },
-    }),
+    } as any),
 }

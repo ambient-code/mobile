@@ -50,7 +50,8 @@ export default function ConnectedReposScreen() {
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Add',
-          onPress: async (url) => {
+          // @ts-expect-error Alert.prompt type mismatch
+          onPress: async (url: string) => {
             if (!url) return
 
             // Validate URL

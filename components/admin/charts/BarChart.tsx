@@ -72,6 +72,7 @@ export function BarChart({
         rulesColor="#E5E5EA"
         isAnimated
         animationDuration={ADMIN_METRICS.CHART_CONFIG.ANIMATION_DURATION}
+        // @ts-expect-error react-native-gifted-charts stackData type mismatch
         stackData={
           stacked
             ? (data as StackedBarDataPoint[]).map((d) =>

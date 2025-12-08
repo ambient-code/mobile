@@ -29,7 +29,7 @@ export function ErrorMessage({ error, retry, showDetails = false }: ErrorMessage
       </Text>
 
       {showDetails && error.stack && (
-        <Text style={[styles.details, { color: colors.textTertiary }]}>{error.stack}</Text>
+        <Text style={[styles.details, { color: colors.textSecondary }]}>{error.stack}</Text>
       )}
 
       {retry && (

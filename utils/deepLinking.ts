@@ -91,27 +91,39 @@ export function parseDeepLink(url: string): ParsedDeepLink {
     // Sanitize path (remove trailing slashes, normalize)
     const sanitizedPath = sanitizePath(parsed.path)
 
+    // Convert queryParams to Record<string, string>
+    const normalizedParams: Record<string, string> = {}
+    if (parsed.queryParams) {
+      for (const [key, value] of Object.entries(parsed.queryParams)) {
+        if (typeof value === 'string') {
+          normalizedParams[key] = value
+        } else if (Array.isArray(value)) {
+          normalizedParams[key] = value[0] || ''
+        }
+      }
+    }
+
     // Find matching route
     const matchedRoute = findMatchingRoute(sanitizedPath)
 
     if (!matchedRoute) {
       return {
         scheme: parsed.scheme || '',
-        hostname: parsed.hostname,
+        hostname: parsed.hostname || undefined,
         path: sanitizedPath,
-        queryParams: parsed.queryParams || {},
+        queryParams: normalizedParams,
         isValid: false,
         errorMessage: `Unsupported route: ${sanitizedPath}`,
       }
     }
 
     // Validate query parameters if validator exists
-    if (matchedRoute.validateParams && !matchedRoute.validateParams(parsed.queryParams || {})) {
+    if (matchedRoute.validateParams && !matchedRoute.validateParams(normalizedParams)) {
       return {
         scheme: parsed.scheme || '',
-        hostname: parsed.hostname,
+        hostname: parsed.hostname || undefined,
         path: sanitizedPath,
-        queryParams: parsed.queryParams || {},
+        queryParams: normalizedParams,
         isValid: false,
         errorMessage: 'Invalid query parameters',
       }
@@ -119,9 +131,9 @@ export function parseDeepLink(url: string): ParsedDeepLink {
 
     return {
       scheme: parsed.scheme || '',
-      hostname: parsed.hostname,
+      hostname: parsed.hostname || undefined,
       path: sanitizedPath,
-      queryParams: parsed.queryParams || {},
+      queryParams: normalizedParams,
       isValid: true,
     }
   } catch (error) {

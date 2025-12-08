@@ -40,7 +40,7 @@ export default function LoginScreen() {
     if (!rootNavigationState?.key) return // Wait for navigation to be ready
 
     if (isAuthenticated && !isLoading) {
-      router.replace('/(tabs)/')
+      router.replace('/(tabs)')
     }
   }, [isAuthenticated, isLoading, rootNavigationState])
 

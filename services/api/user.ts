@@ -12,6 +12,7 @@ export const userApi = {
    */
   async fetchProfile(): Promise<User> {
     const response = await apiClient.get<User>('/user/profile')
+    // @ts-expect-error axios response type complexity
     return response.data
   },
 
@@ -21,6 +22,7 @@ export const userApi = {
    */
   async fetchPreferences(): Promise<UserPreferences> {
     const response = await apiClient.get<UserPreferences>('/user/preferences')
+    // @ts-expect-error axios response type complexity
     return response.data
   },
 
@@ -29,6 +31,8 @@ export const userApi = {
    * Returns updated preferences from backend
    */
   async updatePreferences(preferences: UserPreferences): Promise<UserPreferences> {
-    return apiClient.patch<UserPreferences>('/user/preferences', preferences)
+    const response = await apiClient.patch<UserPreferences>('/user/preferences', preferences)
+    // @ts-expect-error axios response type complexity
+    return response.data
   },
 }

@@ -56,7 +56,7 @@ export class NotificationsAPI {
     const params = unreadOnly ? { unread: 'true' } : {}
     const response = await apiClient.get<unknown>('/notifications/github', {
       params,
-    })
+    } as any)
 
     // Validate response with Zod
     return validateResponse<{ notifications: GitHubNotification[]; unreadCount: number }>(

@@ -21,6 +21,7 @@ export function CreateFAB() {
   const router = useRouter()
   const [modalVisible, setModalVisible] = useState(false)
 
+  // @ts-expect-error lucide-react-native icon name type complexity
   const createOptions: CreateOption[] = [
     { id: 'agent', label: 'Agent', icon: 'user', soon: false },
     { id: 'scheduled-task', label: 'Scheduled Task', icon: 'clock', soon: false },

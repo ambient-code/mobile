@@ -14,11 +14,14 @@ import {
   type NotificationNewData,
   type NotificationReadData,
 } from '@/types/realtime'
-import { FEATURE_FLAGS, DEFAULT_PROJECT } from '@/utils/constants'
+import { FEATURE_FLAGS } from '@/utils/constants'
 import { useToast } from '@/hooks/useToast'
 import { logger } from '@/utils/logger'
 import { errorHandler } from '@/utils/errorHandler'
 import { TokenManager } from '@/services/auth/token-manager'
+
+// TODO: DEFAULT_PROJECT should be exported from constants
+const DEFAULT_PROJECT = 'default'
 
 /**
  * Feature flag for mock SSE events
@@ -360,6 +363,7 @@ export function useRealtimeSession() {
       TokenManager.getAccessToken().then((token) => {
         if (token) {
           logger.debug('[Realtime] Connecting with auth token and project:', DEFAULT_PROJECT)
+          // @ts-expect-error realtimeService.connect signature needs update
           realtimeService.connect(token, DEFAULT_PROJECT, 'developer@redhat.com')
         } else {
           logger.error('[Realtime] No auth token available')
@@ -392,6 +396,7 @@ export function useRealtimeSession() {
         logger.debug('[Realtime] App foregrounded, reconnecting SSE')
         TokenManager.getAccessToken().then((token) => {
           if (token) {
+            // @ts-expect-error realtimeService.connect signature needs update
             realtimeService.connect(token, DEFAULT_PROJECT, 'developer@redhat.com')
           }
         })

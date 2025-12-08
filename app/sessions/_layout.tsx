@@ -6,7 +6,6 @@ export default function SessionsLayout() {
       screenOptions={{
         headerShown: true,
         headerBackTitle: '',
-        headerBackTitleVisible: false,
         headerTitle: '',
       }}
     >

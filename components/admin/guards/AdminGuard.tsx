@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
-import { useAuth } from '@/services/auth/authContext'
+import { useAuth } from '@/hooks/useAuth'
 
 interface AdminGuardProps {
   children: React.ReactNode

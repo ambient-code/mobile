@@ -84,7 +84,6 @@ function RootLayoutNav() {
           headerTintColor: colors.text,
           headerShadowVisible: false,
           headerBackTitle: '',
-          headerBackTitleVisible: false,
           contentStyle: {
             backgroundColor: colors.bg,
           },

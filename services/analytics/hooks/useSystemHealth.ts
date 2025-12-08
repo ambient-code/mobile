@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { analyticsApi } from '../client'
 import { ADMIN_METRICS } from '@/constants/AdminMetrics'
+import type { SystemHealthStatus } from '../types'
 
 /**
  * Hook for fetching system health status
@@ -11,14 +12,14 @@ import { ADMIN_METRICS } from '@/constants/AdminMetrics'
  * Data considered fresh for 4 minutes
  */
 export function useSystemHealth() {
-  return useQuery({
+  return useQuery<SystemHealthStatus>({
     queryKey: ['admin', 'system-health'],
     queryFn: async () => {
       const response = await analyticsApi.getSystemHealth()
       return response.data
     },
     staleTime: ADMIN_METRICS.STALE_TIME,
-    cacheTime: ADMIN_METRICS.CACHE_TIME,
+    gcTime: ADMIN_METRICS.CACHE_TIME,
     refetchInterval: ADMIN_METRICS.REFRESH_INTERVAL,
     refetchOnWindowFocus: true,
     refetchOnMount: true,

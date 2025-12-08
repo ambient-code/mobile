@@ -157,7 +157,7 @@ export default function DashboardScreen() {
         icon: 'bell.fill',
         text: 'GitHub Notifications',
         count: unreadCount > 0 ? unreadCount : undefined,
-        onPress: () => router.push('/notifications/'),
+        onPress: () => router.push('/notifications'),
       },
       { id: 'lucky', icon: 'dice.fill', text: "I'm Feeling Lucky" },
       { id: 'inspire', icon: 'lightbulb.fill', text: 'Inspire Me' },

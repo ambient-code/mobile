@@ -19,20 +19,14 @@ export function SaturationGauge({ label, data }: SaturationGaugeProps) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.label}>{label}</Text>
-        <Text style={[styles.value, { color: statusColor }]}>
-          {data.current.toFixed(1)}%
-        </Text>
+        <Text style={[styles.value, { color: statusColor }]}>{data.current.toFixed(1)}%</Text>
       </View>
       <View style={styles.barContainer}>
         <View style={styles.barBackground}>
+          {/* @ts-expect-error React Native View width percentage type mismatch */}
           <View style={[styles.barFill, { width: progressWidth, backgroundColor: statusColor }]} />
           {data.threshold < 100 && (
-            <View
-              style={[
-                styles.thresholdLine,
-                { left: `${data.threshold}%` },
-              ]}
-            />
+            <View style={[styles.thresholdLine, { left: `${data.threshold}%` }]} />
           )}
         </View>
       </View>

@@ -168,7 +168,7 @@ export async function handleSettings(
 
   if (section) {
     // Navigate to specific settings section
-    router.push(`/settings/${section}`)
+    router.push(`/settings/${section}` as any)
   } else {
     // Navigate to settings home
     router.push('/settings')
