@@ -9,7 +9,7 @@ import { PreferencesService } from '../../services/storage/preferences'
 type ThemeOption = 'light' | 'dark' | 'system'
 
 export default function AppearanceSettingsScreen() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setThemeMode } = useTheme()
   const { isOffline } = useOffline()
   const [selectedTheme, setSelectedTheme] = useState<ThemeOption>(theme)
 
@@ -19,7 +19,7 @@ export default function AppearanceSettingsScreen() {
 
   async function handleThemeChange(newTheme: ThemeOption) {
     setSelectedTheme(newTheme)
-    setTheme(newTheme)
+    setThemeMode(newTheme)
 
     // Persist to storage
     await PreferencesService.updateTheme(newTheme)

@@ -71,7 +71,11 @@ export default function EngagementDashboard() {
         </View>
         <MetricCard
           label="Stickiness Ratio"
-          value={data?.stickiness !== null ? `${data.stickiness.toFixed(1)}%` : 'N/A'}
+          value={
+            data?.stickiness !== null && data?.stickiness !== undefined
+              ? `${data.stickiness.toFixed(1)}%`
+              : 'N/A'
+          }
           status={getStickinessStatus(data?.stickiness ?? 0)}
           subtitle="DAU / MAU × 100"
         />
@@ -118,10 +122,7 @@ export default function EngagementDashboard() {
         <View style={styles.legend}>
           <View style={styles.legendItem}>
             <View
-              style={[
-                styles.legendColor,
-                { backgroundColor: ADMIN_METRICS.CHART_COLORS.success },
-              ]}
+              style={[styles.legendColor, { backgroundColor: ADMIN_METRICS.CHART_COLORS.success }]}
             />
             <Text style={styles.legendLabel}>New Users</Text>
           </View>

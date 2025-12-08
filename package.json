@@ -104,7 +104,8 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "bash scripts/type-check-if-ts.sh"
     ],
     "*.{json,md}": [
       "prettier --write"

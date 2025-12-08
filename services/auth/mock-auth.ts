@@ -12,6 +12,7 @@ export const MOCK_USER: User = {
   id: 'mock-user-dev-123',
   name: 'Developer User',
   email: 'developer@redhat.com',
+  username: 'developer',
   role: 'developer',
   avatar: null,
   ssoProvider: 'mock',
