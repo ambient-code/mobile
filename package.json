@@ -1,7 +1,7 @@
 {
   "name": "acp-mobile",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "start": "expo start",
     "start:offline": "EXPO_NO_DOCTOR=1 EXPO_OFFLINE=1 expo start --offline",
