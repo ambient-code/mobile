@@ -1,0 +1,124 @@
+name: Release Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      new_tag: ${{ steps.next_version.outputs.new_tag }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Get Latest Tag
+        id: get_latest_tag
+        run: |
+          echo "All existing tags:"
+          git tag --list 'v*.*.*' --sort=-version:refname
+
+          LATEST_TAG=$(git tag --list 'v*.*.*' --sort=-version:refname | head -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v0.0.0"
+          fi
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "Latest tag: $LATEST_TAG"
+
+      - name: Calculate Next Version
+        id: next_version
+        run: |
+          LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
+          VERSION=${LATEST_TAG#v}
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          case "${{ github.event.inputs.bump_type }}" in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "new_tag=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
+          NEW_TAG="${{ steps.next_version.outputs.new_tag }}"
+
+          echo "# Release $NEW_TAG" > RELEASE_CHANGELOG.md
+          echo "" >> RELEASE_CHANGELOG.md
+          echo "## Changes since $LATEST_TAG" >> RELEASE_CHANGELOG.md
+          echo "" >> RELEASE_CHANGELOG.md
+
+          if [ "$LATEST_TAG" = "v0.0.0" ]; then
+            git log --pretty=format:"- %s (%h)" >> RELEASE_CHANGELOG.md
+          else
+            git log ${LATEST_TAG}..HEAD --pretty=format:"- %s (%h)" >> RELEASE_CHANGELOG.md
+          fi
+
+          echo "" >> RELEASE_CHANGELOG.md
+          echo "" >> RELEASE_CHANGELOG.md
+          echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${LATEST_TAG}...${NEW_TAG}" >> RELEASE_CHANGELOG.md
+
+          cat RELEASE_CHANGELOG.md
+
+      - name: Create Tag
+        id: create_tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: ${{ steps.next_version.outputs.new_tag }}
+          message: "Release ${{ steps.next_version.outputs.new_tag }}"
+          force_push_tag: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release Archive
+        id: create_archive
+        run: |
+          NEW_TAG="${{ steps.next_version.outputs.new_tag }}"
+          ARCHIVE_NAME="acp-mobile-${NEW_TAG}.tar.gz"
+
+          git archive --format=tar.gz --prefix=acp-mobile-${NEW_TAG}/ HEAD > $ARCHIVE_NAME
+
+          echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_version.outputs.new_tag }}
+          name: "Release ${{ steps.next_version.outputs.new_tag }}"
+          body_path: RELEASE_CHANGELOG.md
+          draft: false
+          prerelease: false
+          files: |
+            ${{ steps.create_archive.outputs.archive_name }}
+            RELEASE_CHANGELOG.md
