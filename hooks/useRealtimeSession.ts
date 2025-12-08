@@ -14,10 +14,11 @@ import {
   type NotificationNewData,
   type NotificationReadData,
 } from '@/types/realtime'
-import { FEATURE_FLAGS } from '@/utils/constants'
+import { FEATURE_FLAGS, DEFAULT_PROJECT } from '@/utils/constants'
 import { useToast } from '@/hooks/useToast'
 import { logger } from '@/utils/logger'
 import { errorHandler } from '@/utils/errorHandler'
+import { TokenManager } from '@/services/auth/token-manager'
 
 /**
  * Feature flag for mock SSE events
@@ -111,6 +112,12 @@ export function useRealtimeSession() {
    */
   const handleProgressUpdate = useCallback(
     (data: SessionProgressData) => {
+      console.log('[Realtime] 📊 Processing progress update:', {
+        sessionId: data.sessionId,
+        progress: data.progress,
+        task: data.currentTask,
+      })
+
       queueCacheUpdate(data.sessionId, () => {
         logger.debug('[Realtime] Updating progress for session:', data.sessionId, data.progress)
 
@@ -265,9 +272,12 @@ export function useRealtimeSession() {
    */
   const handleEvent = useCallback(
     (event: RealtimeEventUnion) => {
+      console.log('[Realtime] 📥 Received event:', event.type)
+
       try {
         // Check for duplicate
         if (isDuplicateEvent(event)) {
+          console.log('[Realtime] ⏭️ Skipping duplicate event')
           return // Ignore duplicate
         }
 
@@ -326,13 +336,16 @@ export function useRealtimeSession() {
   useEffect(() => {
     if (USE_MOCK_SSE) {
       // Use mock SSE service for development
+      console.log('[Realtime] 🎭 Using mock SSE service - events should generate every 3-5 seconds')
       logger.debug('[Realtime] Using mock SSE service')
       setConnectionState(ConnectionState.CONNECTED)
 
       const unsubscribe = mockSSEService.subscribe(handleEvent)
       mockSSEService.start()
+      console.log('[Realtime] ✅ Mock SSE service started')
 
       return () => {
+        console.log('[Realtime] 🛑 Stopping mock SSE service')
         unsubscribe()
         mockSSEService.stop()
       }
@@ -343,7 +356,16 @@ export function useRealtimeSession() {
       const unsubscribeEvents = realtimeService.onEvent(handleEvent)
       const unsubscribeState = realtimeService.onStateChange(setConnectionState)
 
-      realtimeService.connect()
+      // Get token and connect
+      TokenManager.getAccessToken().then((token) => {
+        if (token) {
+          logger.debug('[Realtime] Connecting with auth token and project:', DEFAULT_PROJECT)
+          realtimeService.connect(token, DEFAULT_PROJECT, 'developer@redhat.com')
+        } else {
+          logger.error('[Realtime] No auth token available')
+          setConnectionState(ConnectionState.ERROR)
+        }
+      })
 
       return () => {
         unsubscribeEvents()
@@ -368,7 +390,11 @@ export function useRealtimeSession() {
         realtimeService.disconnect()
       } else if (nextAppState === 'active') {
         logger.debug('[Realtime] App foregrounded, reconnecting SSE')
-        realtimeService.connect()
+        TokenManager.getAccessToken().then((token) => {
+          if (token) {
+            realtimeService.connect(token, DEFAULT_PROJECT, 'developer@redhat.com')
+          }
+        })
       }
     })
 

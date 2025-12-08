@@ -7,8 +7,8 @@ import {
   ScrollView,
   Alert,
 } from 'react-native'
-import { router } from 'expo-router'
-import { useState } from 'react'
+import { router, useNavigation } from 'expo-router'
+import { useState, useEffect } from 'react'
 import { useOffline } from '@/hooks/useOffline'
 import { RepositoryPicker } from '@/components/session/RepositoryPicker'
 import { WorkflowTypeGrid } from '@/components/session/WorkflowTypeGrid'
@@ -27,10 +27,12 @@ export default function NewSessionScreen() {
   const [sessionName, setSessionName] = useState('')
   const [selectedModel, setSelectedModel] = useState<ModelType>(ModelType.SONNET_4_5)
   const [loading, setLoading] = useState(false)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
   // Auto-generate session name when repo + workflow selected
   const handleRepoSelect = (repo: Repository) => {
     setSelectedRepo(repo)
+    setHasUnsavedChanges(true)
     if (selectedWorkflow) {
       setSessionName(generateSessionName(repo.name, selectedWorkflow))
     }
@@ -38,9 +40,20 @@ export default function NewSessionScreen() {
 
   const handleWorkflowSelect = (workflowId: string) => {
     setSelectedWorkflow(workflowId)
+    setHasUnsavedChanges(true)
     if (selectedRepo) {
       setSessionName(generateSessionName(selectedRepo.name, workflowId))
     }
+  }
+
+  const handleSessionNameChange = (text: string) => {
+    setSessionName(text)
+    setHasUnsavedChanges(true)
+  }
+
+  const handleModelSelect = (model: ModelType) => {
+    setSelectedModel(model)
+    setHasUnsavedChanges(true)
   }
 
   const generateSessionName = (repoName: string, workflowType: string) => {
@@ -86,6 +99,9 @@ export default function NewSessionScreen() {
       // Show success toast (using Alert for now)
       Alert.alert('Success', 'Session created successfully!')
 
+      // Clear unsaved changes flag before navigating
+      setHasUnsavedChanges(false)
+
       // Navigate back to dashboard
       router.replace('/(tabs)')
     } catch (error) {
@@ -95,6 +111,41 @@ export default function NewSessionScreen() {
       setLoading(false)
     }
   }
+
+  // Intercept back navigation to show confirmation if there are unsaved changes
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (!hasUnsavedChanges) {
+        // No unsaved changes, allow navigation
+        return
+      }
+
+      // Prevent default navigation
+      e.preventDefault()
+
+      // Show confirmation dialog
+      Alert.alert(
+        'Discard changes?',
+        'You have unsaved changes. Are you sure you want to discard them?',
+        [
+          { text: "Don't leave", style: 'cancel', onPress: () => {} },
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: () => {
+              // Clear the flag and navigate back
+              setHasUnsavedChanges(false)
+              navigation.dispatch(e.data.action)
+            },
+          },
+        ]
+      )
+    })
+
+    return unsubscribe
+  }, [navigation, hasUnsavedChanges])
 
   const isStartDisabled = !selectedRepo || !selectedWorkflow || loading || isOffline
 
@@ -122,13 +173,13 @@ export default function NewSessionScreen() {
           <TextInput
             style={styles.input}
             value={sessionName}
-            onChangeText={setSessionName}
+            onChangeText={handleSessionNameChange}
             placeholder="Enter session name..."
             placeholderTextColor="#94a3b8"
           />
         </View>
 
-        <ModelSelector selectedModel={selectedModel} onSelectModel={setSelectedModel} />
+        <ModelSelector selectedModel={selectedModel} onSelectModel={handleModelSelect} />
       </ScrollView>
 
       <View style={styles.footer}>

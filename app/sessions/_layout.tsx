@@ -11,7 +11,23 @@ export default function SessionsLayout() {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="[id]" />
+      <Stack.Screen name="[id]/index" />
+      <Stack.Screen
+        name="[id]/review"
+        options={{
+          headerShown: true,
+          headerTitle: 'Review Session',
+          headerBackTitle: '',
+        }}
+      />
+      <Stack.Screen
+        name="new"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerBackTitle: '',
+        }}
+      />
     </Stack>
   )
 }
