@@ -27,6 +27,7 @@ This library uses `react-native-svg` which is already installed in the project, 
 ### 2. Verify Existing Dependencies
 
 These should already be in `package.json`:
+
 ```json
 {
   "react-native-svg": "15.12.1",
@@ -64,6 +65,7 @@ services/analytics/         # NEW directory
 ```
 
 **Estimated LOC**: ~2,500 lines total
+
 - Routes: ~400 lines
 - Components: ~1,200 lines
 - Services: ~600 lines
@@ -73,6 +75,7 @@ services/analytics/         # NEW directory
 ### Backend API Changes (Coordinate with Backend Team)
 
 Required backend endpoints:
+
 ```
 GET /api/admin/analytics/system-health
 GET /api/admin/analytics/golden-signals?period=7d|30d
@@ -82,6 +85,7 @@ GET /api/admin/errors/summary?period=7d|30d
 ```
 
 Backend responsibilities:
+
 - Query PostHog Personal API
 - Query Sentry REST API
 - Implement Redis caching (15-30 min cache duration)
@@ -95,6 +99,7 @@ Backend responsibilities:
 **Time estimate**: 2-3 days
 
 1. **Set up environment variables**:
+
 ```bash
 # Backend .env
 POSTHOG_PERSONAL_API_KEY=phx_xxx...
@@ -118,13 +123,14 @@ REDIS_URL=redis://...
 4. **Create backend API endpoints** matching `contracts/backend-api.yaml`
 
 5. **Add Redis caching layer**:
+
 ```typescript
 const CACHE_DURATIONS = {
   'system-health': 5 * 60,
   'golden-signals': 5 * 60,
-  'engagement': 15 * 60,
-  'platforms': 30 * 60,
-  'errors': 5 * 60,
+  engagement: 15 * 60,
+  platforms: 30 * 60,
+  errors: 5 * 60,
 }
 ```
 
@@ -135,6 +141,7 @@ const CACHE_DURATIONS = {
 **Time estimate**: 1-2 days
 
 1. **Create directory structure**:
+
 ```bash
 mkdir -p app/admin
 mkdir -p components/admin/{charts,metrics,layout,guards}
@@ -143,6 +150,7 @@ mkdir -p constants
 ```
 
 2. **Implement AdminGuard component**:
+
 ```typescript
 // components/admin/guards/AdminGuard.tsx
 import { useAuth } from '@/services/auth/authContext'
@@ -169,6 +177,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 ```
 
 3. **Set up admin routing**:
+
 ```typescript
 // app/admin/_layout.tsx
 import { AdminGuard } from '@/components/admin/guards/AdminGuard'
@@ -189,6 +198,7 @@ export default function AdminLayout() {
 ```
 
 4. **Create TypeScript types**:
+
 ```typescript
 // services/analytics/types.ts
 export interface SystemHealthStatus {
@@ -216,6 +226,7 @@ export interface SystemHealthStatus {
 **Time estimate**: 1-2 days
 
 1. **Create API client wrapper**:
+
 ```typescript
 // services/analytics/client.ts
 import { apiClient } from '@/services/api/client'
@@ -234,6 +245,7 @@ export const analyticsApi = {
 ```
 
 2. **Create React Query hooks**:
+
 ```typescript
 // services/analytics/hooks/useSystemHealth.ts
 import { useQuery } from '@tanstack/react-query'
@@ -246,8 +258,8 @@ export function useSystemHealth() {
       const response = await analyticsApi.getSystemHealth()
       return response.data
     },
-    staleTime: 4 * 60 * 1000,     // 4 minutes
-    cacheTime: 15 * 60 * 1000,    // 15 minutes
+    staleTime: 4 * 60 * 1000, // 4 minutes
+    cacheTime: 15 * 60 * 1000, // 15 minutes
     refetchInterval: 5 * 60 * 1000, // 5 minutes auto-refresh
   })
 }
@@ -265,6 +277,7 @@ export function useSystemHealth() {
 **Time estimate**: 2-3 days
 
 1. **Create ChartContainer wrapper**:
+
 ```typescript
 // components/admin/charts/ChartContainer.tsx
 import { View, Text, ActivityIndicator } from 'react-native'
@@ -289,6 +302,7 @@ export function ChartContainer({ title, loading, error, children }: ChartContain
 ```
 
 2. **Implement LineChart component**:
+
 ```typescript
 // components/admin/charts/LineChart.tsx
 import { LineChart as GiftedLineChart } from 'react-native-gifted-charts'
@@ -338,6 +352,7 @@ export function LineChart({ title, data, loading, error, color = '#007AFF' }: Li
    - `GaugeChart.tsx` - Saturation metrics (can use progress bars or custom component)
 
 4. **Add responsive sizing hook**:
+
 ```typescript
 // hooks/useResponsiveChart.ts
 import { useWindowDimensions } from 'react-native'
@@ -359,6 +374,7 @@ export function useResponsiveChart() {
 **Time estimate**: 1 day
 
 1. **Create MetricCard**:
+
 ```typescript
 // components/admin/metrics/MetricCard.tsx
 interface MetricCardProps {
@@ -380,6 +396,7 @@ export function MetricCard({ label, value, trend, status }: MetricCardProps) {
 ```
 
 2. **Create StatusIndicator**:
+
 ```typescript
 // components/admin/metrics/StatusIndicator.tsx
 interface StatusIndicatorProps {
@@ -408,6 +425,7 @@ export function StatusIndicator({ status }: StatusIndicatorProps) {
 **Time estimate**: 3-4 days
 
 1. **Implement Overview Dashboard**:
+
 ```typescript
 // app/admin/index.tsx
 import { useSystemHealth } from '@/services/analytics/hooks/useSystemHealth'
@@ -460,6 +478,7 @@ export default function OverviewDashboard() {
 **Time estimate**: 1-2 days
 
 1. **Component tests**:
+
 ```typescript
 // app/admin/__tests__/index.test.tsx
 import { render, screen } from '@testing-library/react-native'
@@ -498,18 +517,19 @@ test('displays system status', () => {
 **Time estimate**: 1 day
 
 1. **Add constants file**:
+
 ```typescript
 // constants/AdminMetrics.ts
 export const ADMIN_METRICS = {
   REFRESH_INTERVAL: 5 * 60 * 1000, // 5 minutes
-  STALE_TIME: 4 * 60 * 1000,       // 4 minutes
-  CACHE_TIME: 15 * 60 * 1000,      // 15 minutes
+  STALE_TIME: 4 * 60 * 1000, // 4 minutes
+  CACHE_TIME: 15 * 60 * 1000, // 15 minutes
 
   HEALTH_THRESHOLDS: {
-    ERROR_RATE_WARNING: 1,    // 1% = degraded
-    ERROR_RATE_CRITICAL: 5,   // 5% = down
-    LATENCY_WARNING: 100,     // 100ms = degraded
-    LATENCY_CRITICAL: 500,    // 500ms = down
+    ERROR_RATE_WARNING: 1, // 1% = degraded
+    ERROR_RATE_CRITICAL: 5, // 5% = down
+    LATENCY_WARNING: 100, // 100ms = degraded
+    LATENCY_CRITICAL: 500, // 500ms = down
   },
 
   CHART_COLORS: {
@@ -522,6 +542,7 @@ export const ADMIN_METRICS = {
 ```
 
 2. **Update agent context**:
+
 ```bash
 .specify/scripts/bash/update-agent-context.sh claude
 ```
@@ -539,6 +560,7 @@ export const ADMIN_METRICS = {
 ### 1. Backend Testing (Backend Team)
 
 Test each endpoint with curl/Postman:
+
 ```bash
 # System health
 curl -H "Authorization: Bearer $JWT" \
@@ -560,12 +582,14 @@ curl -H "Authorization: Bearer $JWT" \
 ### 2. Mobile Testing
 
 **Development mode**:
+
 ```bash
 npm start
 # Press 'i' for iOS or 'a' for Android
 ```
 
 **Test scenarios**:
+
 1. Log in as admin user → navigate to "Admin" tab
 2. Verify all 4 dashboards load
 3. Pull down to refresh → verify data updates
@@ -577,6 +601,7 @@ npm start
 ### 3. Performance Testing
 
 Use React DevTools Profiler to verify:
+
 - Dashboard loads < 2s
 - Chart render < 1s
 - 60fps scrolling
@@ -587,6 +612,7 @@ Use React DevTools Profiler to verify:
 ### Issue: "Admin access required" error for admin users
 
 **Solution**: Check JWT token contains `role: "admin"`:
+
 ```typescript
 // Decode JWT in browser console
 const token = localStorage.getItem('jwt')
@@ -597,12 +623,14 @@ console.log(decoded.role) // should be "admin"
 ### Issue: Charts not rendering
 
 **Solution**: Verify react-native-svg is installed:
+
 ```bash
 npm list react-native-svg
 # Should show: react-native-svg@15.12.1 (or higher)
 ```
 
 If charts still don't render, check that you're importing from the correct package:
+
 ```typescript
 // Correct
 import { LineChart, PieChart, BarChart } from 'react-native-gifted-charts'
@@ -614,6 +642,7 @@ import { LineChart } from 'victory-native-xl'
 ### Issue: "Unable to load metrics" even when backend is up
 
 **Solution**: Check CORS headers on backend:
+
 ```typescript
 // Backend should include:
 Access-Control-Allow-Origin: https://your-app.com
@@ -623,6 +652,7 @@ Access-Control-Allow-Headers: Authorization, Content-Type
 ### Issue: Auto-refresh not working
 
 **Solution**: React Query refetchInterval requires app to be in foreground:
+
 ```typescript
 // Add focus refetch
 refetchOnWindowFocus: true,
@@ -632,6 +662,7 @@ refetchOnMount: true,
 ### Issue: Stale data after backend changes
 
 **Solution**: Invalidate React Query cache:
+
 ```typescript
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -671,6 +702,7 @@ queryClient.invalidateQueries({ queryKey: ['admin'] })
 ## Contact
 
 For questions about this implementation:
+
 - Mobile team: Slack #acp-mobile
 - Backend team: Slack #acp-backend
 - Design questions: Review spec.md and data-model.md first

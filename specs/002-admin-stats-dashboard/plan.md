@@ -22,6 +22,7 @@ Admin-only statistics dashboard for the ACP mobile app to track usage across bot
 **Scale/Scope**: 4 dashboard screens (Overview, Golden Signals, Engagement, Platforms), 24-hour data retention for charts, supports displaying metrics for up to 100k+ users and 1M+ events/day
 
 **Integration Requirements**:
+
 - NEEDS CLARIFICATION: PostHog API endpoint structure, authentication method (API key vs project token), query syntax for custom analytics
 - NEEDS CLARIFICATION: Sentry API integration approach (REST API vs SDK methods), authentication for fetching error metrics
 - RESOLVED: Chart library = react-native-gifted-charts (uses existing react-native-svg dependency, simpler API, good performance)
@@ -35,10 +36,11 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 **Status**: ✅ PASS (No constitution file exists - using established patterns from 001-acp-mobile)
 
 This feature extends the existing acp-mobile app architecture. Following established patterns:
-- Expo Router for file-based routing (add app/admin/* routes)
+
+- Expo Router for file-based routing (add app/admin/\* routes)
 - React Query for data fetching and caching
-- Component-based UI architecture (create components/admin/*)
-- Service layer for API integration (add services/analytics/*)
+- Component-based UI architecture (create components/admin/\*)
+- Service layer for API integration (add services/analytics/\*)
 - Role-based access control (extend existing auth service)
 - Offline-capable with cached data (React Query stale-while-revalidate)
 

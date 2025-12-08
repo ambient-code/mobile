@@ -152,12 +152,15 @@ export function captureMessage(
  * Start a performance transaction span
  */
 export function startSpan(name: string, op: string) {
-  return Sentry.startSpan({
-    name,
-    op,
-  }, () => {
-    // Span callback - operations tracked here
-  })
+  return Sentry.startSpan(
+    {
+      name,
+      op,
+    },
+    () => {
+      // Span callback - operations tracked here
+    }
+  )
 }
 
 /**

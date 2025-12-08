@@ -102,6 +102,8 @@ export const ADMIN_METRICS = {
 // Type Exports for Constants
 // ============================================================================
 
-export type ChartColor = (typeof ADMIN_METRICS.CHART_COLORS)[keyof typeof ADMIN_METRICS.CHART_COLORS]
-export type StatusColor = (typeof ADMIN_METRICS.STATUS_COLORS)[keyof typeof ADMIN_METRICS.STATUS_COLORS]
+export type ChartColor =
+  (typeof ADMIN_METRICS.CHART_COLORS)[keyof typeof ADMIN_METRICS.CHART_COLORS]
+export type StatusColor =
+  (typeof ADMIN_METRICS.STATUS_COLORS)[keyof typeof ADMIN_METRICS.STATUS_COLORS]
 export type AdminEndpoint = (typeof ADMIN_METRICS.ENDPOINTS)[keyof typeof ADMIN_METRICS.ENDPOINTS]
