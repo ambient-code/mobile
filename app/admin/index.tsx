@@ -56,11 +56,7 @@ export default function OverviewDashboard() {
         />
         <View style={styles.row}>
           <View style={styles.halfCard}>
-            <MetricCard
-              label="Web"
-              value={data?.metrics.activeUsers.web ?? 0}
-              subtitle="users"
-            />
+            <MetricCard label="Web" value={data?.metrics.activeUsers.web ?? 0} subtitle="users" />
           </View>
           <View style={styles.halfCard}>
             <MetricCard

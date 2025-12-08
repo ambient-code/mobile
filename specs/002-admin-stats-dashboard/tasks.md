@@ -324,6 +324,7 @@ Phase 10 (Polish) ← All user stories must be complete
 ### Parallel Execution Examples
 
 **Scenario 1: Single Developer**
+
 1. Complete Phase 1 (Setup) → Phase 2 (Foundation)
 2. Implement US1 (Overview) as MVP → Deploy to staging → Gather feedback
 3. Implement US2 (Golden Signals) → Deploy
@@ -334,15 +335,18 @@ Phase 10 (Polish) ← All user stories must be complete
 **Scenario 2: Team of 3 Developers**
 
 Developer A:
+
 - Phase 1-2 (Setup + Foundation)
 - US1 (Overview)
 - US2 (Golden Signals)
 
 Developer B (in parallel with A after Phase 2):
+
 - US3 (Engagement)
 - US4 (Platform Comparison)
 
 Developer C (in parallel with A & B after Phase 2):
+
 - Chart components (T035-T039, T049)
 - Metric components (T023-T024)
 - Edge cases (Phase 9)
@@ -350,10 +354,12 @@ Developer C (in parallel with A & B after Phase 2):
 **Scenario 3: Frontend + Backend Split**
 
 Backend Team (MUST START FIRST):
+
 - T006-T012 (PostHog/Sentry integration + API endpoints)
 - Deploy to staging before mobile team starts Phase 3
 
 Frontend Team (mobile):
+
 - Phase 1-2 (Setup + Foundation) while backend works
 - Once backend staging ready: US1-6 in priority order
 
@@ -364,6 +370,7 @@ Frontend Team (mobile):
 ### Manual Testing Scenarios
 
 **Admin User Flow**:
+
 - [ ] Log in as admin user
 - [ ] Navigate to /admin/stats (Overview dashboard)
 - [ ] Verify Overview displays: status indicator, active users, error rate, latency, requests/min
@@ -379,12 +386,14 @@ Frontend Team (mobile):
 - [ ] Check "Last updated" timestamp changes
 
 **Non-Admin User Flow**:
+
 - [ ] Log in as developer or regular user (not admin)
 - [ ] Attempt to navigate to /admin/stats
 - [ ] Verify redirected to main app
 - [ ] Verify "Admin access required" message displays
 
 **Error Scenarios**:
+
 - [ ] Turn off WiFi
 - [ ] Navigate to admin dashboards
 - [ ] Verify "Unable to load metrics" error displays
@@ -394,6 +403,7 @@ Frontend Team (mobile):
 - [ ] Verify metrics load successfully
 
 **Responsive Design**:
+
 - [ ] Test on iPhone SE (375px width) - verify charts readable
 - [ ] Test on iPad (768px width) - verify 2-column layout
 - [ ] Test on desktop (1920px width) - verify 3-column layout
@@ -403,6 +413,7 @@ Frontend Team (mobile):
 - [ ] Verify mouse hover states work on desktop
 
 **Edge Cases**:
+
 - [ ] Test with zero active users (verify "No data yet" message)
 - [ ] Test with MAU = 0 (verify stickiness shows "N/A")
 - [ ] Test with error rate exactly at thresholds (1%, 5%)
@@ -424,6 +435,7 @@ Frontend Team (mobile):
 **Minimum Viable Product** = Phase 1 + Phase 2 + US1 (Overview Dashboard)
 
 This provides:
+
 - ✅ Admin access control
 - ✅ System health monitoring (most critical operational need)
 - ✅ Foundation for adding more dashboards incrementally
@@ -433,18 +445,22 @@ This provides:
 ### Incremental Delivery Plan
 
 **Week 1**: MVP (US1)
+
 - T001-T029: Setup + Foundation + Overview Dashboard
 - Deploy to staging, gather admin user feedback
 
 **Week 2**: Golden Signals (US2)
+
 - T030-T043: Charts + Golden Signals Dashboard
 - Deploy to staging, validate metrics accuracy with backend team
 
 **Week 3**: Engagement + Platforms (US3, US4)
+
 - T044-T059: Engagement and Platform dashboards in parallel
 - Deploy to staging, validate DAU/MAU calculations
 
 **Week 4**: Polish + Deployment (US5, US6, Phase 9-10)
+
 - T060-T093: Navigation refinements, responsive design, edge cases, polish
 - Full QA testing cycle
 - Deploy to production
@@ -452,6 +468,7 @@ This provides:
 ### Parallelization Opportunities
 
 **High parallelization** (different files, no dependencies):
+
 - All chart component tasks: T035-T039, T049
 - All metric component tasks: T023-T024, T038
 - Backend API endpoints: T007-T010 (backend team)
@@ -460,6 +477,7 @@ This provides:
 - Polish tasks: T079-T085
 
 **Must be sequential**:
+
 - Setup → Foundation → User Stories
 - Hook implementation → Screen implementation (within same story)
 - Backend endpoints → Mobile integration
@@ -469,6 +487,7 @@ This provides:
 ## Summary
 
 **Total Tasks**: 93 tasks
+
 - Phase 1 (Setup): 5 tasks
 - Phase 2 (Foundation): 12 tasks (7 backend, 5 mobile)
 - Phase 3 (US1): 12 tasks (3 optional tests + 9 implementation)
@@ -481,6 +500,7 @@ This provides:
 - Phase 10 (Polish): 14 tasks
 
 **User Story Task Breakdown**:
+
 - US1 (View System Health): 12 tasks → **MVP Focus**
 - US2 (Golden Signals): 14 tasks → **High Value**
 - US3 (Engagement): 9 tasks
@@ -493,6 +513,7 @@ This provides:
 **Independent Test Criteria**: Each user story phase has clear "Independent Test" criteria for verification
 
 **Estimated Timeline**:
+
 - Single developer: 3-4 weeks (MVP in 3-5 days)
 - Team of 3: 1.5-2 weeks (MVP in 2-3 days)
 - Backend + Frontend teams: 2 weeks total (1 week backend prep + 1 week mobile implementation in parallel)

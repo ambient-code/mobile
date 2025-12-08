@@ -161,7 +161,7 @@ As an admin, I need the statistics dashboards to work on both mobile devices (to
 ### Functional Requirements
 
 - **FR-001**: System MUST restrict access to all admin statistics dashboards to users with role="admin"
-- **FR-002**: System MUST redirect non-admin users attempting to access /admin/stats/* to the main app with an unauthorized message
+- **FR-002**: System MUST redirect non-admin users attempting to access /admin/stats/\* to the main app with an unauthorized message
 - **FR-003**: System MUST display active user counts separated by platform (web, mobile, total) on the overview dashboard
 - **FR-004**: System MUST calculate and display requests per minute based on the last hour of activity
 - **FR-005**: System MUST display error rate as a percentage calculated from the last hour of requests
