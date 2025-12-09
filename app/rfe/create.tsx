@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
+  Alert,
 } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Feather } from '@expo/vector-icons'
@@ -16,6 +17,38 @@ interface Source {
   id: string
   type: 'gdoc' | 'url' | 'jira'
   value: string
+}
+
+// Icon mapping for source types
+const SOURCE_ICONS = {
+  gdoc: 'file-text',
+  url: 'link',
+  jira: 'package',
+} as const
+
+// Input validation for different source types
+const validateSource = (type: 'gdoc' | 'url' | 'jira', value: string): string | null => {
+  const trimmed = value.trim()
+  if (!trimmed) return 'Source cannot be empty'
+
+  switch (type) {
+    case 'gdoc':
+      if (!trimmed.includes('docs.google.com/document')) {
+        return 'Please enter a valid Google Docs URL'
+      }
+      break
+    case 'url':
+      if (!/^https?:\/\/.+\..+/.test(trimmed)) {
+        return 'Please enter a valid URL (must start with http:// or https://)'
+      }
+      break
+    case 'jira':
+      if (!/^[A-Z]+-\d+$/.test(trimmed)) {
+        return 'Please enter a valid Jira ticket ID (e.g., PROJ-123)'
+      }
+      break
+  }
+  return null
 }
 
 export default function CreateRFEScreen() {
@@ -28,15 +61,19 @@ export default function CreateRFEScreen() {
   const [newSourceValue, setNewSourceValue] = useState('')
 
   const addSource = () => {
-    if (newSourceValue.trim()) {
-      const newSource: Source = {
-        id: Date.now().toString(),
-        type: newSourceType,
-        value: newSourceValue.trim(),
-      }
-      setSources([...sources, newSource])
-      setNewSourceValue('')
+    const validationError = validateSource(newSourceType, newSourceValue)
+    if (validationError) {
+      Alert.alert('Invalid Source', validationError)
+      return
     }
+
+    const newSource: Source = {
+      id: Date.now().toString(),
+      type: newSourceType,
+      value: newSourceValue.trim(),
+    }
+    setSources([...sources, newSource])
+    setNewSourceValue('')
   }
 
   const removeSource = (id: string) => {
@@ -45,22 +82,8 @@ export default function CreateRFEScreen() {
 
   const handleSubmit = () => {
     // TODO: Implement batch mode submission with attached gdoc design document
-    console.log('Creating RFE in batch mode:', { title, description, sources })
     // For now, just navigate back
     router.back()
-  }
-
-  const getSourceIcon = (type: 'gdoc' | 'url' | 'jira') => {
-    switch (type) {
-      case 'gdoc':
-        return 'file-text'
-      case 'url':
-        return 'link'
-      case 'jira':
-        return 'package'
-      default:
-        return 'file'
-    }
   }
 
   return (
@@ -139,7 +162,7 @@ export default function CreateRFEScreen() {
                 accessibilityLabel={`Select ${type} type`}
               >
                 <Feather
-                  name={getSourceIcon(type)}
+                  name={SOURCE_ICONS[type]}
                   size={16}
                   color={newSourceType === type ? '#fff' : colors.text}
                 />
@@ -190,7 +213,7 @@ export default function CreateRFEScreen() {
                     { backgroundColor: colors.card, borderColor: colors.border },
                   ]}
                 >
-                  <Feather name={getSourceIcon(source.type)} size={16} color={colors.accent} />
+                  <Feather name={SOURCE_ICONS[source.type]} size={16} color={colors.accent} />
                   <View style={styles.sourceContent}>
                     <Text style={[styles.sourceType, { color: colors.textSecondary }]}>
                       {source.type.toUpperCase()}

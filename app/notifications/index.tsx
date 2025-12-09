@@ -35,6 +35,17 @@ export default function NotificationsScreen() {
     { label: 'Miro', value: 'miro', icon: 'grid' },
   ]
 
+  // Filter notifications by source
+  // Note: Currently only GitHub notifications are supported in the data model.
+  // When multi-source support is added, this will filter based on notification.source
+  const filteredNotifications = React.useMemo(() => {
+    if (sourceFilter === 'all' || sourceFilter === 'github') {
+      return notifications
+    }
+    // Other sources not yet supported - return empty array
+    return []
+  }, [notifications, sourceFilter])
+
   const handleNotificationPress = useCallback(
     (notification: GitHubNotification) => {
       showActions(notification, () => {
@@ -178,7 +189,7 @@ export default function NotificationsScreen() {
 
       {/* Notifications List */}
       <FlatList
-        data={notifications}
+        data={filteredNotifications}
         renderItem={useCallback(
           ({ item }: { item: GitHubNotification }) => (
             <NotificationCard notification={item} onPress={handleNotificationPress} />

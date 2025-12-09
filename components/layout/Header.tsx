@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, memo } from 'react'
+import React, { useState, useEffect, useCallback, memo } from 'react'
 import {
   View,
   Text,
@@ -24,6 +24,15 @@ interface HeaderProps {
 }
 
 const STORAGE_KEY = '@acp_read_announcements'
+
+// Pure function - no need for memoization
+function getInitials(name: string): string {
+  const parts = name.split(' ')
+  if (parts.length >= 2) {
+    return parts[0][0] + parts[1][0]
+  }
+  return name[0]
+}
 
 // Memoized Header component to prevent unnecessary re-renders
 export const Header = memo(({ isRefetching = false }: HeaderProps) => {
@@ -68,24 +77,13 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
     return () => clearInterval(interval)
   }, [])
 
-  // Memoize getInitials function
-  const getInitials = useCallback((name: string) => {
-    const parts = name.split(' ')
-    if (parts.length >= 2) {
-      return parts[0][0] + parts[1][0]
-    }
-    return name[0]
-  }, [])
+  // Simple derived values - no need for memoization
+  const firstName = user?.name ? user.name.split(' ')[0] : 'there'
+  const userInitials = user ? getInitials(user.name) : 'U'
 
-  // Memoize firstName to prevent recalculation
-  const firstName = useMemo(() => (user?.name ? user.name.split(' ')[0] : 'there'), [user?.name])
-
-  // Memoize user initials
-  const userInitials = useMemo(() => (user ? getInitials(user.name) : 'U'), [user, getInitials])
-
-  // Memoize notifications toggle callback
-  const openNotifications = useCallback(() => setNotificationsVisible(true), [])
-  const closeNotifications = useCallback(() => setNotificationsVisible(false), [])
+  // Simple setters - no need for useCallback
+  const openNotifications = () => setNotificationsVisible(true)
+  const closeNotifications = () => setNotificationsVisible(false)
 
   // Sign out handler (defined before showUserMenu to avoid forward reference)
   const handleSignOut = useCallback(async () => {
