@@ -3,7 +3,6 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
 import { AuthAPI } from '@/services/api/auth'
 import { OAuthService } from '@/services/auth/oauth'
-import { OAUTH_CONFIG } from '@/utils/constants'
 
 /**
  * OAuth Callback Handler
@@ -22,6 +21,7 @@ export default function AuthCallbackScreen() {
 
   useEffect(() => {
     handleCallback()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleCallback = async () => {

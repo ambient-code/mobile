@@ -39,15 +39,18 @@ export default function AnnouncementsScreen() {
     }
   }
 
-  const markAsRead = async (announcementId: string) => {
-    try {
-      const newReadIds = [...readIds, announcementId]
-      setReadIds(newReadIds)
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newReadIds))
-    } catch (error) {
-      console.error('Failed to mark announcement as read:', error)
-    }
-  }
+  const markAsRead = useCallback(
+    async (announcementId: string) => {
+      try {
+        const newReadIds = [...readIds, announcementId]
+        setReadIds(newReadIds)
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newReadIds))
+      } catch (error) {
+        console.error('Failed to mark announcement as read:', error)
+      }
+    },
+    [readIds]
+  )
 
   const handleAnnouncementPress = useCallback(
     (announcement: Announcement) => {
@@ -55,7 +58,7 @@ export default function AnnouncementsScreen() {
         markAsRead(announcement.id)
       }
     },
-    [readIds]
+    [readIds, markAsRead]
   )
 
   const isUnread = useCallback(

@@ -12,7 +12,7 @@ import { ADMIN_METRICS } from '@/constants/AdminMetrics'
 import type { GoldenSignalsPeriod } from '@/services/analytics/types'
 
 export default function GoldenSignalsDashboard() {
-  const [period, setPeriod] = useState<GoldenSignalsPeriod>('7d')
+  const [period] = useState<GoldenSignalsPeriod>('7d')
   const { data, isLoading, error, refetch, isRefetching } = useGoldenSignals(period)
 
   const onRefresh = () => {

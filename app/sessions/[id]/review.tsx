@@ -56,7 +56,7 @@ export default function SessionReviewScreen() {
       })
 
       router.back()
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to submit review. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -92,7 +92,7 @@ export default function SessionReviewScreen() {
               })
 
               router.back()
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Failed to approve session. Please try again.')
             } finally {
               setIsSubmitting(false)

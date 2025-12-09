@@ -87,6 +87,26 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
   const openNotifications = useCallback(() => setNotificationsVisible(true), [])
   const closeNotifications = useCallback(() => setNotificationsVisible(false), [])
 
+  // Sign out handler (defined before showUserMenu to avoid forward reference)
+  const handleSignOut = useCallback(async () => {
+    Alert.alert('Sign Out', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await PreferencesService.clearAll()
+            // logout() will clear auth context and tokens
+            router.replace('/login')
+          } catch (error) {
+            console.error('Sign out failed:', error)
+          }
+        },
+      },
+    ])
+  }, [])
+
   // User menu handler
   const showUserMenu = useCallback(() => {
     if (Platform.OS === 'ios') {
@@ -116,27 +136,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
         { text: 'Cancel', style: 'cancel' },
       ])
     }
-  }, [])
-
-  // Sign out handler
-  const handleSignOut = useCallback(async () => {
-    Alert.alert('Sign Out', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Sign Out',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            await PreferencesService.clearAll()
-            // logout() will clear auth context and tokens
-            router.replace('/login')
-          } catch (error) {
-            console.error('Sign out failed:', error)
-          }
-        },
-      },
-    ])
-  }, [])
+  }, [handleSignOut])
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>

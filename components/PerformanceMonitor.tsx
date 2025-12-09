@@ -8,9 +8,9 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useState, useEffect } from 'react'
 import { useTheme } from '@/hooks/useTheme'
-import type { MemoryStats } from '@/utils/performanceMonitor'
-import type { FPSStats } from '@/utils/fpsMonitor'
-import type { RenderStats } from '@/utils/renderTracker'
+import { getMemoryMonitor, type MemoryStats } from '@/utils/performanceMonitor'
+import { getFPSMonitor, type FPSStats } from '@/utils/fpsMonitor'
+import { getRenderTracker, type RenderStats } from '@/utils/renderTracker'
 
 interface PerformanceMetrics {
   memory: MemoryStats | null
@@ -32,10 +32,6 @@ export function PerformanceMonitor() {
 
     // Update metrics every second
     const interval = setInterval(() => {
-      const { getMemoryMonitor } = require('@/utils/performanceMonitor')
-      const { getFPSMonitor } = require('@/utils/fpsMonitor')
-      const { getRenderTracker } = require('@/utils/renderTracker')
-
       setMetrics({
         memory: getMemoryMonitor().getCurrentStats(),
         fps: getFPSMonitor().getStats(),
@@ -213,10 +209,6 @@ export function PerformanceMonitor() {
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.card, marginTop: 8 }]}
             onPress={() => {
-              const { getRenderTracker } = require('@/utils/renderTracker')
-              const { getMemoryMonitor } = require('@/utils/performanceMonitor')
-              const { getFPSMonitor } = require('@/utils/fpsMonitor')
-
               getRenderTracker().reset()
               getFPSMonitor().reset()
               console.log('🔄 Performance metrics reset')

@@ -53,7 +53,7 @@ export default function ReviewDecisionScreen() {
 
   const handleComplete = async () => {
     try {
-      const result = await completeDecisionReview(decision.id, {
+      await completeDecisionReview(decision.id, {
         comment,
         quickResponse: quickResponse || undefined,
         viewedSections: Array.from(viewedSections),
@@ -65,7 +65,7 @@ export default function ReviewDecisionScreen() {
         'Your review has been submitted. (Undo functionality will be in full implementation)',
         [{ text: 'OK', onPress: () => router.back() }]
       )
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to complete review')
     }
   }
