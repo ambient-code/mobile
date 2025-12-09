@@ -9,7 +9,7 @@ import { ADMIN_METRICS } from '@/constants/AdminMetrics'
 import type { EngagementPeriod } from '@/services/analytics/types'
 
 export default function EngagementDashboard() {
-  const [period, setPeriod] = useState<EngagementPeriod>('24h')
+  const [period] = useState<EngagementPeriod>('24h')
   const { data, isLoading, error, refetch, isRefetching } = useEngagement(period)
 
   const onRefresh = () => {

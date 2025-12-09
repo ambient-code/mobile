@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { StuckAgent } from '@/types/inbox'
 import { useTheme } from '@/hooks/useTheme'
 import { AgentAvatar } from '../ui/AgentAvatar'
-import { router } from 'expo-router'
 
 interface StuckAgentBannerProps {
   agents: StuckAgent[]

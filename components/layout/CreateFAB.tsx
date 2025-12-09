@@ -21,30 +21,28 @@ export function CreateFAB() {
   const router = useRouter()
   const [modalVisible, setModalVisible] = useState(false)
 
-  // @ts-expect-error lucide-react-native icon name type complexity
+  // Options are pre-sorted alphabetically to avoid runtime sorting
   const createOptions: CreateOption[] = [
-    { id: 'agent', label: 'Agent', icon: 'user', soon: false },
+    { id: 'rfe', label: 'Create RFE', icon: 'file-plus', route: '/rfe/create' },
+    { id: 'deep-research', label: 'Deep Research', icon: 'search', soon: false },
     { id: 'scheduled-task', label: 'Scheduled Task', icon: 'clock', soon: false },
     { id: 'session', label: 'Session', icon: 'zap', route: '/sessions/new' },
     { id: 'skill', label: 'Skill', icon: 'target', soon: false },
     { id: 'workflow', label: 'Workflow', icon: 'git-branch', soon: true },
-  ].sort((a, b) => a.label.localeCompare(b.label))
+  ]
 
   const handleOptionPress = (option: CreateOption) => {
     setModalVisible(false)
 
     if (option.soon) {
       // TODO: Show "Coming Soon" toast
-      console.log(`${option.label} coming soon!`)
       return
     }
 
     if (option.route) {
       router.push(option.route as any)
-    } else {
-      // TODO: Navigate to specific creation screens when implemented
-      console.log(`Create ${option.label} - Not implemented yet`)
     }
+    // TODO: Navigate to specific creation screens when implemented
   }
 
   return (

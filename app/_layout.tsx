@@ -11,6 +11,9 @@ import { errorHandler } from '@/utils/errorHandler'
 import { initializeSentry } from '@/services/monitoring/sentry'
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { startMemoryMonitoring } from '@/utils/performanceMonitor'
+import { startFPSMonitoring } from '@/utils/fpsMonitor'
+import { getRenderTracker } from '@/utils/renderTracker'
 
 // Singleton QueryClient instance (prevents memory leaks and cache loss)
 let queryClient: QueryClient | null = null
@@ -129,9 +132,6 @@ export default function RootLayout() {
   // Initialize performance monitoring in development
   useEffect(() => {
     if (__DEV__) {
-      const { startMemoryMonitoring } = require('@/utils/performanceMonitor')
-      const { startFPSMonitoring } = require('@/utils/fpsMonitor')
-
       // Start monitoring
       const memoryMonitor = startMemoryMonitoring({
         checkIntervalMs: 15000, // Check every 15 seconds
@@ -155,7 +155,6 @@ export default function RootLayout() {
           report: () => {
             memoryMonitor.printReport()
             fpsMonitor.printReport()
-            const { getRenderTracker } = require('@/utils/renderTracker')
             getRenderTracker().printReport()
           },
         }

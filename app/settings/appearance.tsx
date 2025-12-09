@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '../../hooks/useTheme'
 import { useOffline } from '../../hooks/useOffline'
 import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { PreferencesService } from '../../services/storage/preferences'
 
-type ThemeOption = 'light' | 'dark' | 'system'
+type ThemeMode = 'light' | 'dark' | 'system'
 
 export default function AppearanceSettingsScreen() {
   const { theme, setThemeMode } = useTheme()
   const { isOffline } = useOffline()
-  const [selectedTheme, setSelectedTheme] = useState<ThemeOption>(theme)
+  const [selectedTheme, setSelectedTheme] = useState<ThemeMode>(theme)
 
   useEffect(() => {
     setSelectedTheme(theme)
   }, [theme])
 
-  async function handleThemeChange(newTheme: ThemeOption) {
+  async function handleThemeChange(newTheme: ThemeMode) {
     setSelectedTheme(newTheme)
     setThemeMode(newTheme)
 
@@ -62,7 +61,7 @@ export default function AppearanceSettingsScreen() {
 interface ThemeOptionProps {
   label: string
   description: string
-  value: ThemeOption
+  value: ThemeMode
   selected: boolean
   onSelect: () => void
 }

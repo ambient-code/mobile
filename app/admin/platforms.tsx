@@ -8,7 +8,7 @@ import { ADMIN_METRICS } from '@/constants/AdminMetrics'
 import type { PlatformPeriod, OSVersionBreakdown } from '@/services/analytics/types'
 
 export default function PlatformComparisonDashboard() {
-  const [period, setPeriod] = useState<PlatformPeriod>('30d')
+  const [period] = useState<PlatformPeriod>('30d')
   const { data, isLoading, error, refetch, isRefetching } = usePlatforms(period)
 
   const onRefresh = () => {

@@ -155,7 +155,7 @@ export default function DashboardScreen() {
       {
         id: 'notifications',
         icon: 'bell.fill',
-        text: 'GitHub Notifications',
+        text: 'Notifications',
         count: unreadCount > 0 ? unreadCount : undefined,
         onPress: () => router.push('/notifications'),
       },
@@ -166,14 +166,6 @@ export default function DashboardScreen() {
     ],
     [runningSessions.length, unreadCount, router]
   )
-
-  // Render callback for Quick Action buttons
-  const renderQuickAction = useCallback(
-    ({ item }: { item: QuickAction }) => <QuickActionButton action={item} colors={colors} />,
-    [colors]
-  )
-
-  const quickActionKeyExtractor = useCallback((item: QuickAction) => item.id, [])
 
   if (authLoading) {
     return (

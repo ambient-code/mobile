@@ -59,3 +59,4 @@ __pycache__/
 
 # Implementation scripts
 implement-phases.sh
+.claude-learnings.md

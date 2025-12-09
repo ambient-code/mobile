@@ -21,6 +21,7 @@ export default function SettingsScreen() {
 
   useEffect(() => {
     loadProfile()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function loadProfile() {
