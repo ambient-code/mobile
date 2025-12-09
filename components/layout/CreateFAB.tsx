@@ -23,7 +23,8 @@ export function CreateFAB() {
 
   // @ts-expect-error lucide-react-native icon name type complexity
   const createOptions: CreateOption[] = [
-    { id: 'agent', label: 'Agent', icon: 'user', soon: false },
+    { id: 'deep-research', label: 'Deep Research', icon: 'search', soon: false },
+    { id: 'rfe', label: 'Create RFE', icon: 'file-plus', route: '/rfe/create' },
     { id: 'scheduled-task', label: 'Scheduled Task', icon: 'clock', soon: false },
     { id: 'session', label: 'Session', icon: 'zap', route: '/sessions/new' },
     { id: 'skill', label: 'Skill', icon: 'target', soon: false },

@@ -10,11 +10,13 @@ import { OfflineBanner } from '@/components/ui/OfflineBanner'
 import type { GitHubNotification } from '@/types/notification'
 
 type FilterType = 'all' | 'unread'
+type SourceFilter = 'all' | 'github' | 'google' | 'jira' | 'gitlab' | 'miro'
 
 export default function NotificationsScreen() {
   const { colors } = useTheme()
   const { isOffline } = useOffline()
   const [filter, setFilter] = useState<FilterType>('all')
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all')
   const { notifications, unreadCount, isLoading, refetch } = useNotifications(filter === 'unread')
   const { showActions } = useNotificationActions()
   const markAllAsRead = useMarkAllAsRead()
@@ -22,6 +24,15 @@ export default function NotificationsScreen() {
   const filters: { label: string; value: FilterType; badge?: number }[] = [
     { label: 'All', value: 'all' },
     { label: 'Unread', value: 'unread', badge: unreadCount },
+  ]
+
+  const sourceFilters: { label: string; value: SourceFilter; icon: string }[] = [
+    { label: 'All Sources', value: 'all', icon: 'filter' },
+    { label: 'GitHub', value: 'github', icon: 'github' },
+    { label: 'Google Workspace', value: 'google', icon: 'mail' },
+    { label: 'Jira', value: 'jira', icon: 'trello' },
+    { label: 'GitLab', value: 'gitlab', icon: 'gitlab' },
+    { label: 'Miro', value: 'miro', icon: 'grid' },
   ]
 
   const handleNotificationPress = useCallback(
@@ -68,7 +79,7 @@ export default function NotificationsScreen() {
 
       {/* Header with Mark All Read button */}
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>GitHub Notifications</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Notifications</Text>
         {unreadCount > 0 && (
           <TouchableOpacity
             style={[styles.markAllButton, { backgroundColor: colors.card }]}
@@ -84,7 +95,7 @@ export default function NotificationsScreen() {
         )}
       </View>
 
-      {/* Filter Chips */}
+      {/* Filter Chips - Read/Unread */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -122,6 +133,44 @@ export default function NotificationsScreen() {
                   </Text>
                 </View>
               )}
+            </TouchableOpacity>
+          )
+        })}
+      </ScrollView>
+
+      {/* Source Filter Chips */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.sourceFiltersContainer}
+        contentContainerStyle={styles.filtersContent}
+      >
+        {sourceFilters.map((f) => {
+          const isActive = sourceFilter === f.value
+          return (
+            <TouchableOpacity
+              key={f.value}
+              style={[
+                styles.filterChip,
+                {
+                  backgroundColor: isActive ? colors.accent : colors.card,
+                  borderColor: isActive ? colors.accent : colors.border,
+                },
+              ]}
+              onPress={() => setSourceFilter(f.value)}
+              activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={`Filter by ${f.label}`}
+              accessibilityState={{ selected: isActive }}
+            >
+              <Feather
+                name={f.icon as keyof typeof Feather.glyphMap}
+                size={14}
+                color={isActive ? '#fff' : colors.text}
+              />
+              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.text }]}>
+                {f.label}
+              </Text>
             </TouchableOpacity>
           )
         })}
@@ -196,6 +245,10 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     flexGrow: 0,
+  },
+  sourceFiltersContainer: {
+    flexGrow: 0,
+    marginBottom: 8,
   },
   filtersContent: {
     paddingHorizontal: 16,

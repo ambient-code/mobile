@@ -33,19 +33,20 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
       }}
+      initialRouteName="inbox"
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Sessions',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
       <Tabs.Screen
         name="inbox"
         options={{
           title: 'Inbox',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="tray.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Sessions',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
