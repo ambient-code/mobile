@@ -167,14 +167,6 @@ export default function DashboardScreen() {
     [runningSessions.length, unreadCount, router]
   )
 
-  // Render callback for Quick Action buttons
-  const renderQuickAction = useCallback(
-    ({ item }: { item: QuickAction }) => <QuickActionButton action={item} colors={colors} />,
-    [colors]
-  )
-
-  const quickActionKeyExtractor = useCallback((item: QuickAction) => item.id, [])
-
   if (authLoading) {
     return (
       <View style={[styles.container, { backgroundColor: colors.bg }]}>
