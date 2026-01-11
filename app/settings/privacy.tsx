@@ -60,20 +60,16 @@ export default function PrivacySettingsScreen() {
 
       <View style={styles.infoSection}>
         <Text style={styles.infoTitle}>What data is collected?</Text>
-        <Text style={styles.infoText}>When analytics are enabled, we collect:</Text>
         <View style={styles.bulletList}>
           <Text style={styles.bulletPoint}>
-            • App usage patterns (screens viewed, features used)
+            • Anonymous usage patterns and performance metrics
           </Text>
-          <Text style={styles.bulletPoint}>• Performance metrics (app crashes, errors)</Text>
-          <Text style={styles.bulletPoint}>• Device information (OS version, model)</Text>
-        </View>
-
-        <Text style={styles.infoText}>We never collect:</Text>
-        <View style={styles.bulletList}>
-          <Text style={styles.bulletPoint}>• Your code or repository content</Text>
-          <Text style={styles.bulletPoint}>• Personal messages or chat conversations</Text>
-          <Text style={styles.bulletPoint}>• Passwords or authentication tokens</Text>
+          <Text style={styles.bulletPoint}>
+            • We never collect your code, messages, or credentials
+          </Text>
+          <Text style={styles.bulletPoint}>
+            • All data is anonymized and used only for improvements
+          </Text>
         </View>
 
         <Text style={styles.noteText}>

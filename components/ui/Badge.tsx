@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { SessionStatus } from '@/types/session'
+import { TOKENS } from '@/utils/constants'
 import { useTheme } from '@/hooks/useTheme'
 
 interface StatusBadgeProps {
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: TOKENS.radius20,
     gap: 4,
   },
   dot: {

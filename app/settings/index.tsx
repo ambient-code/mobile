@@ -137,8 +137,6 @@ export default function SettingsScreen() {
           icon="git-branch-outline"
           onPress={() => router.push('/settings/repos')}
         />
-        <SettingsRow label="GitHub Integration" icon="logo-github" badge="Soon" disabled />
-        <SettingsRow label="API Keys" icon="key-outline" badge="Soon" disabled />
       </View>
 
       {/* Preferences Section */}

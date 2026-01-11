@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
+import { TOKENS } from '@/utils/constants'
 
 interface ToggleProps {
   label: string
@@ -27,9 +28,9 @@ export function Toggle({
         value={value}
         onValueChange={onValueChange}
         disabled={disabled}
-        trackColor={{ false: '#d1d5db', true: '#a78bfa' }}
-        thumbColor={value ? '#8b5cf6' : '#f3f4f6'}
-        ios_backgroundColor="#d1d5db"
+        trackColor={{ false: TOKENS.border, true: TOKENS.primary }}
+        thumbColor={value ? TOKENS.primary : TOKENS.card}
+        ios_backgroundColor={TOKENS.border}
       />
     </View>
   )
