@@ -44,7 +44,7 @@ export const CACHE_TTL = {
   USER_PROFILE: 60 * 60 * 1000, // 1 hour
 }
 
-// Theme Colors
+// Theme Colors (Legacy - for backward compatibility during migration)
 export const COLORS = {
   light: {
     bg: '#f1f5f9',
@@ -68,6 +68,56 @@ export const COLORS = {
     success: '#34d399',
     warning: '#fbbf24',
   },
+}
+
+// New Design Tokens (Dark-First Design System)
+export const TOKENS = {
+  // Backgrounds
+  bg: '#0a0a0a',
+  card: '#1a1a1a',
+  elevated: '#222',
+
+  // Semantic colors
+  primary: '#3b82f6',
+  success: '#22c55e',
+  warning: '#eab308',
+  danger: '#ef4444',
+
+  // Text (flattened, not nested)
+  textPrimary: '#fff',
+  textSecondary: '#ccc',
+  textMuted: '#888',
+  textDisabled: '#666',
+
+  // UI elements
+  border: '#333',
+
+  // Spacing (4px base)
+  spacing4: 4,
+  spacing8: 8,
+  spacing12: 12,
+  spacing16: 16,
+  spacing24: 24,
+  spacing32: 32,
+
+  // Border radius
+  radius8: 8,
+  radius10: 10,
+  radius12: 12,
+  radius14: 14,
+  radius20: 20,
+
+  // Typography
+  titleSize: 28,
+  titleWeight: '700' as const,
+  headerSize: 20,
+  headerWeight: '700' as const,
+  bodySize: 16,
+  bodyWeight: '400' as const,
+  labelSize: 14,
+  labelWeight: '600' as const,
+  hintSize: 12,
+  hintWeight: '400' as const,
 }
 
 // Workflow Types
