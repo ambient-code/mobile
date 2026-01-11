@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useCallback, memo } from 'react'
-import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native'
+import React, { useCallback, memo } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import type { Session } from '@/types/session'
 import { SessionProgress } from './SessionProgress'
 import { ModelBadge } from './ModelBadge'
@@ -14,77 +14,10 @@ interface SessionCardProps {
 function SessionCardComponent({ session }: SessionCardProps) {
   const { colors } = useTheme()
   const router = useRouter()
-  const progressFlashAnim = useRef(new Animated.Value(0)).current
-  const statusFlashAnim = useRef(new Animated.Value(0)).current
-  const prevProgressRef = useRef(session.progress)
-  const prevStatusRef = useRef(session.status)
-
-  // Detect progress changes and trigger flash animation
-  useEffect(() => {
-    if (prevProgressRef.current !== session.progress) {
-      // Progress changed - trigger flash animation
-
-      // Flash animation: 0 -> 1 (inverted) -> 0 (normal) over 3 seconds
-      Animated.sequence([
-        Animated.timing(progressFlashAnim, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: false,
-        }),
-        Animated.timing(progressFlashAnim, {
-          toValue: 0,
-          duration: 2850,
-          useNativeDriver: false,
-        }),
-      ]).start()
-
-      prevProgressRef.current = session.progress
-    }
-  }, [session.progress, progressFlashAnim, session.id])
-
-  // Detect status changes and trigger flash animation
-  useEffect(() => {
-    if (prevStatusRef.current !== session.status) {
-      // Status changed - trigger flash animation
-
-      // Flash animation: 0 -> 1 (inverted) -> 0 (normal) over 3 seconds
-      Animated.sequence([
-        Animated.timing(statusFlashAnim, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: false,
-        }),
-        Animated.timing(statusFlashAnim, {
-          toValue: 0,
-          duration: 2850,
-          useNativeDriver: false,
-        }),
-      ]).start()
-
-      prevStatusRef.current = session.status
-    }
-  }, [session.status, statusFlashAnim, session.id])
 
   const handlePress = useCallback(() => {
     router.push(`/sessions/${session.id}`)
   }, [router, session.id])
-
-  // Progress text color animation
-  const progressTextColor = progressFlashAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [colors.textSecondary, colors.card],
-  })
-
-  const progressBgColor = progressFlashAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
-  })
-
-  // Status badge flash animation (will wrap StatusBadge)
-  const statusBgColor = statusFlashAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
-  })
 
   return (
     <TouchableOpacity
@@ -96,51 +29,27 @@ function SessionCardComponent({ session }: SessionCardProps) {
       accessibilityHint="Double tap to view session details"
     >
       <View style={styles.header}>
-        <Animated.Text style={[styles.name, { color: colors.textPrimary }]} numberOfLines={1}>
+        <Text style={[styles.name, { color: colors.textPrimary }]} numberOfLines={1}>
           {session.name}
-        </Animated.Text>
+        </Text>
         <ModelBadge model={session.model} />
       </View>
 
       <View style={styles.statusRow}>
-        <Animated.View
-          style={[
-            {
-              backgroundColor: statusBgColor,
-              borderRadius: 4,
-              paddingHorizontal: 4,
-              paddingVertical: 2,
-            },
-          ]}
-        >
+        <View style={styles.statusBadgeWrapper}>
           <StatusBadge status={session.status} />
-        </Animated.View>
-        <Animated.View
-          style={[
-            styles.progressContainer,
-            {
-              backgroundColor: progressBgColor,
-              borderRadius: 4,
-              paddingHorizontal: 6,
-              paddingVertical: 2,
-            },
-          ]}
-        >
-          <Animated.Text style={[styles.progress, { color: progressTextColor }]}>
-            {session.progress}%
-          </Animated.Text>
-        </Animated.View>
+        </View>
+        <View style={styles.progressWrapper}>
+          <Text style={[styles.progress, { color: colors.textPrimary }]}>{session.progress}%</Text>
+        </View>
       </View>
 
       <SessionProgress progress={session.progress} />
 
       {session.currentTask && (
-        <Animated.Text
-          style={[styles.currentTask, { color: colors.textSecondary }]}
-          numberOfLines={1}
-        >
+        <Text style={[styles.currentTask, { color: colors.textSecondary }]} numberOfLines={1}>
           {session.currentTask}
-        </Animated.Text>
+        </Text>
       )}
     </TouchableOpacity>
   )
@@ -174,8 +83,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  progressContainer: {
-    // Container for progress percentage with flash effect
+  statusBadgeWrapper: {
+    borderRadius: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+  },
+  progressWrapper: {
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
   },
   progress: {
     fontSize: 14,
