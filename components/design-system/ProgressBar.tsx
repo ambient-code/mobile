@@ -18,7 +18,7 @@ export function ProgressBar({ progress, color = TOKENS.primary }: ProgressBarPro
             width: `${percentage}%`,
             backgroundColor: color,
             shadowColor: color,
-          }
+          },
         ]}
       />
     </View>

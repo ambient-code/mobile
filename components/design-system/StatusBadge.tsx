@@ -4,10 +4,10 @@ import { TOKENS } from '@/utils/constants'
 type Status = 'running' | 'done' | 'error' | 'paused' | 'awaiting_review'
 
 const STATUS_COLORS = {
-  running: TOKENS.success,    // #22c55e
-  done: TOKENS.primary,       // #3b82f6
-  error: TOKENS.danger,       // #ef4444
-  paused: TOKENS.warning,     // #eab308
+  running: TOKENS.success, // #22c55e
+  done: TOKENS.primary, // #3b82f6
+  error: TOKENS.danger, // #ef4444
+  paused: TOKENS.warning, // #eab308
   awaiting_review: TOKENS.warning,
 }
 
@@ -22,30 +22,30 @@ export function StatusBadge({ status, label, size = 'small' }: StatusBadgeProps)
   const isLarge = size === 'large'
 
   return (
-    <View style={[
-      styles.container,
-      isLarge && styles.containerLarge,
-      {
-        backgroundColor: TOKENS.card,
-        shadowColor: color,
-        borderColor: color,
-      }
-    ]}>
-      {/* Colored dot with glow */}
-      <View style={[
-        styles.dot,
-        isLarge && styles.dotLarge,
+    <View
+      style={[
+        styles.container,
+        isLarge && styles.containerLarge,
         {
-          backgroundColor: color,
+          backgroundColor: TOKENS.card,
           shadowColor: color,
-        }
-      ]} />
+          borderColor: color,
+        },
+      ]}
+    >
+      {/* Colored dot with glow */}
+      <View
+        style={[
+          styles.dot,
+          isLarge && styles.dotLarge,
+          {
+            backgroundColor: color,
+            shadowColor: color,
+          },
+        ]}
+      />
 
-      <Text style={[
-        styles.label,
-        isLarge && styles.labelLarge,
-        { color: TOKENS.textPrimary }
-      ]}>
+      <Text style={[styles.label, isLarge && styles.labelLarge, { color: TOKENS.textPrimary }]}>
         {label}
       </Text>
     </View>

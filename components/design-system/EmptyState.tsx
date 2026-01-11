@@ -11,35 +11,17 @@ interface EmptyStateProps {
   onAction?: () => void
 }
 
-export function EmptyState({
-  icon,
-  title,
-  description,
-  actionLabel,
-  onAction
-}: EmptyStateProps) {
+export function EmptyState({ icon, title, description, actionLabel, onAction }: EmptyStateProps) {
   return (
     <View style={styles.container}>
-      <MaterialCommunityIcons
-        name={icon as any}
-        size={64}
-        color={TOKENS.textMuted}
-      />
+      <MaterialCommunityIcons name={icon as any} size={64} color={TOKENS.textMuted} />
 
-      <Text style={[styles.title, { color: TOKENS.textPrimary }]}>
-        {title}
-      </Text>
+      <Text style={[styles.title, { color: TOKENS.textPrimary }]}>{title}</Text>
 
-      <Text style={[styles.description, { color: TOKENS.textSecondary }]}>
-        {description}
-      </Text>
+      <Text style={[styles.description, { color: TOKENS.textSecondary }]}>{description}</Text>
 
       {actionLabel && onAction && (
-        <ControlButton
-          label={actionLabel}
-          onPress={onAction}
-          style={styles.action}
-        />
+        <ControlButton label={actionLabel} onPress={onAction} style={styles.action} />
       )}
     </View>
   )

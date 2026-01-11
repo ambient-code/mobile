@@ -30,10 +30,7 @@ export function ControlButton({
       accessibilityRole="button"
       accessibilityState={{ disabled }}
     >
-      <Text style={[
-        styles.label,
-        { color: isActive ? TOKENS.textPrimary : TOKENS.textSecondary }
-      ]}>
+      <Text style={[styles.label, { color: isActive ? TOKENS.textPrimary : TOKENS.textSecondary }]}>
         {label}
       </Text>
     </Pressable>

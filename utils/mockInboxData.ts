@@ -21,7 +21,7 @@ export const mockInboxData = {
       name: 'Archie',
       task: 'Schema design',
       sessionId: 'session-archie-1',
-      stuckSince: new Date('2025-12-07T03:42:00'),
+      stuckSince: new Date(Date.now() - 6 * 3600000), // 6 hours ago (stuck since 3:42 AM)
     },
   ] as StuckAgent[],
   overnightResults: [
@@ -31,10 +31,10 @@ export const mockInboxData = {
   ] as OvernightResult[],
   forecast: {
     deepWorkWindow: {
-      start: new Date('2025-12-07T10:30:00'),
-      end: new Date('2025-12-07T13:00:00'),
+      start: new Date(new Date().setHours(10, 30, 0, 0)), // Today at 10:30 AM
+      end: new Date(new Date().setHours(13, 0, 0, 0)), // Today at 1:00 PM
     },
-    nextReviewBatch: new Date('2025-12-07T14:15:00'),
+    nextReviewBatch: new Date(new Date().setHours(14, 15, 0, 0)), // Today at 2:15 PM
     agentHoursInProgress: 14,
   } as Forecast,
 }
@@ -190,35 +190,35 @@ export const mockNotificationHistory: Notification[] = [
     id: 'n1',
     agentName: 'Parker',
     title: 'RFE #67 triage complete', // Easter egg!
-    createdAt: new Date('2025-12-07T12:52:00'),
+    createdAt: new Date(Date.now() - 3600000), // 1 hour ago
     status: 'dismissed',
   },
   {
     id: 'n2',
     agentName: 'Phoenix',
     title: 'Test suite ready for review',
-    createdAt: new Date('2025-12-07T11:47:00'),
+    createdAt: new Date(Date.now() - 2 * 3600000), // 2 hours ago
     status: 'reviewed',
   },
   {
     id: 'n3',
     agentName: 'Archie',
     title: 'Schema retry successful',
-    createdAt: new Date('2025-12-07T10:15:00'),
+    createdAt: new Date(Date.now() - 4 * 3600000), // 4 hours ago
     status: 'reviewed',
   },
   {
     id: 'n4',
     agentName: 'Taylor',
     title: 'PR #127 merged successfully',
-    createdAt: new Date('2025-12-06T16:30:00'),
+    createdAt: new Date(Date.now() - 18 * 3600000), // 18 hours ago (yesterday afternoon)
     status: 'reviewed',
   },
   {
     id: 'n5',
     agentName: 'Morgan',
     title: 'Build failed - Node version mismatch',
-    createdAt: new Date('2025-12-06T14:22:00'),
+    createdAt: new Date(Date.now() - 20 * 3600000), // 20 hours ago (yesterday afternoon)
     status: 'dismissed',
   },
 ]

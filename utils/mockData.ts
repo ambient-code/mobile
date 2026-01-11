@@ -10,10 +10,38 @@ import { GitHubNotification, NotificationType } from '@/types/notification'
 import { NOTIFICATION_WORKFLOW_MAP } from '@/utils/constants'
 import { logger } from '@/utils/logger'
 
+/**
+ * Format a date as "MMM DD" (e.g., "Jan 11")
+ */
+function formatDateForSessionName(date: Date): string {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+  return `${months[date.getMonth()]} ${date.getDate()}`
+}
+
+// Generate current dates for session names
+const now = new Date()
+const today = formatDateForSessionName(now)
+const yesterday = formatDateForSessionName(new Date(Date.now() - 86400000))
+const twoDaysAgo = formatDateForSessionName(new Date(Date.now() - 172800000))
+const threeDaysAgo = formatDateForSessionName(new Date(Date.now() - 259200000))
+
 export const MOCK_SESSIONS: Session[] = [
   {
     id: '1',
-    name: 'platform Review - Nov 26',
+    name: `platform Review - ${today}`,
     status: SessionStatus.RUNNING,
     progress: 67,
     model: ModelType.SONNET_4_5,
@@ -33,7 +61,7 @@ export const MOCK_SESSIONS: Session[] = [
   },
   {
     id: '2',
-    name: 'acp-mobile Bugfix - Nov 26',
+    name: `acp-mobile Bugfix - ${today}`,
     status: SessionStatus.AWAITING_REVIEW,
     progress: 100,
     model: ModelType.SONNET_4_5,
@@ -59,7 +87,7 @@ export const MOCK_SESSIONS: Session[] = [
   },
   {
     id: '3',
-    name: 'backend-api Research - Nov 25',
+    name: `backend-api Research - ${yesterday}`,
     status: SessionStatus.RUNNING,
     progress: 45,
     model: ModelType.OPUS_4_5,
@@ -79,7 +107,7 @@ export const MOCK_SESSIONS: Session[] = [
   },
   {
     id: '4',
-    name: 'feature-planner Plan - Nov 25',
+    name: `feature-planner Plan - ${yesterday}`,
     status: SessionStatus.ERROR,
     progress: 23,
     model: ModelType.SONNET_4_5,
@@ -99,7 +127,7 @@ export const MOCK_SESSIONS: Session[] = [
   },
   {
     id: '5',
-    name: 'docs-site Plan a Feature - Nov 24',
+    name: `docs-site Plan a Feature - ${threeDaysAgo}`,
     status: SessionStatus.DONE,
     progress: 100,
     model: ModelType.SONNET_4_5,

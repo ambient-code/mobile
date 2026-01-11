@@ -19,30 +19,16 @@ interface StatCardProps {
   style?: StyleProp<ViewStyle>
 }
 
-export function StatCard({
-  label,
-  value,
-  icon,
-  variant = 'default',
-  style
-}: StatCardProps) {
+export function StatCard({ label, value, icon, variant = 'default', style }: StatCardProps) {
   const color = VARIANT_COLORS[variant]
 
   return (
     <View style={[styles.container, style]}>
-      <MaterialCommunityIcons
-        name={icon as any}
-        size={20}
-        color={color}
-      />
+      <MaterialCommunityIcons name={icon as any} size={20} color={color} />
 
-      <Text style={[styles.value, { color: TOKENS.textPrimary }]}>
-        {value}
-      </Text>
+      <Text style={[styles.value, { color: TOKENS.textPrimary }]}>{value}</Text>
 
-      <Text style={[styles.label, { color: TOKENS.textMuted }]}>
-        {label}
-      </Text>
+      <Text style={[styles.label, { color: TOKENS.textMuted }]}>{label}</Text>
     </View>
   )
 }
