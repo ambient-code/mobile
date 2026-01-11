@@ -24,15 +24,15 @@ export function DecisionQueueCard({ count, totalMinutes }: DecisionQueueCardProp
       accessibilityHint="Opens decision queue"
     >
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>Decision Queue</Text>
-        <View style={[styles.badge, { backgroundColor: colors.accent }]}>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>Decision Queue</Text>
+        <View style={[styles.badge, { backgroundColor: colors.primary }]}>
           <Text style={styles.badgeText}>{count}</Text>
         </View>
       </View>
       <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
         ~{totalMinutes} min to review
       </Text>
-      <View style={[styles.button, { backgroundColor: colors.accent }]}>
+      <View style={[styles.button, { backgroundColor: colors.primary }]}>
         <Text style={styles.buttonText}>Start Reviews →</Text>
       </View>
     </TouchableOpacity>

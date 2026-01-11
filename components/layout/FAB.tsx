@@ -1,5 +1,6 @@
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { TOKENS } from '@/utils/constants'
 import { router } from 'expo-router'
 
 export function FAB() {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#6366f1', // Purple accent
+    backgroundColor: TOKENS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // Android shadow

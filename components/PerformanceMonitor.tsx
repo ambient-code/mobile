@@ -65,27 +65,27 @@ export function PerformanceMonitor() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.title, { color: colors.text }]}>Performance Monitor</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>Performance Monitor</Text>
         <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.closeButton}>
-          <Text style={[styles.closeText, { color: colors.text }]}>✕</Text>
+          <Text style={[styles.closeText, { color: colors.textPrimary }]}>✕</Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content}>
         {/* Memory Stats */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Memory</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Memory</Text>
           {metrics.memory ? (
             <>
               <View style={styles.row}>
                 <Text style={[styles.label, { color: colors.textSecondary }]}>Used:</Text>
-                <Text style={[styles.value, { color: colors.text }]}>
+                <Text style={[styles.value, { color: colors.textPrimary }]}>
                   {formatBytes(metrics.memory.usedJSHeapSize)}
                 </Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.label, { color: colors.textSecondary }]}>Total:</Text>
-                <Text style={[styles.value, { color: colors.text }]}>
+                <Text style={[styles.value, { color: colors.textPrimary }]}>
                   {formatBytes(metrics.memory.totalJSHeapSize)}
                 </Text>
               </View>
@@ -123,7 +123,7 @@ export function PerformanceMonitor() {
 
         {/* FPS Stats */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Frame Rate</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Frame Rate</Text>
           {metrics.fps ? (
             <>
               <View style={styles.row}>
@@ -140,19 +140,19 @@ export function PerformanceMonitor() {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.label, { color: colors.textSecondary }]}>Average:</Text>
-                <Text style={[styles.value, { color: colors.text }]}>
+                <Text style={[styles.value, { color: colors.textPrimary }]}>
                   {metrics.fps.average.toFixed(1)} FPS
                 </Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.label, { color: colors.textSecondary }]}>Min / Max:</Text>
-                <Text style={[styles.value, { color: colors.text }]}>
+                <Text style={[styles.value, { color: colors.textPrimary }]}>
                   {metrics.fps.min.toFixed(0)} / {metrics.fps.max.toFixed(0)}
                 </Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.label, { color: colors.textSecondary }]}>Slow Frames:</Text>
-                <Text style={[styles.value, { color: colors.text }]}>
+                <Text style={[styles.value, { color: colors.textPrimary }]}>
                   {metrics.fps.slowFrameCount} (
                   {((metrics.fps.slowFrameCount / metrics.fps.totalFrames) * 100).toFixed(1)}
                   %)
@@ -168,7 +168,9 @@ export function PerformanceMonitor() {
 
         {/* Render Stats */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Top Rendered Components</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
+            Top Rendered Components
+          </Text>
           {metrics.renders.length > 0 ? (
             metrics.renders.map((stat, index) => (
               <View key={stat.componentName} style={styles.renderRow}>
@@ -176,7 +178,10 @@ export function PerformanceMonitor() {
                   {index + 1}.
                 </Text>
                 <View style={styles.renderInfo}>
-                  <Text style={[styles.componentName, { color: colors.text }]} numberOfLines={1}>
+                  <Text
+                    style={[styles.componentName, { color: colors.textPrimary }]}
+                    numberOfLines={1}
+                  >
                     {stat.componentName}
                   </Text>
                   <Text style={[styles.renderCount, { color: colors.textSecondary }]}>
@@ -196,7 +201,7 @@ export function PerformanceMonitor() {
         {/* Actions */}
         <View style={styles.section}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={() => {
               if (typeof global !== 'undefined' && (global as any).performance?.report) {
                 ;(global as any).performance.report()
@@ -214,7 +219,7 @@ export function PerformanceMonitor() {
               console.log('🔄 Performance metrics reset')
             }}
           >
-            <Text style={[styles.buttonText, { color: colors.text }]}>Reset Metrics</Text>
+            <Text style={[styles.buttonText, { color: colors.textPrimary }]}>Reset Metrics</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -222,7 +227,7 @@ export function PerformanceMonitor() {
       {/* Toggle button - always visible in dev */}
       {!isVisible && (
         <TouchableOpacity
-          style={[styles.floatingButton, { backgroundColor: colors.accent }]}
+          style={[styles.floatingButton, { backgroundColor: colors.primary }]}
           onPress={() => setIsVisible(true)}
         >
           <Text style={styles.floatingButtonText}>📊</Text>
@@ -246,7 +251,7 @@ export function PerformanceToggle() {
       {isVisible && <PerformanceMonitor />}
       {!isVisible && (
         <TouchableOpacity
-          style={[styles.floatingButton, { backgroundColor: colors.accent }]}
+          style={[styles.floatingButton, { backgroundColor: colors.primary }]}
           onPress={() => setIsVisible(true)}
         >
           <Text style={styles.floatingButtonText}>📊</Text>

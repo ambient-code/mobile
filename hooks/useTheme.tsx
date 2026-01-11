@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from 'react'
 import { useColorScheme } from 'react-native'
-import { COLORS } from '@/utils/constants'
+import { COLORS, TOKENS } from '@/utils/constants'
 import { PreferencesService } from '@/services/storage/preferences'
 
 type ThemeMode = 'light' | 'dark' | 'system'
@@ -16,7 +16,7 @@ type ThemeMode = 'light' | 'dark' | 'system'
 interface ThemeContextType {
   theme: 'light' | 'dark'
   themeMode: ThemeMode
-  colors: typeof COLORS.light
+  colors: typeof TOKENS
   setThemeMode: (mode: ThemeMode) => void
 }
 
@@ -46,13 +46,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     [themeMode, systemColorScheme]
   )
 
-  // Memoize colors object to prevent recreation
-  const colors = useMemo(() => COLORS[theme], [theme])
+  // Force dark-first design: always return TOKENS
+  // Keep legacy colors for backward compatibility during migration
+  const colors = useMemo(() => TOKENS, [])
 
   // Memoize entire context value to prevent unnecessary re-renders
+  // Force theme to dark for dark-first design
   const contextValue = useMemo(
-    () => ({ theme, themeMode, colors, setThemeMode }),
-    [theme, themeMode, colors, setThemeMode]
+    () => ({ theme: 'dark' as const, themeMode, colors, setThemeMode }),
+    [themeMode, colors, setThemeMode]
   )
 
   return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>

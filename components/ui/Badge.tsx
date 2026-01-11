@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { SessionStatus } from '@/types/session'
+import { TOKENS } from '@/utils/constants'
 import { useTheme } from '@/hooks/useTheme'
 
 interface StatusBadgeProps {
@@ -13,7 +14,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   const getStatusColor = () => {
     switch (status) {
       case SessionStatus.RUNNING:
-        return colors.accent
+        return colors.primary
       case SessionStatus.PAUSED:
         return colors.warning
       case SessionStatus.DONE:
@@ -21,7 +22,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       case SessionStatus.AWAITING_REVIEW:
         return colors.warning
       case SessionStatus.ERROR:
-        return colors.error
+        return colors.danger
       default:
         return colors.textSecondary
     }
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: TOKENS.radius20,
     gap: 4,
   },
   dot: {

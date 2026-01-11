@@ -59,7 +59,7 @@ export default function NotificationHistoryScreen() {
             <View key={notif.id} style={[styles.item, { backgroundColor: colors.card }]}>
               <AgentAvatar agentName={notif.agentName} size="small" />
               <View style={styles.content}>
-                <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>
+                <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={2}>
                   {notif.title}
                 </Text>
                 <Text style={[styles.time, { color: colors.textSecondary }]}>
@@ -73,7 +73,7 @@ export default function NotificationHistoryScreen() {
                 <NotificationStatusBadge status={notif.status} />
                 {notif.status === 'dismissed' && (
                   <TouchableOpacity
-                    style={[styles.restoreButton, { backgroundColor: colors.accent }]}
+                    style={[styles.restoreButton, { backgroundColor: colors.primary }]}
                     onPress={() => handleRestore(notif.id)}
                   >
                     <Text style={styles.restoreText}>Restore</Text>

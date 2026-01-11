@@ -29,7 +29,7 @@ export default function DecisionQueueScreen() {
       style={[styles.container, { backgroundColor: colors.bg }]}
       contentContainerStyle={styles.content}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.accent} />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
       }
     />
   )

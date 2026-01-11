@@ -26,7 +26,7 @@ export default function ReviewDecisionScreen() {
   if (!decision?.details) {
     return (
       <View style={[styles.error, { backgroundColor: colors.bg }]}>
-        <Text style={{ color: colors.text }}>Decision not found</Text>
+        <Text style={{ color: colors.textPrimary }}>Decision not found</Text>
       </View>
     )
   }
@@ -79,7 +79,7 @@ export default function ReviewDecisionScreen() {
             <View
               style={[
                 styles.stepCircle,
-                { backgroundColor: currentStep >= step ? colors.accent : colors.card },
+                { backgroundColor: currentStep >= step ? colors.primary : colors.card },
               ]}
             >
               <Text
@@ -95,7 +95,7 @@ export default function ReviewDecisionScreen() {
               <View
                 style={[
                   styles.stepLine,
-                  { backgroundColor: currentStep > step ? colors.accent : colors.card },
+                  { backgroundColor: currentStep > step ? colors.primary : colors.card },
                 ]}
               />
             )}
@@ -106,20 +106,26 @@ export default function ReviewDecisionScreen() {
       {/* Step 1: Summary */}
       {currentStep === 1 && (
         <View style={styles.stepContent}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Question</Text>
-          <Text style={[styles.sectionText, { color: colors.text }]}>{details.question}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Question</Text>
+          <Text style={[styles.sectionText, { color: colors.textPrimary }]}>
+            {details.question}
+          </Text>
 
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Context</Text>
-          <Text style={[styles.sectionText, { color: colors.text }]}>{details.context}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Context</Text>
+          <Text style={[styles.sectionText, { color: colors.textPrimary }]}>{details.context}</Text>
 
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Analysis</Text>
-          <Text style={[styles.sectionText, { color: colors.text }]}>{details.analysis}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Analysis</Text>
+          <Text style={[styles.sectionText, { color: colors.textPrimary }]}>
+            {details.analysis}
+          </Text>
 
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Recommendation</Text>
-          <Text style={[styles.sectionText, { color: colors.text }]}>{details.recommendation}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Recommendation</Text>
+          <Text style={[styles.sectionText, { color: colors.textPrimary }]}>
+            {details.recommendation}
+          </Text>
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={() => setCurrentStep(2)}
           >
             <Text style={styles.buttonText}>Next →</Text>
@@ -130,7 +136,7 @@ export default function ReviewDecisionScreen() {
       {/* Step 2: Key Sections */}
       {currentStep === 2 && (
         <View style={styles.stepContent}>
-          <Text style={[styles.title, { color: colors.text }]}>Key Sections</Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>Key Sections</Text>
 
           {details.sections.map((section) => (
             <View key={section.id} style={[styles.accordionItem, { backgroundColor: colors.card }]}>
@@ -138,11 +144,11 @@ export default function ReviewDecisionScreen() {
                 style={styles.accordionHeader}
                 onPress={() => handleExpandSection(section.id)}
               >
-                <Text style={[styles.accordionTitle, { color: colors.text }]}>
+                <Text style={[styles.accordionTitle, { color: colors.textPrimary }]}>
                   {viewedSections.has(section.id) ? '✓ ' : ''}
                   {section.title}
                 </Text>
-                <Text style={{ color: colors.text }}>
+                <Text style={{ color: colors.textPrimary }}>
                   {expandedSections.has(section.id) ? '▼' : '▶'}
                 </Text>
               </TouchableOpacity>
@@ -163,7 +169,7 @@ export default function ReviewDecisionScreen() {
           <TouchableOpacity
             style={[
               styles.button,
-              { backgroundColor: allSectionsViewed ? colors.accent : colors.card },
+              { backgroundColor: allSectionsViewed ? colors.primary : colors.card },
             ]}
             onPress={() => allSectionsViewed && setCurrentStep(3)}
             disabled={!allSectionsViewed}
@@ -183,7 +189,7 @@ export default function ReviewDecisionScreen() {
       {/* Step 3: Comment + Complete */}
       {currentStep === 3 && (
         <View style={styles.stepContent}>
-          <Text style={[styles.title, { color: colors.text }]}>Your Feedback</Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>Your Feedback</Text>
 
           <View style={styles.quickChips}>
             {['Looks good', 'Needs discussion', 'Try different approach'].map((chip) => (
@@ -192,8 +198,8 @@ export default function ReviewDecisionScreen() {
                 style={[
                   styles.chip,
                   {
-                    backgroundColor: quickResponse === chip ? colors.accent : colors.card,
-                    borderColor: colors.accent,
+                    backgroundColor: quickResponse === chip ? colors.primary : colors.card,
+                    borderColor: colors.primary,
                   },
                 ]}
                 onPress={() => handleQuickResponse(chip)}
@@ -201,7 +207,7 @@ export default function ReviewDecisionScreen() {
                 <Text
                   style={[
                     styles.chipText,
-                    { color: quickResponse === chip ? '#FFF' : colors.text },
+                    { color: quickResponse === chip ? '#FFF' : colors.textPrimary },
                   ]}
                 >
                   {chip}
@@ -213,7 +219,7 @@ export default function ReviewDecisionScreen() {
           <TextInput
             style={[
               styles.textInput,
-              { backgroundColor: colors.card, color: colors.text, borderColor: colors.card },
+              { backgroundColor: colors.card, color: colors.textPrimary, borderColor: colors.card },
             ]}
             placeholder="Add your comment..."
             placeholderTextColor={colors.textSecondary}
@@ -224,7 +230,7 @@ export default function ReviewDecisionScreen() {
           />
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={handleComplete}
           >
             <Text style={styles.buttonText}>Complete Review</Text>

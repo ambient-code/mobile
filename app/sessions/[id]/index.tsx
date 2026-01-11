@@ -25,7 +25,7 @@ export default function SessionDetailScreen() {
   if (isLoading) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
+        <ActivityIndicator size="large" color={colors.primary} />
         <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
           Loading session...
         </Text>
@@ -36,7 +36,7 @@ export default function SessionDetailScreen() {
   if (error || !session) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}>
-        <Text style={[styles.errorText, { color: colors.error }]}>
+        <Text style={[styles.errorText, { color: colors.danger }]}>
           Failed to load session details
         </Text>
       </View>
@@ -58,12 +58,12 @@ export default function SessionDetailScreen() {
     >
       {/* Header with Current Task */}
       <View style={[styles.card, { backgroundColor: colors.card }]}>
-        <Text style={[styles.sessionName, { color: colors.text }]}>{session.name}</Text>
+        <Text style={[styles.sessionName, { color: colors.textPrimary }]}>{session.name}</Text>
 
         <View style={styles.metaRow}>
           <StatusBadge status={session.status} />
-          <View style={[styles.modelBadge, { backgroundColor: colors.accent + '20' }]}>
-            <Text style={[styles.modelText, { color: colors.accent }]}>
+          <View style={[styles.modelBadge, { backgroundColor: colors.primary + '20' }]}>
+            <Text style={[styles.modelText, { color: colors.primary }]}>
               {getSimpleModelName(session.model)}
             </Text>
           </View>
@@ -74,7 +74,7 @@ export default function SessionDetailScreen() {
             <Text style={[styles.currentTaskLabel, { color: colors.textSecondary }]}>
               Currently working on:
             </Text>
-            <Text style={[styles.currentTaskText, { color: colors.text }]}>
+            <Text style={[styles.currentTaskText, { color: colors.textPrimary }]}>
               {session.currentTask}
             </Text>
           </View>
@@ -83,7 +83,7 @@ export default function SessionDetailScreen() {
         <View style={styles.progressSection}>
           <View style={styles.progressHeader}>
             <Text style={[styles.progressLabel, { color: colors.textSecondary }]}>Progress</Text>
-            <Text style={[styles.progressValue, { color: colors.accent }]}>
+            <Text style={[styles.progressValue, { color: colors.primary }]}>
               {session.progress}%
             </Text>
           </View>
@@ -96,11 +96,11 @@ export default function SessionDetailScreen() {
         <View
           style={[
             styles.card,
-            { backgroundColor: colors.error + '10', borderColor: colors.error, borderWidth: 1 },
+            { backgroundColor: colors.danger + '10', borderColor: colors.danger, borderWidth: 1 },
           ]}
         >
-          <Text style={[styles.cardTitle, { color: colors.error }]}>Error</Text>
-          <Text style={[styles.errorMessageText, { color: colors.error }]}>
+          <Text style={[styles.cardTitle, { color: colors.danger }]}>Error</Text>
+          <Text style={[styles.errorMessageText, { color: colors.danger }]}>
             {session.errorMessage}
           </Text>
         </View>
@@ -119,12 +119,12 @@ export default function SessionDetailScreen() {
             },
           ]}
         >
-          <Text style={[styles.cardTitle, { color: colors.text }]}>Review Required</Text>
+          <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Review Required</Text>
           <Text style={[styles.reviewPrompt, { color: colors.textSecondary }]}>
             This session has completed and is ready for your review.
           </Text>
           <TouchableOpacity
-            style={[styles.startReviewButton, { backgroundColor: colors.accent }]}
+            style={[styles.startReviewButton, { backgroundColor: colors.primary }]}
             onPress={() => router.push(`/sessions/${session.id}/review`)}
             activeOpacity={0.8}
           >
@@ -141,7 +141,7 @@ export default function SessionDetailScreen() {
             onPress={() => setTasksExpanded(!tasksExpanded)}
             activeOpacity={0.7}
           >
-            <Text style={[styles.cardTitle, { color: colors.text, marginBottom: 0 }]}>
+            <Text style={[styles.cardTitle, { color: colors.textPrimary, marginBottom: 0 }]}>
               Tasks Completed ({session.tasksCompleted.length})
             </Text>
             <Text style={[styles.accordionIcon, { color: colors.textSecondary }]}>
@@ -169,7 +169,9 @@ export default function SessionDetailScreen() {
           onPress={() => setDetailsExpanded(!detailsExpanded)}
           activeOpacity={0.7}
         >
-          <Text style={[styles.cardTitle, { color: colors.text, marginBottom: 0 }]}>Details</Text>
+          <Text style={[styles.cardTitle, { color: colors.textPrimary, marginBottom: 0 }]}>
+            Details
+          </Text>
           <Text style={[styles.accordionIcon, { color: colors.textSecondary }]}>
             {detailsExpanded ? '▼' : '▶'}
           </Text>
@@ -181,31 +183,31 @@ export default function SessionDetailScreen() {
               <Text style={[styles.metadataLabel, { color: colors.textSecondary }]}>
                 Repository:
               </Text>
-              <Text style={[styles.metadataValue, { color: colors.accent }]}>
+              <Text style={[styles.metadataValue, { color: colors.primary }]}>
                 {session.repository.name}
               </Text>
             </View>
             <View style={styles.metadataRow}>
               <Text style={[styles.metadataLabel, { color: colors.textSecondary }]}>Branch:</Text>
-              <Text style={[styles.metadataValue, { color: colors.text }]}>
+              <Text style={[styles.metadataValue, { color: colors.textPrimary }]}>
                 {session.repository.branch}
               </Text>
             </View>
             <View style={styles.metadataRow}>
               <Text style={[styles.metadataLabel, { color: colors.textSecondary }]}>Workflow:</Text>
-              <Text style={[styles.metadataValue, { color: colors.text }]}>
+              <Text style={[styles.metadataValue, { color: colors.textPrimary }]}>
                 {session.workflowType}
               </Text>
             </View>
             <View style={styles.metadataRow}>
               <Text style={[styles.metadataLabel, { color: colors.textSecondary }]}>Created:</Text>
-              <Text style={[styles.metadataValue, { color: colors.text }]}>
+              <Text style={[styles.metadataValue, { color: colors.textPrimary }]}>
                 {session.createdAt.toLocaleDateString()} at {session.createdAt.toLocaleTimeString()}
               </Text>
             </View>
             <View style={styles.metadataRow}>
               <Text style={[styles.metadataLabel, { color: colors.textSecondary }]}>Updated:</Text>
-              <Text style={[styles.metadataValue, { color: colors.text }]}>
+              <Text style={[styles.metadataValue, { color: colors.textPrimary }]}>
                 {session.updatedAt.toLocaleDateString()} at {session.updatedAt.toLocaleTimeString()}
               </Text>
             </View>

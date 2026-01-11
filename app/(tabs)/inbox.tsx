@@ -31,7 +31,7 @@ export default function InboxScreen() {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.bg }]}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.accent} />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
       }
       showsVerticalScrollIndicator={false}
     >

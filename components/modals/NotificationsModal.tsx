@@ -101,12 +101,12 @@ export function NotificationsModal({ visible, onClose }: NotificationsModalProps
   const renderEmptyState = (type: 'notifications' | 'announcements') => (
     <View style={styles.emptyState}>
       <View style={[styles.quoteCard, { backgroundColor: colors.card }]}>
-        <IconSymbol name="sparkles" size={32} color={colors.accent} />
-        <Text style={[styles.quoteText, { color: colors.text }]}>
+        <IconSymbol name="sparkles" size={32} color={colors.primary} />
+        <Text style={[styles.quoteText, { color: colors.textPrimary }]}>
           &quot;{randomQuote.quote}&quot;
         </Text>
         <View style={styles.quoteAuthor}>
-          <Text style={[styles.authorName, { color: colors.accent }]}>{randomQuote.author}</Text>
+          <Text style={[styles.authorName, { color: colors.primary }]}>{randomQuote.author}</Text>
           <Text style={[styles.authorContext, { color: colors.textSecondary }]}>
             {randomQuote.context}
           </Text>
@@ -137,34 +137,34 @@ export function NotificationsModal({ visible, onClose }: NotificationsModalProps
         style={[
           styles.notificationCard,
           {
-            backgroundColor: isUnread ? colors.accent + '10' : colors.card,
-            borderLeftColor: isUnread ? colors.accent : colors.border,
+            backgroundColor: isUnread ? colors.primary + '10' : colors.card,
+            borderLeftColor: isUnread ? colors.primary : colors.border,
           },
         ]}
         activeOpacity={0.7}
       >
         <View style={styles.notificationContent}>
-          <View style={[styles.notificationIcon, { backgroundColor: colors.accent + '20' }]}>
-            <IconSymbol name={iconName} size={20} color={colors.accent} />
+          <View style={[styles.notificationIcon, { backgroundColor: colors.primary + '20' }]}>
+            <IconSymbol name={iconName} size={20} color={colors.primary} />
           </View>
           <View style={styles.notificationDetails}>
             <View style={styles.notificationHeader}>
               <Text
                 style={[
                   styles.notificationTitle,
-                  { color: colors.text, fontWeight: isUnread ? '700' : '600' },
+                  { color: colors.textPrimary, fontWeight: isUnread ? '700' : '600' },
                 ]}
               >
                 {notification.title}
               </Text>
-              {isUnread && <View style={[styles.unreadDot, { backgroundColor: colors.accent }]} />}
+              {isUnread && <View style={[styles.unreadDot, { backgroundColor: colors.primary }]} />}
             </View>
             <Text style={[styles.notificationMessage, { color: colors.textSecondary }]}>
               {notification.message}
             </Text>
             <View style={styles.notificationFooter}>
               {notification.author && (
-                <Text style={[styles.notificationAuthor, { color: colors.accent }]}>
+                <Text style={[styles.notificationAuthor, { color: colors.primary }]}>
                   {notification.author}
                 </Text>
               )}
@@ -188,9 +188,9 @@ export function NotificationsModal({ visible, onClose }: NotificationsModalProps
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
         {/* Header */}
         <View style={[styles.header, { borderBottomColor: colors.border }]}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>Updates</Text>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Updates</Text>
           <TouchableOpacity onPress={onClose} activeOpacity={0.7}>
-            <Text style={[styles.closeButton, { color: colors.accent }]}>Done</Text>
+            <Text style={[styles.closeButton, { color: colors.primary }]}>Done</Text>
           </TouchableOpacity>
         </View>
 
@@ -200,19 +200,19 @@ export function NotificationsModal({ visible, onClose }: NotificationsModalProps
             style={[
               styles.tab,
               activeTab === 'notifications' && {
-                borderBottomColor: colors.accent,
+                borderBottomColor: colors.primary,
                 borderBottomWidth: 2,
               },
             ]}
             onPress={() => setActiveTab('notifications')}
             activeOpacity={0.7}
           >
-            <IconSymbol name="bell.fill" size={20} color={colors.text} />
+            <IconSymbol name="bell.fill" size={20} color={colors.textPrimary} />
             <Text
               style={[
                 styles.tabText,
                 {
-                  color: activeTab === 'notifications' ? colors.accent : colors.textSecondary,
+                  color: activeTab === 'notifications' ? colors.primary : colors.textSecondary,
                 },
               ]}
             >
@@ -224,19 +224,19 @@ export function NotificationsModal({ visible, onClose }: NotificationsModalProps
             style={[
               styles.tab,
               activeTab === 'announcements' && {
-                borderBottomColor: colors.accent,
+                borderBottomColor: colors.primary,
                 borderBottomWidth: 2,
               },
             ]}
             onPress={() => setActiveTab('announcements')}
             activeOpacity={0.7}
           >
-            <IconSymbol name="sparkles" size={20} color={colors.text} />
+            <IconSymbol name="sparkles" size={20} color={colors.textPrimary} />
             <Text
               style={[
                 styles.tabText,
                 {
-                  color: activeTab === 'announcements' ? colors.accent : colors.textSecondary,
+                  color: activeTab === 'announcements' ? colors.primary : colors.textSecondary,
                 },
               ]}
             >

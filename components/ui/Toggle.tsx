@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
+import { TOKENS } from '@/utils/constants'
 
 interface ToggleProps {
   label: string
@@ -27,9 +28,9 @@ export function Toggle({
         value={value}
         onValueChange={onValueChange}
         disabled={disabled}
-        trackColor={{ false: '#d1d5db', true: '#a78bfa' }}
-        thumbColor={value ? '#8b5cf6' : '#f3f4f6'}
-        ios_backgroundColor="#d1d5db"
+        trackColor={{ false: TOKENS.border, true: TOKENS.primary }}
+        thumbColor={value ? TOKENS.primary : TOKENS.card}
+        ios_backgroundColor={TOKENS.border}
       />
     </View>
   )
@@ -40,9 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: TOKENS.border,
   },
   textContainer: {
     flex: 1,
@@ -51,11 +52,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 2,
   },
   description: {
     fontSize: 13,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
   },
 })

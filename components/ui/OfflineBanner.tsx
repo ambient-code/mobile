@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { IconSymbol } from './icon-symbol'
+import { TOKENS } from '@/utils/constants'
 import { useTheme } from '@/hooks/useTheme'
 
 /**
@@ -13,9 +14,9 @@ export function OfflineBanner() {
   const { colors } = useTheme()
 
   return (
-    <View style={[styles.banner, { backgroundColor: colors.warning }]}>
-      <IconSymbol name="wifi.slash" size={16} color="#fff" />
-      <Text style={styles.text}>Offline - Using cached data</Text>
+    <View style={[styles.banner, { backgroundColor: TOKENS.danger + '33' }]}>
+      <IconSymbol name="wifi.slash" size={16} color={TOKENS.danger} />
+      <Text style={[styles.text, { color: TOKENS.textPrimary }]}>Offline - Using cached data</Text>
     </View>
   )
 }
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   text: {
-    color: '#fff',
     fontSize: 13,
     fontWeight: '600',
   },

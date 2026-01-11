@@ -74,9 +74,9 @@ function ErrorFallback({ error, onReset }: { error: Error | null; onReset: () =>
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <View style={[styles.card, { backgroundColor: colors.card }]}>
-        <Text style={[styles.title, { color: colors.error }]}>Something went wrong</Text>
+        <Text style={[styles.title, { color: colors.danger }]}>Something went wrong</Text>
 
-        <Text style={[styles.message, { color: colors.text }]}>
+        <Text style={[styles.message, { color: colors.textPrimary }]}>
           {error?.message || 'An unexpected error occurred'}
         </Text>
 
@@ -90,7 +90,7 @@ function ErrorFallback({ error, onReset }: { error: Error | null; onReset: () =>
         )}
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.accent }]}
+          style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={onReset}
           activeOpacity={0.8}
         >

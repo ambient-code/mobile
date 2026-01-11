@@ -98,20 +98,24 @@ export default function CreateRFEScreen() {
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Feather name="arrow-left" size={24} color={colors.text} />
+          <Feather name="arrow-left" size={24} color={colors.textPrimary} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Create RFE</Text>
+        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Create RFE</Text>
         <View style={{ width: 24 }} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Title Input */}
         <View style={styles.section}>
-          <Text style={[styles.label, { color: colors.text }]}>Title</Text>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>Title</Text>
           <TextInput
             style={[
               styles.input,
-              { backgroundColor: colors.card, borderColor: colors.border, color: colors.text },
+              {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+                color: colors.textPrimary,
+              },
             ]}
             value={title}
             onChangeText={setTitle}
@@ -122,11 +126,15 @@ export default function CreateRFEScreen() {
 
         {/* Description Input */}
         <View style={styles.section}>
-          <Text style={[styles.label, { color: colors.text }]}>Description</Text>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>Description</Text>
           <TextInput
             style={[
               styles.textArea,
-              { backgroundColor: colors.card, borderColor: colors.border, color: colors.text },
+              {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+                color: colors.textPrimary,
+              },
             ]}
             value={description}
             onChangeText={setDescription}
@@ -140,7 +148,7 @@ export default function CreateRFEScreen() {
 
         {/* Sources Section */}
         <View style={styles.section}>
-          <Text style={[styles.label, { color: colors.text }]}>Sources & Context</Text>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>Sources & Context</Text>
           <Text style={[styles.helperText, { color: colors.textSecondary }]}>
             Add Google Docs, URLs, or Jira tickets as context for your RFE
           </Text>
@@ -153,7 +161,7 @@ export default function CreateRFEScreen() {
                 style={[
                   styles.typeButton,
                   {
-                    backgroundColor: newSourceType === type ? colors.accent : colors.card,
+                    backgroundColor: newSourceType === type ? colors.primary : colors.card,
                     borderColor: colors.border,
                   },
                 ]}
@@ -164,12 +172,12 @@ export default function CreateRFEScreen() {
                 <Feather
                   name={SOURCE_ICONS[type]}
                   size={16}
-                  color={newSourceType === type ? '#fff' : colors.text}
+                  color={newSourceType === type ? '#fff' : colors.textPrimary}
                 />
                 <Text
                   style={[
                     styles.typeButtonText,
-                    { color: newSourceType === type ? '#fff' : colors.text },
+                    { color: newSourceType === type ? '#fff' : colors.textPrimary },
                   ]}
                 >
                   {type.toUpperCase()}
@@ -183,7 +191,11 @@ export default function CreateRFEScreen() {
             <TextInput
               style={[
                 styles.sourceInput,
-                { backgroundColor: colors.card, borderColor: colors.border, color: colors.text },
+                {
+                  backgroundColor: colors.card,
+                  borderColor: colors.border,
+                  color: colors.textPrimary,
+                },
               ]}
               value={newSourceValue}
               onChangeText={setNewSourceValue}
@@ -193,7 +205,7 @@ export default function CreateRFEScreen() {
               autoCorrect={false}
             />
             <TouchableOpacity
-              style={[styles.addButton, { backgroundColor: colors.accent }]}
+              style={[styles.addButton, { backgroundColor: colors.primary }]}
               onPress={addSource}
               accessibilityRole="button"
               accessibilityLabel="Add source"
@@ -213,12 +225,15 @@ export default function CreateRFEScreen() {
                     { backgroundColor: colors.card, borderColor: colors.border },
                   ]}
                 >
-                  <Feather name={SOURCE_ICONS[source.type]} size={16} color={colors.accent} />
+                  <Feather name={SOURCE_ICONS[source.type]} size={16} color={colors.primary} />
                   <View style={styles.sourceContent}>
                     <Text style={[styles.sourceType, { color: colors.textSecondary }]}>
                       {source.type.toUpperCase()}
                     </Text>
-                    <Text style={[styles.sourceValue, { color: colors.text }]} numberOfLines={2}>
+                    <Text
+                      style={[styles.sourceValue, { color: colors.textPrimary }]}
+                      numberOfLines={2}
+                    >
                       {source.value}
                     </Text>
                   </View>
@@ -228,7 +243,7 @@ export default function CreateRFEScreen() {
                     accessibilityRole="button"
                     accessibilityLabel="Remove source"
                   >
-                    <Feather name="x" size={18} color={colors.error} />
+                    <Feather name="x" size={18} color={colors.danger} />
                   </TouchableOpacity>
                 </View>
               ))}
@@ -237,9 +252,9 @@ export default function CreateRFEScreen() {
         </View>
 
         {/* Batch Mode Info */}
-        <View style={[styles.infoBanner, { backgroundColor: colors.accent + '20' }]}>
-          <Feather name="info" size={20} color={colors.accent} />
-          <Text style={[styles.infoText, { color: colors.text }]}>
+        <View style={[styles.infoBanner, { backgroundColor: colors.primary + '20' }]}>
+          <Feather name="info" size={20} color={colors.primary} />
+          <Text style={[styles.infoText, { color: colors.textPrimary }]}>
             This RFE will be created in batch mode. Attach your Google Doc design document to the
             session for processing.
           </Text>
@@ -249,7 +264,7 @@ export default function CreateRFEScreen() {
         <TouchableOpacity
           style={[
             styles.submitButton,
-            { backgroundColor: colors.accent, opacity: !title.trim() ? 0.5 : 1 },
+            { backgroundColor: colors.primary, opacity: !title.trim() ? 0.5 : 1 },
           ]}
           onPress={handleSubmit}
           disabled={!title.trim()}

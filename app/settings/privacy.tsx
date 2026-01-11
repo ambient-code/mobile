@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Switch, StyleSheet, ScrollView } from 'react-native'
 import { getTelemetryEnabled, setTelemetryEnabled } from '@/services/telemetry'
+import { TOKENS } from '@/utils/constants'
 
 export default function PrivacySettingsScreen() {
   const [telemetryEnabled, setTelemetryEnabledState] = useState(true)
@@ -51,29 +52,23 @@ export default function PrivacySettingsScreen() {
             value={telemetryEnabled}
             onValueChange={handleToggle}
             disabled={isLoading}
-            trackColor={{ false: '#d1d5db', true: '#a78bfa' }}
-            thumbColor={telemetryEnabled ? '#8b5cf6' : '#f4f3f4'}
-            ios_backgroundColor="#d1d5db"
+            trackColor={{ false: TOKENS.border, true: TOKENS.primary }}
+            thumbColor={telemetryEnabled ? '#fff' : '#f4f3f4'}
+            ios_backgroundColor={TOKENS.border}
           />
         </View>
       </View>
 
       <View style={styles.infoSection}>
         <Text style={styles.infoTitle}>What data is collected?</Text>
-        <Text style={styles.infoText}>When analytics are enabled, we collect:</Text>
         <View style={styles.bulletList}>
+          <Text style={styles.bulletPoint}>• Anonymous usage patterns and performance metrics</Text>
           <Text style={styles.bulletPoint}>
-            • App usage patterns (screens viewed, features used)
+            • We never collect your code, messages, or credentials
           </Text>
-          <Text style={styles.bulletPoint}>• Performance metrics (app crashes, errors)</Text>
-          <Text style={styles.bulletPoint}>• Device information (OS version, model)</Text>
-        </View>
-
-        <Text style={styles.infoText}>We never collect:</Text>
-        <View style={styles.bulletList}>
-          <Text style={styles.bulletPoint}>• Your code or repository content</Text>
-          <Text style={styles.bulletPoint}>• Personal messages or chat conversations</Text>
-          <Text style={styles.bulletPoint}>• Passwords or authentication tokens</Text>
+          <Text style={styles.bulletPoint}>
+            • All data is anonymized and used only for improvements
+          </Text>
         </View>
 
         <Text style={styles.noteText}>
@@ -87,15 +82,15 @@ export default function PrivacySettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: TOKENS.bg,
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     padding: 16,
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderRadius: 12,
     marginHorizontal: 16,
     overflow: 'hidden',
@@ -113,12 +108,12 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 4,
   },
   settingDescription: {
     fontSize: 13,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     lineHeight: 18,
   },
   infoSection: {
@@ -129,12 +124,12 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 12,
   },
   infoText: {
     fontSize: 14,
-    color: '#374151',
+    color: TOKENS.textSecondary,
     marginTop: 16,
     marginBottom: 8,
   },
@@ -143,13 +138,13 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     lineHeight: 22,
     marginBottom: 4,
   },
   noteText: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: TOKENS.textMuted,
     fontStyle: 'italic',
     marginTop: 16,
   },

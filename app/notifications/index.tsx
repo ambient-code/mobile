@@ -90,7 +90,7 @@ export default function NotificationsScreen() {
 
       {/* Header with Mark All Read button */}
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Notifications</Text>
+        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Notifications</Text>
         {unreadCount > 0 && (
           <TouchableOpacity
             style={[styles.markAllButton, { backgroundColor: colors.card }]}
@@ -100,8 +100,8 @@ export default function NotificationsScreen() {
             accessibilityLabel="Mark all notifications as read"
             accessibilityHint={`Mark all ${unreadCount} unread notification${unreadCount === 1 ? '' : 's'} as read`}
           >
-            <Feather name="check-circle" size={16} color={colors.accent} />
-            <Text style={[styles.markAllText, { color: colors.accent }]}>Mark all read</Text>
+            <Feather name="check-circle" size={16} color={colors.primary} />
+            <Text style={[styles.markAllText, { color: colors.primary }]}>Mark all read</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -121,8 +121,8 @@ export default function NotificationsScreen() {
               style={[
                 styles.filterChip,
                 {
-                  backgroundColor: isActive ? colors.accent : colors.card,
-                  borderColor: isActive ? colors.accent : colors.border,
+                  backgroundColor: isActive ? colors.primary : colors.card,
+                  borderColor: isActive ? colors.primary : colors.border,
                 },
               ]}
               onPress={() => setFilter(f.value)}
@@ -132,14 +132,14 @@ export default function NotificationsScreen() {
               accessibilityState={{ selected: isActive }}
               accessibilityHint={`Double tap to show ${f.label.toLowerCase()} notifications`}
             >
-              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.text }]}>
+              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.textPrimary }]}>
                 {f.label}
               </Text>
               {f.badge !== undefined && f.badge > 0 && (
                 <View
-                  style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.accent }]}
+                  style={[styles.badge, { backgroundColor: isActive ? '#fff' : colors.primary }]}
                 >
-                  <Text style={[styles.badgeText, { color: isActive ? colors.accent : '#fff' }]}>
+                  <Text style={[styles.badgeText, { color: isActive ? colors.primary : '#fff' }]}>
                     {f.badge > 99 ? '99+' : f.badge}
                   </Text>
                 </View>
@@ -164,8 +164,8 @@ export default function NotificationsScreen() {
               style={[
                 styles.filterChip,
                 {
-                  backgroundColor: isActive ? colors.accent : colors.card,
-                  borderColor: isActive ? colors.accent : colors.border,
+                  backgroundColor: isActive ? colors.primary : colors.card,
+                  borderColor: isActive ? colors.primary : colors.border,
                 },
               ]}
               onPress={() => setSourceFilter(f.value)}
@@ -177,9 +177,9 @@ export default function NotificationsScreen() {
               <Feather
                 name={f.icon as keyof typeof Feather.glyphMap}
                 size={14}
-                color={isActive ? '#fff' : colors.text}
+                color={isActive ? '#fff' : colors.textPrimary}
               />
-              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.text }]}>
+              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.textPrimary }]}>
                 {f.label}
               </Text>
             </TouchableOpacity>
@@ -206,7 +206,9 @@ export default function NotificationsScreen() {
           ) : (
             <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
               <Feather name="bell-off" size={48} color={colors.textSecondary} />
-              <Text style={[styles.emptyStateText, { color: colors.text }]}>No notifications</Text>
+              <Text style={[styles.emptyStateText, { color: colors.textPrimary }]}>
+                No notifications
+              </Text>
               <Text style={[styles.emptyStateSubtext, { color: colors.textSecondary }]}>
                 {filter === 'unread'
                   ? 'All caught up! No unread notifications.'

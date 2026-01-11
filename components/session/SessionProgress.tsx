@@ -18,7 +18,7 @@ export function SessionProgress({ progress }: SessionProgressProps) {
           styles.fill,
           {
             width: `${clampedProgress}%`,
-            backgroundColor: colors.accent,
+            backgroundColor: colors.primary,
           },
         ]}
       />
