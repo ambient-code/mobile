@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
+import { TOKENS } from '@/utils/constants'
 import { useTheme } from '@/hooks/useTheme'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { useRouter } from 'expo-router'
@@ -92,15 +93,15 @@ export function Toast({ notification, onDismiss }: ToastProps) {
   const getBackgroundColor = () => {
     switch (notification.type) {
       case 'review':
-        return colors.warning + 'E6'
+        return TOKENS.warning + 'E6'
       case 'session':
-        return colors.accent + 'E6'
+        return TOKENS.primary + 'E6'
       case 'success':
-        return colors.success + 'E6'
+        return TOKENS.success + 'E6'
       case 'error':
-        return colors.error + 'E6'
+        return TOKENS.danger + 'E6'
       default:
-        return colors.card + 'E6'
+        return TOKENS.elevated + 'E6'
     }
   }
 

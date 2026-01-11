@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { IconSymbol } from './icon-symbol'
+import { TOKENS } from '@/utils/constants'
 import { useTheme } from '@/hooks/useTheme'
 
 interface ErrorMessageProps {
@@ -19,22 +20,22 @@ export function ErrorMessage({ error, retry, showDetails = false }: ErrorMessage
   const { colors } = useTheme()
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.card }]}>
-      <IconSymbol name="exclamationmark.triangle.fill" size={48} color={colors.error} />
+    <View style={[styles.container, { backgroundColor: TOKENS.card }]}>
+      <IconSymbol name="exclamationmark.triangle.fill" size={48} color={TOKENS.danger} />
 
-      <Text style={[styles.title, { color: colors.text }]}>Something went wrong</Text>
+      <Text style={[styles.title, { color: TOKENS.textPrimary }]}>Something went wrong</Text>
 
-      <Text style={[styles.message, { color: colors.textSecondary }]}>
+      <Text style={[styles.message, { color: TOKENS.textSecondary }]}>
         {error.message || 'An unexpected error occurred'}
       </Text>
 
       {showDetails && error.stack && (
-        <Text style={[styles.details, { color: colors.textSecondary }]}>{error.stack}</Text>
+        <Text style={[styles.details, { color: TOKENS.textSecondary }]}>{error.stack}</Text>
       )}
 
       {retry && (
         <TouchableOpacity
-          style={[styles.retryButton, { backgroundColor: colors.accent }]}
+          style={[styles.retryButton, { backgroundColor: TOKENS.primary }]}
           onPress={retry}
           activeOpacity={0.7}
         >
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: TOKENS.radius12,
     marginTop: 8,
   },
   retryText: {
