@@ -5,8 +5,9 @@ import { useOffline } from '@/hooks/useOffline'
 import { useSessions } from '@/hooks/useSessions'
 import { SessionCard } from '@/components/session/SessionCard'
 import { OfflineBanner } from '@/components/ui/OfflineBanner'
+import { EmptyState } from '@/components/design-system/EmptyState'
 import { SessionStatus, type Session } from '@/types/session'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 
 type FilterType = 'all' | SessionStatus
 
@@ -14,6 +15,7 @@ export default function SessionsListScreen() {
   const { colors } = useTheme()
   const { isOffline } = useOffline()
   const { filter: urlFilter } = useLocalSearchParams()
+  const router = useRouter()
   const [filter, setFilter] = useState<FilterType>('all')
 
   // Set initial filter from URL parameter
@@ -97,11 +99,13 @@ export default function SessionsListScreen() {
               Loading sessions...
             </Text>
           ) : (
-            <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
-              <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
-                No sessions found
-              </Text>
-            </View>
+            <EmptyState
+              icon="briefcase"
+              title="No sessions found"
+              description="You don't have any sessions matching this filter. Start a new workflow to get started."
+              actionLabel="Create Session"
+              onAction={() => router.push('/chat')}
+            />
           )
         }
         ListFooterComponent={<View style={{ height: 40 }} />}
