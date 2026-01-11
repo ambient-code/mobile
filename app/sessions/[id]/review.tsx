@@ -106,7 +106,7 @@ export default function SessionReviewScreen() {
   if (isLoading || !session) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     )
   }
@@ -116,7 +116,7 @@ export default function SessionReviewScreen() {
       <View style={styles.content}>
         {/* Session Info */}
         <View style={[styles.card, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sessionName, { color: colors.text }]}>{session.name}</Text>
+          <Text style={[styles.sessionName, { color: colors.textPrimary }]}>{session.name}</Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
             Review the changes and provide feedback
           </Text>
@@ -124,25 +124,25 @@ export default function SessionReviewScreen() {
 
         {/* Tasks Completed */}
         <View style={[styles.card, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Changes Made</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Changes Made</Text>
           {session.tasksCompleted.map((task, index) => (
             <View key={index} style={styles.taskItem}>
               <Text style={[styles.bullet, { color: colors.success }]}>✓</Text>
-              <Text style={[styles.taskText, { color: colors.text }]}>{task}</Text>
+              <Text style={[styles.taskText, { color: colors.textPrimary }]}>{task}</Text>
             </View>
           ))}
         </View>
 
         {/* Comment Box */}
         <View style={[styles.card, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Your Feedback</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Your Feedback</Text>
           <Text style={[styles.helperText, { color: colors.textSecondary }]}>
             Add comments to guide the next iteration. Be specific about what needs to change.
           </Text>
           <TextInput
             style={[
               styles.commentInput,
-              { backgroundColor: colors.bg, color: colors.text, borderColor: colors.border },
+              { backgroundColor: colors.bg, color: colors.textPrimary, borderColor: colors.border },
             ]}
             placeholder="e.g., 'Please add error handling for the API call' or 'The button color should match our brand'"
             placeholderTextColor={colors.textSecondary}

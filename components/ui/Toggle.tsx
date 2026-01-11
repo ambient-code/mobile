@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: TOKENS.border,
   },
   textContainer: {
     flex: 1,
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 2,
   },
   description: {
     fontSize: 13,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
   },
 })

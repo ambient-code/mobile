@@ -16,7 +16,7 @@ type ThemeMode = 'light' | 'dark' | 'system'
 interface ThemeContextType {
   theme: 'light' | 'dark'
   themeMode: ThemeMode
-  colors: typeof COLORS.light
+  colors: typeof TOKENS
   setThemeMode: (mode: ThemeMode) => void
 }
 

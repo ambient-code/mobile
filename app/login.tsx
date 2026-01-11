@@ -64,7 +64,7 @@ export default function LoginScreen() {
   if (isLoading) {
     return (
       <View style={[styles.container, { backgroundColor: colors.bg }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
+        <ActivityIndicator size="large" color={colors.primary} />
         <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
           Checking authentication...
         </Text>
@@ -76,10 +76,10 @@ export default function LoginScreen() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Logo Section */}
       <View style={styles.logoContainer}>
-        <View style={[styles.logoCircle, { backgroundColor: colors.accent + '20' }]}>
-          <IconSymbol name="terminal.fill" size={60} color={colors.accent} />
+        <View style={[styles.logoCircle, { backgroundColor: colors.primary + '20' }]}>
+          <IconSymbol name="terminal.fill" size={60} color={colors.primary} />
         </View>
-        <Text style={[styles.title, { color: colors.text }]}>ACP Mobile</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>ACP Mobile</Text>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
           Ambient Code Platform
         </Text>
@@ -95,7 +95,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={[
             styles.loginButton,
-            { backgroundColor: colors.accent },
+            { backgroundColor: colors.primary },
             isLoggingIn && styles.loginButtonDisabled,
           ]}
           onPress={handleLogin}

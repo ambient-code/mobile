@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react'
-import { SafeAreaView, ScrollView, RefreshControl, StyleSheet } from 'react-native'
+import { ScrollView, RefreshControl, StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { TOKENS } from '@/utils/constants'
 
 interface ScreenLayoutProps {

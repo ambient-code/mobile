@@ -63,8 +63,8 @@ export default function SessionsListScreen() {
               style={[
                 styles.filterChip,
                 {
-                  backgroundColor: isActive ? colors.accent : colors.card,
-                  borderColor: isActive ? colors.accent : colors.border,
+                  backgroundColor: isActive ? colors.primary : colors.card,
+                  borderColor: isActive ? colors.primary : colors.border,
                 },
               ]}
               onPress={() => setFilter(f.value)}
@@ -74,7 +74,7 @@ export default function SessionsListScreen() {
               accessibilityState={{ selected: isActive }}
               accessibilityHint={`Double tap to show ${f.label.toLowerCase()} sessions`}
             >
-              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.text }]}>
+              <Text style={[styles.filterText, { color: isActive ? '#fff' : colors.textPrimary }]}>
                 {f.label}
               </Text>
             </TouchableOpacity>

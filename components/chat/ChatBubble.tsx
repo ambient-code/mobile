@@ -35,7 +35,7 @@ function ChatBubbleComponent({ message }: ChatBubbleProps) {
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
       {/* Claude avatar for assistant messages */}
       {!isUser && (
-        <View style={[styles.avatar, { backgroundColor: colors.accent }]}>
+        <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
           <Text style={styles.avatarText}>C</Text>
         </View>
       )}
@@ -45,7 +45,7 @@ function ChatBubbleComponent({ message }: ChatBubbleProps) {
         style={[
           styles.bubble,
           {
-            backgroundColor: isUser ? colors.accent : colors.card,
+            backgroundColor: isUser ? colors.primary : colors.card,
             maxWidth: '75%',
           },
         ]}
@@ -54,7 +54,7 @@ function ChatBubbleComponent({ message }: ChatBubbleProps) {
           style={[
             styles.content,
             {
-              color: isUser ? '#fff' : colors.text,
+              color: isUser ? '#fff' : colors.textPrimary,
             },
           ]}
         >

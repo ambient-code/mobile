@@ -77,13 +77,13 @@ function SessionCardComponent({ session }: SessionCardProps) {
 
   const progressBgColor = progressFlashAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['transparent', colors.text],
+    outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
   })
 
   // Status badge flash animation (will wrap StatusBadge)
   const statusBgColor = statusFlashAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['transparent', colors.text],
+    outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
   })
 
   return (
@@ -96,7 +96,7 @@ function SessionCardComponent({ session }: SessionCardProps) {
       accessibilityHint="Double tap to view session details"
     >
       <View style={styles.header}>
-        <Animated.Text style={[styles.name, { color: colors.text }]} numberOfLines={1}>
+        <Animated.Text style={[styles.name, { color: colors.textPrimary }]} numberOfLines={1}>
           {session.name}
         </Animated.Text>
         <ModelBadge model={session.model} />

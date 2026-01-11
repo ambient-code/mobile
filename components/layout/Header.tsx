@@ -138,7 +138,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
-      <Text style={[styles.greeting, { color: colors.text }]} numberOfLines={1}>
+      <Text style={[styles.greeting, { color: colors.textPrimary }]} numberOfLines={1}>
         {greeting}, {firstName}
       </Text>
 
@@ -149,10 +149,10 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
           onPress={() => router.push('/announcements')}
           activeOpacity={0.7}
         >
-          <IconSymbol name="gift.fill" size={20} color={colors.text} />
+          <IconSymbol name="gift.fill" size={20} color={colors.textPrimary} />
           {/* Unread badge */}
           {unreadAnnouncementsCount > 0 && (
-            <View style={[styles.unreadBadge, { backgroundColor: colors.accent }]}>
+            <View style={[styles.unreadBadge, { backgroundColor: colors.primary }]}>
               <Text style={styles.unreadBadgeText}>{unreadAnnouncementsCount}</Text>
             </View>
           )}
@@ -164,9 +164,9 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
           onPress={openNotifications}
           activeOpacity={0.7}
         >
-          <IconSymbol name="bell.fill" size={20} color={colors.text} />
+          <IconSymbol name="bell.fill" size={20} color={colors.textPrimary} />
           {/* Unread badge */}
-          <View style={[styles.unreadBadge, { backgroundColor: colors.error }]}>
+          <View style={[styles.unreadBadge, { backgroundColor: colors.danger }]}>
             <Text style={styles.unreadBadgeText}>2</Text>
           </View>
         </TouchableOpacity>
@@ -174,7 +174,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
         {/* Avatar with refresh spinner */}
         <View style={styles.avatarContainer}>
           <TouchableOpacity
-            style={[styles.avatar, { backgroundColor: colors.accent }]}
+            style={[styles.avatar, { backgroundColor: colors.primary }]}
             activeOpacity={0.7}
             onPress={showUserMenu}
           >
@@ -182,7 +182,7 @@ export const Header = memo(({ isRefetching = false }: HeaderProps) => {
           </TouchableOpacity>
           {isRefetching && (
             <View style={styles.spinnerContainer}>
-              <ActivityIndicator size="large" color={colors.accent} />
+              <ActivityIndicator size="large" color={colors.primary} />
             </View>
           )}
         </View>

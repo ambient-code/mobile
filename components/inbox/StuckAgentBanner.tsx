@@ -32,7 +32,7 @@ export function StuckAgentBanner({ agents }: StuckAgentBannerProps) {
     >
       <AgentAvatar agentName={agent.name} size="small" />
       <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.text }]}>{agent.name} needs help</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>{agent.name} needs help</Text>
         <Text style={[styles.task, { color: colors.textSecondary }]} numberOfLines={1}>
           {agent.task}
         </Text>

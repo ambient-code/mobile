@@ -78,13 +78,15 @@ export default function ChatModal() {
         {/* Loading state */}
         {isLoading ? (
           <View style={styles.centerContent}>
-            <ActivityIndicator size="large" color={colors.accent} />
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : messages.length === 0 ? (
           /* Empty state */
           <View style={styles.centerContent}>
             <IconSymbol name="message.fill" size={56} color={colors.textSecondary} />
-            <Text style={[styles.emptyText, { color: colors.text }]}>Ask Claude anything</Text>
+            <Text style={[styles.emptyText, { color: colors.textPrimary }]}>
+              Ask Claude anything
+            </Text>
             <Text style={[styles.emptySubtext, { color: colors.textSecondary }]}>
               Your conversation will be saved locally
             </Text>

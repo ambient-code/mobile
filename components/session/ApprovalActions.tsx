@@ -114,7 +114,7 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
           style={[
             styles.button,
             styles.rejectButton,
-            { backgroundColor: colors.error },
+            { backgroundColor: colors.danger },
             isButtonDisabled && styles.buttonDisabled,
           ]}
           onPress={() => setRejectModalVisible(true)}
@@ -157,7 +157,7 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
       >
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { backgroundColor: colors.card }]}>
-            <Text style={[styles.modalTitle, { color: colors.text }]}>Approve Session?</Text>
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Approve Session?</Text>
             <Text style={[styles.modalMessage, { color: colors.textSecondary }]}>
               This will mark &ldquo;{sessionName}&rdquo; as completed and merge the changes.
             </Text>
@@ -168,7 +168,7 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
                 onPress={() => setApproveModalVisible(false)}
                 activeOpacity={0.7}
               >
-                <Text style={[styles.modalButtonText, { color: colors.text }]}>Cancel</Text>
+                <Text style={[styles.modalButtonText, { color: colors.textPrimary }]}>Cancel</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -196,7 +196,7 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
           style={styles.modalOverlay}
         >
           <View style={[styles.modalContent, { backgroundColor: colors.card }]}>
-            <Text style={[styles.modalTitle, { color: colors.text }]}>Reject Session?</Text>
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Reject Session?</Text>
             <Text style={[styles.modalMessage, { color: colors.textSecondary }]}>
               Provide feedback for Claude to make changes. Feedback is optional.
             </Text>
@@ -204,7 +204,11 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
             <TextInput
               style={[
                 styles.feedbackInput,
-                { backgroundColor: colors.bg, color: colors.text, borderColor: colors.border },
+                {
+                  backgroundColor: colors.bg,
+                  color: colors.textPrimary,
+                  borderColor: colors.border,
+                },
               ]}
               placeholder="Describe what needs to be changed..."
               placeholderTextColor={colors.textSecondary}
@@ -228,11 +232,11 @@ export function ApprovalActions({ sessionId, sessionName, onSuccess }: ApprovalA
                 }}
                 activeOpacity={0.7}
               >
-                <Text style={[styles.modalButtonText, { color: colors.text }]}>Cancel</Text>
+                <Text style={[styles.modalButtonText, { color: colors.textPrimary }]}>Cancel</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.modalButton, { backgroundColor: colors.error }]}
+                style={[styles.modalButton, { backgroundColor: colors.danger }]}
                 onPress={handleReject}
                 activeOpacity={0.7}
               >

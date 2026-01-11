@@ -14,7 +14,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   const getStatusColor = () => {
     switch (status) {
       case SessionStatus.RUNNING:
-        return colors.accent
+        return colors.primary
       case SessionStatus.PAUSED:
         return colors.warning
       case SessionStatus.DONE:
@@ -22,7 +22,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       case SessionStatus.AWAITING_REVIEW:
         return colors.warning
       case SessionStatus.ERROR:
-        return colors.error
+        return colors.danger
       default:
         return colors.textSecondary
     }

@@ -9,6 +9,7 @@ import { useOffline } from '../../hooks/useOffline'
 import { userApi } from '../../services/api/user'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { User } from '../../types/user'
+import { TOKENS } from '../../utils/constants'
 
 const FEEDBACK_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLScQwBV4ZH2b3Fm_D0IDzIwKyCa-B8AnKhAOXZj3_F5cN0Gm8Q/viewform'
@@ -165,7 +166,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: TOKENS.bg,
   },
   loading: {
     flex: 1,
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#6b7280',
+    color: TOKENS.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     paddingHorizontal: 16,

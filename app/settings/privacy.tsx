@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Switch, StyleSheet, ScrollView } from 'react-native'
 import { getTelemetryEnabled, setTelemetryEnabled } from '@/services/telemetry'
+import { TOKENS } from '@/utils/constants'
 
 export default function PrivacySettingsScreen() {
   const [telemetryEnabled, setTelemetryEnabledState] = useState(true)
@@ -51,9 +52,9 @@ export default function PrivacySettingsScreen() {
             value={telemetryEnabled}
             onValueChange={handleToggle}
             disabled={isLoading}
-            trackColor={{ false: '#d1d5db', true: '#a78bfa' }}
-            thumbColor={telemetryEnabled ? '#8b5cf6' : '#f4f3f4'}
-            ios_backgroundColor="#d1d5db"
+            trackColor={{ false: TOKENS.border, true: TOKENS.primary }}
+            thumbColor={telemetryEnabled ? '#fff' : '#f4f3f4'}
+            ios_backgroundColor={TOKENS.border}
           />
         </View>
       </View>
@@ -61,9 +62,7 @@ export default function PrivacySettingsScreen() {
       <View style={styles.infoSection}>
         <Text style={styles.infoTitle}>What data is collected?</Text>
         <View style={styles.bulletList}>
-          <Text style={styles.bulletPoint}>
-            • Anonymous usage patterns and performance metrics
-          </Text>
+          <Text style={styles.bulletPoint}>• Anonymous usage patterns and performance metrics</Text>
           <Text style={styles.bulletPoint}>
             • We never collect your code, messages, or credentials
           </Text>
@@ -83,15 +82,15 @@ export default function PrivacySettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: TOKENS.bg,
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     padding: 16,
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderRadius: 12,
     marginHorizontal: 16,
     overflow: 'hidden',
@@ -109,12 +108,12 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 4,
   },
   settingDescription: {
     fontSize: 13,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     lineHeight: 18,
   },
   infoSection: {
@@ -125,12 +124,12 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 12,
   },
   infoText: {
     fontSize: 14,
-    color: '#374151',
+    color: TOKENS.textSecondary,
     marginTop: 16,
     marginBottom: 8,
   },
@@ -139,13 +138,13 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     lineHeight: 22,
     marginBottom: 4,
   },
   noteText: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: TOKENS.textMuted,
     fontStyle: 'italic',
     marginTop: 16,
   },

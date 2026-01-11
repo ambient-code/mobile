@@ -27,14 +27,14 @@ export function ChatHeader({ onClose }: ChatHeaderProps) {
     >
       <View style={styles.titleSection}>
         <View style={styles.titleRow}>
-          <Text style={[styles.title, { color: colors.text }]}>Claude</Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>Claude</Text>
           <View style={[styles.statusDot, { backgroundColor: colors.success }]} />
         </View>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>sonnet-4.5</Text>
       </View>
 
       <TouchableOpacity onPress={onClose} style={styles.closeButton} activeOpacity={0.7}>
-        <IconSymbol name="xmark" size={24} color={colors.text} />
+        <IconSymbol name="xmark" size={24} color={colors.textPrimary} />
       </TouchableOpacity>
     </View>
   )

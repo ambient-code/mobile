@@ -16,7 +16,6 @@ import { useOffline } from '@/hooks/useOffline'
 import { useRealtimeSession } from '@/hooks/useRealtimeSession'
 import { useNotifications } from '@/hooks/useNotifications'
 import { Header } from '@/components/layout/Header'
-import { FAB } from '@/components/layout/FAB'
 import { SessionCard } from '@/components/session/SessionCard'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { OfflineBanner } from '@/components/ui/OfflineBanner'
@@ -49,7 +48,7 @@ const QuickActionButton = memo<QuickActionButtonProps>(
       <TouchableOpacity
         style={[
           styles.quickActionButton,
-          { backgroundColor: action.disabled ? colors.card : colors.accent },
+          { backgroundColor: action.disabled ? colors.card : colors.primary },
         ]}
         onPress={action.onPress}
         activeOpacity={0.8}
@@ -166,7 +165,7 @@ export default function DashboardScreen() {
   if (authLoading) {
     return (
       <View style={[styles.container, { backgroundColor: colors.bg }]}>
-        <Text style={[styles.loadingText, { color: colors.text }]}>Loading...</Text>
+        <Text style={[styles.loadingText, { color: colors.textPrimary }]}>Loading...</Text>
       </View>
     )
   }
@@ -197,7 +196,7 @@ export default function DashboardScreen() {
           <View
             style={[
               styles.connectionBanner,
-              { backgroundColor: isError ? colors.error + '20' : colors.warning + '20' },
+              { backgroundColor: isError ? colors.danger + '20' : colors.warning + '20' },
             ]}
           >
             <View style={styles.connectionContent}>
@@ -205,12 +204,12 @@ export default function DashboardScreen() {
                 style={[
                   styles.connectionDot,
                   {
-                    backgroundColor: isError ? colors.error : colors.warning,
+                    backgroundColor: isError ? colors.danger : colors.warning,
                   },
                 ]}
               />
               <Text
-                style={[styles.connectionText, { color: isError ? colors.error : colors.warning }]}
+                style={[styles.connectionText, { color: isError ? colors.danger : colors.warning }]}
               >
                 {isError ? 'Real-time updates unavailable' : 'Connecting to updates...'}
               </Text>
@@ -223,7 +222,7 @@ export default function DashboardScreen() {
                 accessibilityLabel="Retry connection"
                 accessibilityHint="Double tap to retry real-time connection"
               >
-                <Text style={[styles.retryText, { color: colors.error }]}>Retry</Text>
+                <Text style={[styles.retryText, { color: colors.danger }]}>Retry</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -231,7 +230,7 @@ export default function DashboardScreen() {
 
         {/* Quick Actions - 2 rows of 3 */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Quick Actions</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Quick Actions</Text>
           <View style={styles.quickActionsGrid}>
             {quickActions.map((action) => (
               <View key={action.id} style={styles.quickActionWrapper}>
@@ -245,7 +244,7 @@ export default function DashboardScreen() {
         {awaitingReview.length > 0 && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>My Reviews</Text>
+              <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>My Reviews</Text>
               <View
                 style={[
                   styles.badge,
@@ -274,7 +273,9 @@ export default function DashboardScreen() {
         {/* Active Sessions */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Active Sessions</Text>
+            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
+              Active Sessions
+            </Text>
             {runningSessions.length > 0 && (
               <TouchableOpacity
                 onPress={handleViewAllSessions}
@@ -282,7 +283,7 @@ export default function DashboardScreen() {
                 accessibilityLabel="View all sessions"
                 accessibilityHint="Double tap to view all active sessions"
               >
-                <Text style={[styles.viewAllText, { color: colors.accent }]}>View All</Text>
+                <Text style={[styles.viewAllText, { color: colors.primary }]}>View All</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -315,9 +316,6 @@ export default function DashboardScreen() {
 
         <View style={{ height: 40 }} />
       </ScrollView>
-
-      {/* Floating Action Button */}
-      <FAB />
     </View>
   )
 }

@@ -14,12 +14,12 @@ export function OvernightResultsCard({ results }: OvernightResultsCardProps) {
 
   return (
     <View style={[styles.card, { backgroundColor: colors.card }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Overnight Results</Text>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>Overnight Results</Text>
       <View style={styles.results}>
         {displayResults.map((result, index) => (
           <View key={index} style={styles.resultRow}>
             <AgentAvatar agentName={result.agentName} size="small" />
-            <Text style={[styles.task, { color: colors.text }]} numberOfLines={1}>
+            <Text style={[styles.task, { color: colors.textPrimary }]} numberOfLines={1}>
               {result.task}
             </Text>
             <Text

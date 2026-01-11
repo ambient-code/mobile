@@ -4,6 +4,7 @@ import { useTheme } from '../../hooks/useTheme'
 import { useOffline } from '../../hooks/useOffline'
 import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { PreferencesService } from '../../services/storage/preferences'
+import { TOKENS } from '../../utils/constants'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 
@@ -84,15 +85,15 @@ function ThemeOption({ label, description, selected, onSelect }: ThemeOptionProp
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: TOKENS.bg,
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     padding: 16,
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderRadius: 12,
     marginHorizontal: 16,
     overflow: 'hidden',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: TOKENS.border,
   },
   optionContent: {
     flex: 1,
@@ -110,29 +111,29 @@ const styles = StyleSheet.create({
   optionLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 2,
   },
   optionDescription: {
     fontSize: 13,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
   },
   radio: {
     width: 24,
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#d1d5db',
+    borderColor: TOKENS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   radioSelected: {
-    borderColor: '#8b5cf6',
+    borderColor: TOKENS.primary,
   },
   radioInner: {
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#8b5cf6',
+    backgroundColor: TOKENS.primary,
   },
 })

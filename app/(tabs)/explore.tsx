@@ -15,7 +15,7 @@ export default function SettingsScreen() {
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Settings</Text>
+        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Settings</Text>
         <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
           Manage your preferences
         </Text>
@@ -27,7 +27,7 @@ export default function SettingsScreen() {
 
         <View style={[styles.card, { backgroundColor: colors.card }]}>
           <View style={styles.accountInfo}>
-            <View style={[styles.avatar, { backgroundColor: colors.accent }]}>
+            <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
               <Text style={styles.avatarText}>
                 {user?.name
                   ?.split(' ')
@@ -36,11 +36,11 @@ export default function SettingsScreen() {
               </Text>
             </View>
             <View style={styles.accountDetails}>
-              <Text style={[styles.accountName, { color: colors.text }]}>{user?.name}</Text>
+              <Text style={[styles.accountName, { color: colors.textPrimary }]}>{user?.name}</Text>
               <Text style={[styles.accountEmail, { color: colors.textSecondary }]}>
                 {user?.email}
               </Text>
-              <Text style={[styles.accountRole, { color: colors.accent }]}>{user?.role}</Text>
+              <Text style={[styles.accountRole, { color: colors.primary }]}>{user?.role}</Text>
             </View>
           </View>
         </View>
@@ -53,8 +53,8 @@ export default function SettingsScreen() {
         <View style={[styles.card, { backgroundColor: colors.card }]}>
           <View style={styles.settingRow}>
             <View style={styles.settingInfo}>
-              <IconSymbol name="moon.fill" size={20} color={colors.text} />
-              <Text style={[styles.settingLabel, { color: colors.text }]}>Dark Mode</Text>
+              <IconSymbol name="moon.fill" size={20} color={colors.textPrimary} />
+              <Text style={[styles.settingLabel, { color: colors.textPrimary }]}>Dark Mode</Text>
             </View>
             <Text style={[styles.settingValue, { color: colors.textSecondary }]}>
               {themeMode === 'system' ? 'Auto' : themeMode === 'dark' ? 'On' : 'Off'}
@@ -65,45 +65,45 @@ export default function SettingsScreen() {
             <TouchableOpacity
               style={[
                 styles.themeOption,
-                themeMode === 'light' && { backgroundColor: colors.accent + '20' },
+                themeMode === 'light' && { backgroundColor: colors.primary + '20' },
               ]}
               onPress={() => handleThemeChange('light')}
               activeOpacity={0.7}
             >
-              <IconSymbol name="sun.max.fill" size={24} color={colors.text} />
-              <Text style={[styles.themeOptionText, { color: colors.text }]}>Light</Text>
+              <IconSymbol name="sun.max.fill" size={24} color={colors.textPrimary} />
+              <Text style={[styles.themeOptionText, { color: colors.textPrimary }]}>Light</Text>
               {themeMode === 'light' && (
-                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+                <View style={[styles.activeIndicator, { backgroundColor: colors.primary }]} />
               )}
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[
                 styles.themeOption,
-                themeMode === 'dark' && { backgroundColor: colors.accent + '20' },
+                themeMode === 'dark' && { backgroundColor: colors.primary + '20' },
               ]}
               onPress={() => handleThemeChange('dark')}
               activeOpacity={0.7}
             >
-              <IconSymbol name="moon.fill" size={24} color={colors.text} />
-              <Text style={[styles.themeOptionText, { color: colors.text }]}>Dark</Text>
+              <IconSymbol name="moon.fill" size={24} color={colors.textPrimary} />
+              <Text style={[styles.themeOptionText, { color: colors.textPrimary }]}>Dark</Text>
               {themeMode === 'dark' && (
-                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+                <View style={[styles.activeIndicator, { backgroundColor: colors.primary }]} />
               )}
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[
                 styles.themeOption,
-                themeMode === 'system' && { backgroundColor: colors.accent + '20' },
+                themeMode === 'system' && { backgroundColor: colors.primary + '20' },
               ]}
               onPress={() => handleThemeChange('system')}
               activeOpacity={0.7}
             >
-              <IconSymbol name="sparkles" size={24} color={colors.text} />
-              <Text style={[styles.themeOptionText, { color: colors.text }]}>Auto</Text>
+              <IconSymbol name="sparkles" size={24} color={colors.textPrimary} />
+              <Text style={[styles.themeOptionText, { color: colors.textPrimary }]}>Auto</Text>
               {themeMode === 'system' && (
-                <View style={[styles.activeIndicator, { backgroundColor: colors.accent }]} />
+                <View style={[styles.activeIndicator, { backgroundColor: colors.primary }]} />
               )}
             </TouchableOpacity>
           </View>
@@ -117,13 +117,15 @@ export default function SettingsScreen() {
         <View style={[styles.card, { backgroundColor: colors.card }]}>
           <View style={styles.settingRow}>
             <View style={styles.settingInfo}>
-              <Text style={[styles.settingLabel, { color: colors.text }]}>Blocking Alerts</Text>
+              <Text style={[styles.settingLabel, { color: colors.textPrimary }]}>
+                Blocking Alerts
+              </Text>
             </View>
             <Switch
               value={user?.preferences.notifications.blockingAlerts}
-              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              trackColor={{ false: colors.border, true: colors.primary + '60' }}
               thumbColor={
-                user?.preferences.notifications.blockingAlerts ? colors.accent : colors.card
+                user?.preferences.notifications.blockingAlerts ? colors.primary : colors.card
               }
               ios_backgroundColor={colors.border}
             />
@@ -131,13 +133,15 @@ export default function SettingsScreen() {
 
           <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={[styles.settingLabel, { color: colors.text }]}>Review Requests</Text>
+              <Text style={[styles.settingLabel, { color: colors.textPrimary }]}>
+                Review Requests
+              </Text>
             </View>
             <Switch
               value={user?.preferences.notifications.reviewRequests}
-              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              trackColor={{ false: colors.border, true: colors.primary + '60' }}
               thumbColor={
-                user?.preferences.notifications.reviewRequests ? colors.accent : colors.card
+                user?.preferences.notifications.reviewRequests ? colors.primary : colors.card
               }
               ios_backgroundColor={colors.border}
             />
@@ -145,13 +149,15 @@ export default function SettingsScreen() {
 
           <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={[styles.settingLabel, { color: colors.text }]}>Session Updates</Text>
+              <Text style={[styles.settingLabel, { color: colors.textPrimary }]}>
+                Session Updates
+              </Text>
             </View>
             <Switch
               value={user?.preferences.notifications.sessionUpdates}
-              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              trackColor={{ false: colors.border, true: colors.primary + '60' }}
               thumbColor={
-                user?.preferences.notifications.sessionUpdates ? colors.accent : colors.card
+                user?.preferences.notifications.sessionUpdates ? colors.primary : colors.card
               }
               ios_backgroundColor={colors.border}
             />
@@ -159,13 +165,15 @@ export default function SettingsScreen() {
 
           <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={[styles.settingLabel, { color: colors.text }]}>Features & News</Text>
+              <Text style={[styles.settingLabel, { color: colors.textPrimary }]}>
+                Features & News
+              </Text>
             </View>
             <Switch
               value={user?.preferences.notifications.featuresAndNews}
-              trackColor={{ false: colors.border, true: colors.accent + '60' }}
+              trackColor={{ false: colors.border, true: colors.primary + '60' }}
               thumbColor={
-                user?.preferences.notifications.featuresAndNews ? colors.accent : colors.card
+                user?.preferences.notifications.featuresAndNews ? colors.primary : colors.card
               }
               ios_backgroundColor={colors.border}
             />
@@ -178,11 +186,11 @@ export default function SettingsScreen() {
         <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>ACCOUNT</Text>
 
         <TouchableOpacity
-          style={[styles.card, styles.dangerButton, { backgroundColor: colors.error + '10' }]}
+          style={[styles.card, styles.dangerButton, { backgroundColor: colors.danger + '10' }]}
           onPress={logout}
           activeOpacity={0.7}
         >
-          <Text style={[styles.dangerButtonText, { color: colors.error }]}>Sign Out</Text>
+          <Text style={[styles.dangerButtonText, { color: colors.danger }]}>Sign Out</Text>
         </TouchableOpacity>
       </View>
 

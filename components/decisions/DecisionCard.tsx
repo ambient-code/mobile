@@ -17,7 +17,7 @@ export function DecisionCard({ decision, onStartReview }: DecisionCardProps) {
       <View style={styles.header}>
         <AgentAvatar agentName={decision.agentName} size="medium" />
         <View style={styles.headerText}>
-          <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>
+          <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={2}>
             {decision.title}
           </Text>
           <Text style={[styles.context, { color: colors.textSecondary }]}>
@@ -27,7 +27,7 @@ export function DecisionCard({ decision, onStartReview }: DecisionCardProps) {
       </View>
 
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors.accent }]}
+        style={[styles.button, { backgroundColor: colors.primary }]}
         onPress={onStartReview}
         accessibilityRole="button"
         accessibilityLabel={`Start review for ${decision.title}`}

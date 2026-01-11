@@ -135,7 +135,7 @@ export const ApiStatusIndicator = memo<ApiStatusIndicatorProps>(
               </Text>
             )}
             {error && size === 'large' && (
-              <Text style={[styles.errorText, { color: colors.error }]} numberOfLines={2}>
+              <Text style={[styles.errorText, { color: colors.danger }]} numberOfLines={2}>
                 {error}
               </Text>
             )}

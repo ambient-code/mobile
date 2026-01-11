@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import type { User } from '../../types/user'
+import { TOKENS } from '../../utils/constants'
 
 interface ProfileCardProps {
   user: User
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 24,
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderRadius: 12,
     marginBottom: 16,
   },
@@ -51,36 +52,36 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
     marginBottom: 8,
   },
   badge: {
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: TOKENS.elevated,
     marginBottom: 4,
   },
   badgeText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
   },
   ssoBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#d1fae5',
+    backgroundColor: TOKENS.success + '20',
   },
   ssoIndicator: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#10b981',
+    backgroundColor: TOKENS.success,
     marginRight: 6,
   },
   ssoBadgeText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#059669',
+    color: TOKENS.success,
   },
 })

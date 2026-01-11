@@ -63,7 +63,7 @@ function NotificationCardComponent({ notification, onPress }: NotificationCardPr
         styles.container,
         {
           backgroundColor: colors.card,
-          borderLeftColor: notification.isUnread ? colors.accent : 'transparent',
+          borderLeftColor: notification.isUnread ? colors.primary : 'transparent',
         },
       ]}
       onPress={() => onPress(notification)}
@@ -74,7 +74,7 @@ function NotificationCardComponent({ notification, onPress }: NotificationCardPr
     >
       {/* Unread indicator dot */}
       {notification.isUnread && (
-        <View style={[styles.unreadDot, { backgroundColor: colors.accent }]} />
+        <View style={[styles.unreadDot, { backgroundColor: colors.primary }]} />
       )}
 
       {/* Icon */}
@@ -82,7 +82,7 @@ function NotificationCardComponent({ notification, onPress }: NotificationCardPr
         <Feather
           name={getNotificationIcon(notification.type)}
           size={20}
-          color={notification.isUnread ? colors.accent : colors.textSecondary}
+          color={notification.isUnread ? colors.primary : colors.textSecondary}
         />
       </View>
 
@@ -98,7 +98,7 @@ function NotificationCardComponent({ notification, onPress }: NotificationCardPr
           style={[
             styles.title,
             {
-              color: colors.text,
+              color: colors.textPrimary,
               fontWeight: notification.isUnread ? '600' : '400',
             },
           ]}

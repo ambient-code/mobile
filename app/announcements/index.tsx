@@ -90,7 +90,7 @@ export default function AnnouncementsScreen() {
             styles.announcementCard,
             {
               backgroundColor: colors.card,
-              borderColor: unread ? colors.accent : colors.border,
+              borderColor: unread ? colors.primary : colors.border,
             },
           ]}
           onPress={() => handleAnnouncementPress(item)}
@@ -98,11 +98,13 @@ export default function AnnouncementsScreen() {
         >
           <View style={styles.cardHeader}>
             <View style={styles.titleRow}>
-              <Text style={[styles.title, { color: colors.text }, unread && styles.titleUnread]}>
+              <Text
+                style={[styles.title, { color: colors.textPrimary }, unread && styles.titleUnread]}
+              >
                 {item.title}
               </Text>
               {unread && (
-                <View style={[styles.newBadge, { backgroundColor: colors.accent }]}>
+                <View style={[styles.newBadge, { backgroundColor: colors.primary }]}>
                   <Text style={styles.newBadgeText}>NEW</Text>
                 </View>
               )}
@@ -124,7 +126,7 @@ export default function AnnouncementsScreen() {
   if (isLoading) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     )
   }
@@ -133,8 +135,8 @@ export default function AnnouncementsScreen() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Header */}
       <View style={styles.header}>
-        <IconSymbol name="gift.fill" size={28} color={colors.accent} />
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Announcements</Text>
+        <IconSymbol name="gift.fill" size={28} color={colors.primary} />
+        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Announcements</Text>
       </View>
 
       {/* Announcements List */}
@@ -146,7 +148,7 @@ export default function AnnouncementsScreen() {
         ListEmptyComponent={
           <View style={[styles.emptyState, { backgroundColor: colors.card }]}>
             <IconSymbol name="gift" size={48} color={colors.textSecondary} />
-            <Text style={[styles.emptyStateText, { color: colors.text }]}>
+            <Text style={[styles.emptyStateText, { color: colors.textPrimary }]}>
               No announcements yet
             </Text>
             <Text style={[styles.emptyStateSubtext, { color: colors.textSecondary }]}>

@@ -15,8 +15,8 @@ export function ModelBadge({ model, size = 'small' }: ModelBadgeProps) {
   const description = model === ModelType.SONNET_4_5 ? 'Fast & efficient' : 'Most capable'
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.accent + '20' }]}>
-      <Text style={[styles.label, { color: colors.accent }]}>{label}</Text>
+    <View style={[styles.container, { backgroundColor: colors.primary + '20' }]}>
+      <Text style={[styles.label, { color: colors.primary }]}>{label}</Text>
       {size === 'medium' && (
         <Text style={[styles.description, { color: colors.textSecondary }]}>{description}</Text>
       )}

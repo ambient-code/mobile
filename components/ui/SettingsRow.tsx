@@ -1,6 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { TOKENS } from '@/utils/constants'
 
 interface SettingsRowProps {
   label: string
@@ -23,7 +24,7 @@ export function SettingsRow({ label, icon, badge, onPress, disabled = false }: S
         <Ionicons
           name={icon}
           size={24}
-          color={disabled ? '#9ca3af' : '#6b7280'}
+          color={disabled ? TOKENS.textDisabled : TOKENS.textSecondary}
           style={styles.icon}
         />
       )}
@@ -39,7 +40,11 @@ export function SettingsRow({ label, icon, badge, onPress, disabled = false }: S
       )}
 
       {/* Chevron */}
-      <Ionicons name="chevron-forward" size={20} color={disabled ? '#d1d5db' : '#9ca3af'} />
+      <Ionicons
+        name="chevron-forward"
+        size={20}
+        color={disabled ? TOKENS.border : TOKENS.textMuted}
+      />
     </TouchableOpacity>
   )
 }
@@ -49,9 +54,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: TOKENS.border,
   },
   disabled: {
     opacity: 0.5,
@@ -63,21 +68,21 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '500',
-    color: '#1a1a1a',
+    color: TOKENS.textPrimary,
   },
   disabledText: {
-    color: '#9ca3af',
+    color: TOKENS.textDisabled,
   },
   badge: {
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 8,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: TOKENS.elevated,
     marginRight: 8,
   },
   badgeText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
   },
 })

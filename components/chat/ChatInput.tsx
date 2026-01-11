@@ -42,7 +42,7 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
       style={[styles.container, { backgroundColor: colors.card, borderTopColor: colors.border }]}
     >
       <TextInput
-        style={[styles.input, { color: colors.text }]}
+        style={[styles.input, { color: colors.textPrimary }]}
         placeholder="Message Claude..."
         placeholderTextColor={colors.textSecondary}
         value={text}
@@ -57,7 +57,7 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
         style={[
           styles.sendButton,
           {
-            backgroundColor: canSend ? colors.accent : colors.border,
+            backgroundColor: canSend ? colors.primary : colors.border,
           },
         ]}
         onPress={handleSend}

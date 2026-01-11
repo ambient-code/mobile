@@ -49,7 +49,7 @@ export function CreateFAB() {
     <>
       {/* FAB Button */}
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: colors.accent }]}
+        style={[styles.fab, { backgroundColor: colors.primary }]}
         onPress={() => setModalVisible(true)}
         activeOpacity={0.8}
         accessibilityRole="button"
@@ -71,7 +71,7 @@ export function CreateFAB() {
             <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
               {/* Header */}
               <View style={styles.modalHeader}>
-                <Text style={[styles.modalTitle, { color: colors.text }]}>Create New</Text>
+                <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Create New</Text>
                 <TouchableOpacity
                   onPress={() => setModalVisible(false)}
                   style={styles.closeButton}
@@ -98,7 +98,7 @@ export function CreateFAB() {
                     activeOpacity={0.7}
                     disabled={option.soon}
                   >
-                    <View style={[styles.optionIconContainer, { backgroundColor: colors.accent }]}>
+                    <View style={[styles.optionIconContainer, { backgroundColor: colors.primary }]}>
                       <Feather
                         name={option.icon}
                         size={20}
@@ -109,7 +109,7 @@ export function CreateFAB() {
                       style={[
                         styles.optionLabel,
                         {
-                          color: option.soon ? colors.textSecondary : colors.text,
+                          color: option.soon ? colors.textSecondary : colors.textPrimary,
                         },
                       ]}
                     >

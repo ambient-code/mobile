@@ -16,25 +16,25 @@ export function ForecastCard({ forecast }: ForecastCardProps) {
 
   return (
     <View style={[styles.card, { backgroundColor: colors.card }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Forecast</Text>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>Forecast</Text>
 
       <View style={styles.section}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Deep Work Window</Text>
-        <Text style={[styles.value, { color: colors.text }]}>
+        <Text style={[styles.value, { color: colors.textPrimary }]}>
           {formatTime(forecast.deepWorkWindow.start)} - {formatTime(forecast.deepWorkWindow.end)}
         </Text>
       </View>
 
       <View style={styles.section}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Next Review Batch</Text>
-        <Text style={[styles.value, { color: colors.text }]}>
+        <Text style={[styles.value, { color: colors.textPrimary }]}>
           {formatTime(forecast.nextReviewBatch)}
         </Text>
       </View>
 
       <View style={styles.section}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Agent Hours in Progress</Text>
-        <Text style={[styles.value, { color: colors.accent }]}>
+        <Text style={[styles.value, { color: colors.primary }]}>
           {forecast.agentHoursInProgress} hours
         </Text>
       </View>

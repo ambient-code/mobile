@@ -20,7 +20,7 @@ export function InboxHeader({ userName, summary }: InboxHeaderProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.greeting, { color: colors.text }]}>
+      <Text style={[styles.greeting, { color: colors.textPrimary }]}>
         {getGreeting()}, {userName}
       </Text>
 
@@ -37,8 +37,8 @@ export function InboxHeader({ userName, summary }: InboxHeaderProps) {
           <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Stuck</Text>
         </View>
 
-        <View style={[styles.statCard, { backgroundColor: colors.accent + '20' }]}>
-          <Text style={[styles.statNumber, { color: colors.accent }]}>
+        <View style={[styles.statCard, { backgroundColor: colors.primary + '20' }]}>
+          <Text style={[styles.statNumber, { color: colors.primary }]}>
             {summary.pendingDecisions}
           </Text>
           <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Decisions</Text>

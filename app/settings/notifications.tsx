@@ -6,6 +6,7 @@ import { useOffline } from '../../hooks/useOffline'
 import { userApi } from '../../services/api/user'
 import { PreferencesService } from '../../services/storage/preferences'
 import type { NotificationPreferences } from '../../types/user'
+import { TOKENS } from '../../utils/constants'
 
 export default function NotificationsSettingsScreen() {
   const { isOffline } = useOffline()
@@ -113,7 +114,7 @@ export default function NotificationsSettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: TOKENS.bg,
   },
   loading: {
     flex: 1,
@@ -122,11 +123,11 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TOKENS.textSecondary,
     padding: 16,
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: TOKENS.card,
     borderRadius: 12,
     marginHorizontal: 16,
     overflow: 'hidden',
