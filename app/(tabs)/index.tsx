@@ -159,10 +159,6 @@ export default function DashboardScreen() {
         count: unreadCount > 0 ? unreadCount : undefined,
         onPress: () => router.push('/notifications'),
       },
-      { id: 'lucky', icon: 'dice.fill', text: "I'm Feeling Lucky" },
-      { id: 'inspire', icon: 'lightbulb.fill', text: 'Inspire Me' },
-      { id: 'invent', icon: 'sparkles', text: 'Go Invent' },
-      { id: 'add', icon: 'plus.circle.fill', text: 'Add Action', disabled: true, badge: 'Soon' },
     ],
     [runningSessions.length, unreadCount, router]
   )
